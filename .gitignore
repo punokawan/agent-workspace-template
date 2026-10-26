@@ -1,0 +1,12 @@
+# Workspace boilerplate: the toolkit only. Each project under projects/ keeps its own git.
+.DS_Store
+__pycache__/
+.wt/
+.cache/
+.claude/agentic-state/
+.claude/verify-results/
+CLAUDE.local.md
+.env*
+!.env.example
+/projects/*
+!/projects/_example/

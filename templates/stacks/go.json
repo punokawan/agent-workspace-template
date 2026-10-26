@@ -1,0 +1,72 @@
+{
+  "verify": {
+    "quick": [
+      {
+        "name": "vet",
+        "cmd": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "requires": [
+          "go.mod"
+        ],
+        "requires_tool": "go"
+      },
+      {
+        "name": "fmt-check",
+        "cmd": [
+          "bash",
+          "-c",
+          "test -z \"$(gofmt -l .)\""
+        ],
+        "requires": [
+          "go.mod"
+        ],
+        "requires_tool": "go"
+      }
+    ],
+    "full": [
+      {
+        "name": "build",
+        "cmd": [
+          "go",
+          "build",
+          "./..."
+        ],
+        "requires": [
+          "go.mod"
+        ],
+        "requires_tool": "go"
+      },
+      {
+        "name": "test",
+        "cmd": [
+          "go",
+          "test",
+          "./..."
+        ],
+        "requires": [
+          "go.mod"
+        ],
+        "requires_tool": "go"
+      }
+    ]
+  },
+  "shared_artifacts": [],
+  "local_config": [
+    ".env"
+  ],
+  "prune_dirs": [
+    "bin",
+    "tmp"
+  ],
+  "code_ext": [
+    ".go"
+  ],
+  "source_roots": [
+    "cmd",
+    "internal"
+  ],
+  "generated_markers": []
+}

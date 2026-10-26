@@ -1,0 +1,68 @@
+{
+  "verify": {
+    "quick": [
+      {
+        "name": "format",
+        "cmd": [
+          "dart",
+          "format",
+          "--output=none",
+          "--set-exit-if-changed",
+          "lib",
+          "test"
+        ],
+        "requires": [
+          "pubspec.yaml"
+        ],
+        "requires_tool": "dart"
+      },
+      {
+        "name": "analyze",
+        "cmd": [
+          "flutter",
+          "analyze"
+        ],
+        "requires": [
+          "pubspec.yaml"
+        ],
+        "requires_tool": "flutter"
+      }
+    ],
+    "full": [
+      {
+        "name": "test",
+        "cmd": [
+          "flutter",
+          "test"
+        ],
+        "requires": [
+          "pubspec.yaml"
+        ],
+        "requires_tool": "flutter"
+      }
+    ]
+  },
+  "shared_artifacts": [],
+  "local_config": [
+    ".env*",
+    "lib/config/environment/data/*.g.dart",
+    "android/key.properties",
+    "android/app/google-services.json",
+    "ios/Runner/GoogleService-Info.plist"
+  ],
+  "prune_dirs": [
+    "build",
+    ".dart_tool"
+  ],
+  "code_ext": [
+    ".dart"
+  ],
+  "source_roots": [
+    "lib"
+  ],
+  "generated_markers": [
+    ".g.dart",
+    ".freezed.dart",
+    ".gr.dart"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  },
+  "skillOverrides": {
+    "orca-cli": "user-invocable-only",
+    "orchestration": "user-invocable-only",
+    "computer-use": "user-invocable-only"
+  }
+}

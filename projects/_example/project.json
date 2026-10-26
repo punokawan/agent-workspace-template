@@ -1,0 +1,26 @@
+{
+  "name": "example",
+  "title": "Example",
+  "description": "A sample project that shows the layout a real project uses. Not a target.",
+  "planning": "planning",
+  "docs": {
+    "dir": "docs",
+    "mkdocs": "mkdocs.yml"
+  },
+  "repos": [
+    {
+      "id": "web",
+      "stack": "nextjs",
+      "integration": "dev",
+      "production": "main",
+      "deploy": "Cloudflare Workers"
+    },
+    {
+      "id": "backend",
+      "stack": "go",
+      "integration": "dev",
+      "production": "main",
+      "deploy": "Fly.io"
+    }
+  ]
+}

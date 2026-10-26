@@ -1,0 +1,58 @@
+# {{TITLE}} — project guide
+
+> Applies inside `projects/{{NAME}}/` and its worktrees under `.wt/{{NAME}}/`. The workspace
+> guide (`../../AGENTS.md`) applies unchanged except where a line here says `Override`. Each
+> repo's own `AGENTS.md` refines this file for that repo.
+
+`project.json` is the source of truth for repos, stacks, branches, deploy targets and verify
+commands (`bash .claude/scripts/project.sh show {{NAME}}`). Never restate it here.
+
+Read when the task touches them (create each file only once it has content):
+- `CONTRACTS.md` — full text and rationale of the project's contracts, when this file only
+  carries their one-line rule.
+- `GLOSSARY.md` — the domain vocabulary, once it outgrows a short table here.
+- `KNOWN-DEFECTS.md` — defects already fixed, for history.
+
+## What {{TITLE}} is
+
+{{DESCRIPTION}}
+
+_TODO: who uses it, the surfaces they touch, and the one constraint that outranks the rest._
+
+## What each repo owns
+
+_TODO: one line per repo in `project.json` — what it is the source of truth for. Each repo's
+layering goes in that repo's own `AGENTS.md`, not here._
+
+## Contracts
+
+_TODO: the decisions that outrank any plan, one to three lines each, numbered so a reviewer can
+cite them. Leave empty until a decision is real._
+
+## Conventions
+
+_TODO: only what differs from or adds to the workspace Studio defaults — naming, money, dates,
+errors, copy, localization. Each rule concrete enough that a reviewer can point at a violation.
+Mark a rule that replaces a workspace one `Override (AGENTS.md §<section>):`._
+
+## Domain vocabulary
+
+_TODO: the nouns the code and copy use, what each means, and what it is not called. Move to
+`GLOSSARY.md` when it grows past a screen._
+
+| Term | Means | Not called |
+|---|---|---|
+
+## Security posture
+
+Beyond the workspace rules, which apply unchanged:
+
+_TODO: the project's credentials, its most sensitive data and who may read it, and its
+unauthenticated surface._
+
+## Known defects
+
+_Pre-existing failures an agent must not absorb into an unrelated change, dated with their
+evidence grade. Fixed ones move to `KNOWN-DEFECTS.md`._
+
+_None recorded ({{DATE}})._

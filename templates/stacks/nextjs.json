@@ -1,0 +1,82 @@
+{
+  "verify": {
+    "quick": [
+      {
+        "name": "typecheck",
+        "cmd": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "requires": [
+          "package.json"
+        ],
+        "requires_tool": "npm"
+      },
+      {
+        "name": "lint",
+        "cmd": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "requires": [
+          "package.json"
+        ],
+        "requires_tool": "npm"
+      }
+    ],
+    "full": [
+      {
+        "name": "test",
+        "cmd": [
+          "npm",
+          "test"
+        ],
+        "requires": [
+          "package.json"
+        ],
+        "requires_tool": "npm"
+      },
+      {
+        "name": "build",
+        "cmd": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "requires": [
+          "package.json"
+        ],
+        "requires_tool": "npm"
+      }
+    ]
+  },
+  "shared_artifacts": [],
+  "local_config": [
+    ".env",
+    ".env.local",
+    ".dev.vars"
+  ],
+  "prune_dirs": [
+    ".next",
+    ".open-next",
+    ".wrangler"
+  ],
+  "code_ext": [
+    ".ts",
+    ".tsx"
+  ],
+  "source_roots": [
+    "app",
+    "features",
+    "engine",
+    "lib",
+    "components"
+  ],
+  "generated_markers": [
+    ".next/",
+    ".open-next/",
+    "next-env.d.ts"
+  ]
+}
