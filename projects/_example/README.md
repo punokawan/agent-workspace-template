@@ -8,8 +8,9 @@ its shape, never its content. To start a real project, run `/new-project`.
 projects/<name>/                    own git, tracking only the files below
   .gitignore                        from templates/project/gitignore.tmpl (left out here, so this
                                     folder stays visible to the boilerplate's git)
-  project.json                      repos, stacks, branches, deploy — the source of truth
-  AGENTS.md                         project guide, always loaded for this project's files
+  project.json                      repos, stacks, branches, deploy, and "rules": {"profile": …}
+  AGENTS.md                         project guide, always loaded for this project's files; its
+                                    rules block is rendered by rules.sh from the profile
   CLAUDE.md                         @AGENTS.md
   CONTRACTS.md, GLOSSARY.md, ...    long reference text the guide points to (optional)
   .claude/skills/<name>-<topic>/    skills for the whole project, may carry project data

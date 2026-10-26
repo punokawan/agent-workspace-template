@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-10-26 12:10_
+_Generated 2026-10-26 12:45_
 
 ## Agents (27)
 
@@ -81,10 +81,11 @@ _Generated 2026-10-26 12:10_
 | `/wt-list` | Show all active worktrees across every project — branch, size, dirty state, commits ahead of the integration branch — plus slot usage and disk verdict |
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 
-## Skills (23)
+## Skills (25)
 
 | Skill | Loads for |
 |---|---|
+| `architecture-decision` | How to answer a business, product or architecture question that has real trade-offs — as a principal architect and sparring partner, not an order-taker. Gives the nine-part structure (system summary, problem, root cause, impact, trade-offs, recommendation, alternative, hidden risks, future), and when to skip it for a short answer. Load when the user weighs a design, a vendor, a platform, a pricing or scaling choice, or asks "should we…". |
 | `changelog-and-release` | How every project manages versioning, changelogs, and releases — the generated Keep a Changelog format via changelog.sh, semver+buildNumber in pubspec.yaml, per-repo release scripts, commit conventions (commit subjects become changelog entries), and the tagging hand-off. Load before cutting a release, writing a changelog entry, or bumping a version. |
 | `clean-architecture` | Studio Flutter Clean Architecture rules — layer boundaries, dependency direction, what belongs where, and the pattern each layer follows (entities, repositories, use cases, DTOs, mappers, datasources, BLoCs, DI). Load for any implementation, review, or refactor of Flutter/Dart app code in any project. |
 | `code-review` | How to review code in any studio project — severity taxonomy, consistency contract, finding format, scope, verdict, plus the Flutter/Clean Architecture checklist. Load when reviewing a diff, a landed change, or a newly scaffolded feature. Go and Next.js reviews also use backend-reviewer / frontend-reviewer and their stack skills. |
@@ -98,6 +99,7 @@ _Generated 2026-10-26 12:10_
 | `git-workflow` | Two-branch development rules for every repo in every project — the production + integration branch model (names from project.json), short-lived working branches merged locally without a PR, commit conventions, hotfix flow, and release hand-off. Load this whenever making commits, cutting or merging branches, or preparing a release in any project. |
 | `l10n` | Localization rules for Flutter apps using ARB files and gen-l10n — where strings live, how to add one to every locale, key naming, parameterized and plural strings, the generate step, and common mistakes. Project facts (locales, template locale, generated class, accessor, generate command) live in the project's app overlay. |
 | `mkdocs` | How every project's engineering docs site works — MkDocs Material, one mkdocs.yml and docs/ tree per project, local dev server, adding a page and registering it in nav, available Markdown extensions, writing style, the mirror rule for cited code paths, and common mistakes. A project's tree and nav live in the <project>-docs overlay. |
+| `owner-report` | How to write an analysis, incident report or decision document for the project owner or other non-developers — format choice, a five-sentence opening, one plain diagram, a glossary, and technical detail kept in an appendix. Load before writing any report or explanation meant for someone who does not read code. |
 | `planning` | Planning-system rules for every project — plan frontmatter as the status source of truth, plan.sh, folder roles, PRD and tech-doc split, templates, and the status update checklist. Load whenever creating, reviewing, scoring, updating, or organizing files under projects/<project>/planning/. |
 | `session-continuity` | Durable run-state protocol for work in every project — how to create, update, and resume a run so any session can pick up an in-flight task after /clear, a crash, or days away. Load this at the start of any multi-step task and whenever the user says "resume", "continue", or "where were we". |
 | `solid-principles` | SOLID principles applied to studio Flutter/Dart apps (Clean Architecture + BLoC) — a violation and fix for each principle, common anti-patterns, and a review quick-check. |

@@ -40,11 +40,13 @@ Rules live as modules in `templates/rules/`. `core/` is always on and renders in
 | Profile | Optional modules |
 |---|---|
 | `light` | none — core only |
-| `standard` | verify-gate, code-style, studio-defaults, commit-discipline |
-| `strict` | all of the above plus worktree-flow, run-state, offline-tests |
+| `standard` | verify-gate, code-style, surgical-changes, studio-defaults, commit-discipline |
+| `strict` | all of the above plus worktree-flow, run-state, offline-tests, incident-analysis, capacity-review |
+| custom | whatever `rules.sh profile new/add/remove` puts in it |
 
 `templates/rules/profiles.json` is the source of these lists and of the default profile for new
-projects. A project stores its choice as `"rules": {"profile": …, "enable": […], "disable": […]}`
+projects. Its `source` is the template repository every generated block names as its origin — a
+fork sets its own URL there, then runs `rules.sh sync`. A project stores its choice as `"rules": {"profile": …, "enable": […], "disable": […]}`
 in `project.json`.
 
 ```bash
@@ -53,8 +55,25 @@ bash .claude/scripts/rules.sh set <project> standard       # switch a project's 
 bash .claude/scripts/rules.sh enable <project> offline-tests
 bash .claude/scripts/rules.sh disable <project> worktree-flow
 bash .claude/scripts/rules.sh default light                # profile for new projects
+bash .claude/scripts/rules.sh profile new team from standard
+bash .claude/scripts/rules.sh profile add team capacity-review
+bash .claude/scripts/rules.sh profile delete team          # refused while a project uses it
 ```
+
+The built-in profiles cannot be edited or deleted; copy one instead. A module's order inside a
+profile is the order it renders in.
 
 To add a module: write `templates/rules/optional/<name>.md` starting with a `## ` heading, add
 it to the profiles that should carry it, run `rules.sh sync`. `/doctor` fails when a block is
 stale.
+
+### Bringing in an existing project
+
+- **A repo just cloned into `projects/<name>/<repo>/`, no manifest yet:**
+  `project.sh new <name> --rules <profile>` registers the folder without overwriting anything in
+  it, then `project.sh add-repo <name> <repo> <stack>` records the existing checkout.
+- **A registered project that still keeps its guide in `CLAUDE.md`, or has no `rules` yet:**
+  `rules.sh adopt <name> [profile]` moves that text to `AGENTS.md` verbatim, makes `CLAUDE.md`
+  import it, sets the profile (the default when none is given) and renders the block.
+
+`rules.sh list` flags a project with no `AGENTS.md`, and `/doctor` fails until it is adopted.

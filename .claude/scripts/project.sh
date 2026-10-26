@@ -21,7 +21,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 TPL="$TEMPLATES_DIR/project"
 
 # Substitute {{PLACEHOLDER}} tokens without invoking sed on untrusted text.
-render() { # render <src> <dest>
+render() { # render <src> <dest> — never overwrites: a pulled project keeps its own files
+  [[ -e "$2" ]] && { warn "kept existing ${2#"$ROOT"/}"; return 0; }
   NAME="$P_NAME" TITLE="$P_TITLE" DESCRIPTION="$P_DESC" STACK="$P_STACK" \
   DATE="$(date '+%Y-%m-%d')" python3 - "$1" "$2" <<'PY'
 import os, sys
@@ -37,7 +38,8 @@ PY
 cmd_new() {
   local name="${1:?usage: project.sh new <name> [--title ..] [--desc ..] [--stack ..]}"; shift
   [[ "$name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || die "project name must be kebab-case: '$name'"
-  [[ -e "$PROJECTS_DIR/$name" ]] && die "projects/$name already exists"
+  # A folder without a manifest (a repo just cloned or pulled here) is adopted, not refused.
+  [[ -f "$PROJECTS_DIR/$name/project.json" ]] && die "projects/$name is already registered"
 
   P_NAME="$name"
   P_TITLE="$(python3 -c 'import sys;print(" ".join(w.capitalize() for w in sys.argv[1].split("-")))' "$name")"
@@ -63,7 +65,15 @@ cmd_new() {
 
   local dest="$PROJECTS_DIR/$name"
   mkdir -p "$dest"
-  render "$TPL/AGENTS.md.tmpl" "$dest/AGENTS.md"; printf '@AGENTS.md\n' > "$dest/CLAUDE.md"
+  # An older project kept its guide in CLAUDE.md: keep that text as AGENTS.md.
+  if [[ ! -f "$dest/AGENTS.md" && -s "$dest/CLAUDE.md" && "$(cat "$dest/CLAUDE.md")" != "@AGENTS.md" ]]; then
+    mv "$dest/CLAUDE.md" "$dest/AGENTS.md"; info "moved projects/$name/CLAUDE.md to AGENTS.md"
+  fi
+  render "$TPL/AGENTS.md.tmpl" "$dest/AGENTS.md"
+  if [[ ! -s "$dest/CLAUDE.md" ]]; then printf '@AGENTS.md\n' > "$dest/CLAUDE.md"
+  elif [[ "$(cat "$dest/CLAUDE.md")" != "@AGENTS.md" ]]; then
+    warn "projects/$name has both AGENTS.md and a CLAUDE.md with its own text — merge them, then make CLAUDE.md '@AGENTS.md'"
+  fi
   render "$TPL/gitignore.tmpl" "$dest/.gitignore"
 
   # A valid manifest with no repos yet, ready for add-repo. json.dump keeps any title or
@@ -82,7 +92,7 @@ PY
     mkdir -p "$dest/planning/features" "$dest/planning/improvements" "$dest/planning/bugs"
     render "$TPL/planning/README.md"      "$dest/planning/README.md"
     render "$TPL/planning/bugs/README.md" "$dest/planning/bugs/README.md"
-    cp -R "$TPL/planning/templates" "$dest/planning/templates"
+    [[ -e "$dest/planning/templates" ]] || cp -R "$TPL/planning/templates" "$dest/planning/templates"
     : > "$dest/planning/features/.gitkeep"
     : > "$dest/planning/improvements/.gitkeep"
   fi

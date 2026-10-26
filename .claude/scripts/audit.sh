@@ -188,6 +188,16 @@ else
   fail "rules blocks are stale — run: bash .claude/scripts/rules.sh sync"
 fi
 
+# 18 — Codex stops reading guides at 32 KiB: root + project + the largest repo guide must fit
+over=0
+for pj in "$PROJECTS_DIR"/*/; do
+  [[ -f "$pj/AGENTS.md" ]] || continue
+  big=0; for g in "$pj"*/AGENTS.md; do [[ -f "$g" ]] && (( $(wc -c < "$g") > big )) && big=$(wc -c < "$g"); done
+  total=$(( $(wc -c < "$ROOT/AGENTS.md") + $(wc -c < "$pj/AGENTS.md") + big ))
+  (( total > 32768 )) && { fail "${pj#"$ROOT"/} guides total $total bytes — over Codex's 32 KiB; trim the project or repo guide, or use a lighter profile"; over=1; }
+done
+(( over == 0 )) && pass "every project's guides fit Codex's 32 KiB"
+
 # 16 — facts a project declares as identical across its repos really are
 if python3 "$ROOT/.claude/scripts/_parity.py" --quiet >/dev/null 2>&1; then
   pass "cross-repo parity groups agree"
