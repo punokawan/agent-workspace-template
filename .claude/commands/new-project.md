@@ -34,7 +34,7 @@ not something to improvise inside this command.
 **2 — Scaffold.**
 
 ```bash
-bash .claude/scripts/project.sh new <name> --title "<title>" --desc "<one line>"
+bash .claude/scripts/project.sh new <name> --title "<title>" --desc "<one line>" [--rules light|standard|strict]
 ```
 
 **3 — Add each repo.** Confirm the URL with the user first.
@@ -67,7 +67,7 @@ defect rather than working around it.
 inventing content:
 
 - **What each repo owns** — one line per repo; never restate `project.json`
-- **Conventions** — only what differs from the workspace Studio defaults. Each rule concrete
+- **Conventions** — only what differs from the Studio defaults module, when the profile turns it on. Each rule concrete
   enough that a reviewer can point at a violation.
 - **Domain vocabulary** — the nouns the code and copy use, and what they mean
 - **Known defects** — anything already failing on the integration branch, dated, with the

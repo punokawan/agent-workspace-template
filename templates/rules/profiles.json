@@ -1,0 +1,26 @@
+{
+  "default": "strict",
+  "core": [
+    "precedence",
+    "security",
+    "outward-actions"
+  ],
+  "profiles": {
+    "light": [],
+    "standard": [
+      "verify-gate",
+      "code-style",
+      "studio-defaults",
+      "commit-discipline"
+    ],
+    "strict": [
+      "worktree-flow",
+      "verify-gate",
+      "run-state",
+      "code-style",
+      "studio-defaults",
+      "commit-discipline",
+      "offline-tests"
+    ]
+  }
+}

@@ -181,6 +181,13 @@ for d in "$ROOT" "$PROJECTS_DIR"/*/ "$PROJECTS_DIR"/*/*/; do
 done
 (( bad == 0 )) && pass "CLAUDE.md files import AGENTS.md; skills are linked for Codex"
 
+# 17 — each guide's rules block matches templates/rules and the project's profile
+if bash "$SCRIPTS/rules.sh" check >/dev/null 2>&1; then
+  pass "rules blocks match each project's profile"
+else
+  fail "rules blocks are stale — run: bash .claude/scripts/rules.sh sync"
+fi
+
 # 16 — facts a project declares as identical across its repos really are
 if python3 "$ROOT/.claude/scripts/_parity.py" --quiet >/dev/null 2>&1; then
   pass "cross-repo parity groups agree"

@@ -30,3 +30,31 @@ Register it with `/new-project`. It needs `projects/<name>/project.json` and
 `projects/<name>/AGENTS.md` (with a `CLAUDE.md` that imports it). Project conventions go in that
 guide and in the project's own skills, never in the workspace `AGENTS.md` or in the shared
 agents. `projects/_example/` shows where every file goes.
+
+## Rule profiles
+
+Rules live as modules in `templates/rules/`. `core/` is always on and renders into the root
+`AGENTS.md`; `optional/` modules are chosen per project and render into that project's
+`AGENTS.md`, between `<!-- BEGIN:rules` and `<!-- END:rules -->`. Never edit inside the block.
+
+| Profile | Optional modules |
+|---|---|
+| `light` | none — core only |
+| `standard` | verify-gate, code-style, studio-defaults, commit-discipline |
+| `strict` | all of the above plus worktree-flow, run-state, offline-tests |
+
+`templates/rules/profiles.json` is the source of these lists and of the default profile for new
+projects. A project stores its choice as `"rules": {"profile": …, "enable": […], "disable": […]}`
+in `project.json`.
+
+```bash
+bash .claude/scripts/rules.sh list                         # every profile and project
+bash .claude/scripts/rules.sh set <project> standard       # switch a project's profile
+bash .claude/scripts/rules.sh enable <project> offline-tests
+bash .claude/scripts/rules.sh disable <project> worktree-flow
+bash .claude/scripts/rules.sh default light                # profile for new projects
+```
+
+To add a module: write `templates/rules/optional/<name>.md` starting with a `## ` heading, add
+it to the profiles that should carry it, run `rules.sh sync`. `/doctor` fails when a block is
+stale.

@@ -43,12 +43,14 @@ cmd_new() {
   P_TITLE="$(python3 -c 'import sys;print(" ".join(w.capitalize() for w in sys.argv[1].split("-")))' "$name")"
   P_DESC=""
   P_STACK=""
+  P_RULES=""
   local want_docs=1 want_planning=1
   while (( $# )); do
     case "$1" in
       --title) P_TITLE="${2:?}"; shift 2 ;;
       --desc)  P_DESC="${2:?}";  shift 2 ;;
       --stack) P_STACK="${2:?}"; shift 2 ;;
+      --rules) P_RULES="${2:?}"; shift 2 ;;   # light | standard | strict
       --no-docs)     want_docs=0; shift ;;
       --no-planning) want_planning=0; shift ;;
       *) die "unknown option: $1" ;;
@@ -66,12 +68,13 @@ cmd_new() {
 
   # A valid manifest with no repos yet, ready for add-repo. json.dump keeps any title or
   # description safe; --stack is only validated above, repos carry their own stack.
-  python3 - "$dest/project.json" "$name" "$P_TITLE" "$P_DESC" <<'PY'
+  python3 - "$dest/project.json" "$name" "$P_TITLE" "$P_DESC" "$P_RULES" "$TEMPLATES_DIR/rules/profiles.json" <<'PY'
 import json, sys
-dest, name, title, desc = sys.argv[1:5]
+dest, name, title, desc, rules, profiles = sys.argv[1:7]
+rules = rules or json.load(open(profiles, encoding="utf-8"))["default"]
 json.dump({"name": name, "title": title, "description": desc,
            "planning": "planning", "docs": {"dir": "docs", "mkdocs": "mkdocs.yml"},
-           "repos": []}, open(dest, "w", encoding="utf-8"), indent=2)
+           "repos": [], "rules": {"profile": rules}}, open(dest, "w", encoding="utf-8"), indent=2)
 open(dest, "a", encoding="utf-8").write("\n")
 PY
 
@@ -88,6 +91,7 @@ PY
     render "$TPL/mkdocs.yml.tmpl"  "$dest/mkdocs.yml"
   fi
 
+  bash "$SCRIPTS/rules.sh" sync >/dev/null || die "rules: could not render the profile into AGENTS.md"
   ok "created projects/$name"
   proj check --quiet || warn "manifest needs a repo before it will validate — see below"
   echo
