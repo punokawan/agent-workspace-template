@@ -94,6 +94,9 @@ def splice(path, block):
     text = open(path, encoding="utf-8").read()
     if BEGIN in text:
         a = text.index(BEGIN)
+        if END not in text[a:]:
+            raise SystemExit(f"rules: {os.path.relpath(path, ROOT)} has a BEGIN:rules marker but no "
+                             f"'{END}' after it — restore that line, then run sync")
         b = text.index(END, a) + len(END)
         new = text[:a] + block.rstrip("\n") + text[b:]
     else:
@@ -104,9 +107,9 @@ def splice(path, block):
     return text, new
 
 
-def targets():
-    out = [(os.path.join(ROOT, "AGENTS.md"), root_block())]
-    for p in projects():
+def targets(only=None):
+    out = [] if only else [(os.path.join(ROOT, "AGENTS.md"), root_block())]
+    for p in ([only] if only else projects()):
         g = os.path.join(PROJECTS, p, "AGENTS.md")
         if os.path.isfile(g):
             out.append((g, project_block(p)))
@@ -117,9 +120,9 @@ def unguided():
     return [p for p in projects() if not os.path.isfile(os.path.join(PROJECTS, p, "AGENTS.md"))]
 
 
-def sync(check=False):
-    stale = [f"projects/{p} (no AGENTS.md — run: rules.sh adopt {p})" for p in unguided()]
-    for path, block in targets():
+def sync(check=False, only=None):
+    stale = [f"projects/{p} (no AGENTS.md — run: rules.sh adopt {p})" for p in unguided() if not only or p == only]
+    for path, block in targets(only):
         old, new = splice(path, block)
         if old != new:
             stale.append(os.path.relpath(path, ROOT))
@@ -147,7 +150,7 @@ def edit(p, fn):
             del r[k]
     json.dump(man, open(path, "w", encoding="utf-8"), indent=2)
     open(path, "a", encoding="utf-8").write("\n")
-    return sync()
+    return sync(only=p)
 
 
 def adopt(p, profile=None):
@@ -244,7 +247,9 @@ def profile_cmd(argv):
 def main(argv):
     cmd = argv[0] if argv else "list"
     if cmd == "sync":
-        return sync()
+        if len(argv) == 2 and argv[1] not in projects():
+            raise SystemExit(f"rules: no project '{argv[1]}'")
+        return sync(only=argv[1] if len(argv) == 2 else None)
     if cmd == "check":
         return sync(check=True)
     if cmd == "list":
@@ -291,7 +296,7 @@ def main(argv):
         save_cfg(c)
         print(f"new projects start on '{argv[1]}'")
         return 0
-    print("usage: rules.sh {list | sync | check | set <project> <profile> |"
+    print("usage: rules.sh {list | sync [project] | check | set <project> <profile> |"
           " enable|disable <project> <module> | adopt <project> [profile] | default <profile> |"
           " profile new|add|remove|delete …}")
     return 2

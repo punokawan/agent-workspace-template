@@ -37,7 +37,10 @@ human() { # bytes -> human
   }'
 }
 
-free_bytes() { df -k /Users | awk 'NR==2{print $4*1024}'; }
+# Portable across macOS, Linux and Windows (Git Bash, WSL): python3 instead of BSD-only flags.
+free_bytes() { python3 -c 'import shutil,sys;print(shutil.disk_usage(sys.argv[1]).free)' "$ROOT"; }
+mtime()      { python3 -c 'import os,sys;print(int(os.path.getmtime(sys.argv[1])))' "$1"; }
+fmt_mtime()  { python3 -c 'import os,sys,time;print(time.strftime("%Y-%m-%d %H:%M",time.localtime(os.path.getmtime(sys.argv[1]))))' "$1"; }
 
 # ---------------------------------------------------------------- registry
 

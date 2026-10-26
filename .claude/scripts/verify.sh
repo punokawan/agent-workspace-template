@@ -21,7 +21,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 set +e +u   # report failures rather than aborting; empty arrays are normal here
 
-export PATH="$ROOT/.claude/shims:$PATH"   # fvm shim: see shims/fvm
+export PATH="$ROOT/.claude/shims:$PATH"   # flutter/dart at the .fvmrc version: see shims/_pinned
 MODE="quick"
 SPECS=""       # newline-separated target specs
 WT_SPECS=""    # newline-separated "project<TAB>repo<TAB>dir" for worktree targets
@@ -62,7 +62,7 @@ if [[ -z "$RESOLVED" && -z "$WT_SPECS" ]]; then
   if [[ -n "$DIRTY" ]]; then RESOLVED="$DIRTY"; else RESOLVED="$ALL"; fi
 fi
 
-LOG="$(mktemp -t studio-verify)"
+LOG="$(mktemp "${TMPDIR:-/tmp}/studio-verify.XXXXXX")"
 RESULT_DIR="$ROOT/.claude/verify-results"
 mkdir -p "$RESULT_DIR"
 RESULT="$RESULT_DIR/$(date '+%Y%m%d-%H%M%S')-$$.txt"
@@ -74,7 +74,7 @@ run_check() {
   local name="$1" dir="$2"; shift 2
   printf '\n\033[1m── %s\033[0m\n' "$name"
   local check_log rc started elapsed
-  check_log="$(mktemp -t studio-check)"
+  check_log="$(mktemp "${TMPDIR:-/tmp}/studio-check.XXXXXX")"
   started="$(date +%s)"
   (cd "$dir" && python3 "$ROOT/.claude/scripts/_run_check.py" "$check_log" "$TIMEOUT_SECONDS" "$STALL_SECONDS" "$@")
   rc=$?

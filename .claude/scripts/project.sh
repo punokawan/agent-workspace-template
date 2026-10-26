@@ -12,7 +12,7 @@
 # `new` options:
 #   --title "..."    human name          (default: capitalized <name>)
 #   --desc  "..."    one-line summary
-#   --stack <s>      stack for the initial `app` repo (default: none — add repos later)
+#   --rules <p>      rule profile (default: templates/rules/profiles.json "default")
 #   --no-docs        skip docs/ + mkdocs.yml
 #   --no-planning    skip planning/
 
@@ -23,12 +23,12 @@ TPL="$TEMPLATES_DIR/project"
 # Substitute {{PLACEHOLDER}} tokens without invoking sed on untrusted text.
 render() { # render <src> <dest> — never overwrites: a pulled project keeps its own files
   [[ -e "$2" ]] && { warn "kept existing ${2#"$ROOT"/}"; return 0; }
-  NAME="$P_NAME" TITLE="$P_TITLE" DESCRIPTION="$P_DESC" STACK="$P_STACK" \
+  NAME="$P_NAME" TITLE="$P_TITLE" DESCRIPTION="$P_DESC" \
   DATE="$(date '+%Y-%m-%d')" python3 - "$1" "$2" <<'PY'
 import os, sys
 src, dest = sys.argv[1], sys.argv[2]
 text = open(src, encoding="utf-8").read()
-for key in ("NAME", "TITLE", "DESCRIPTION", "STACK", "DATE"):
+for key in ("NAME", "TITLE", "DESCRIPTION", "DATE"):
     text = text.replace("{{%s}}" % key, os.environ.get(key, ""))
 os.makedirs(os.path.dirname(dest), exist_ok=True)
 open(dest, "w", encoding="utf-8").write(text)
@@ -36,7 +36,7 @@ PY
 }
 
 cmd_new() {
-  local name="${1:?usage: project.sh new <name> [--title ..] [--desc ..] [--stack ..]}"; shift
+  local name="${1:?usage: project.sh new <name> [--title ..] [--desc ..] [--rules ..]}"; shift
   [[ "$name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || die "project name must be kebab-case: '$name'"
   # A folder without a manifest (a repo just cloned or pulled here) is adopted, not refused.
   [[ -f "$PROJECTS_DIR/$name/project.json" ]] && die "projects/$name is already registered"
@@ -44,23 +44,18 @@ cmd_new() {
   P_NAME="$name"
   P_TITLE="$(python3 -c 'import sys;print(" ".join(w.capitalize() for w in sys.argv[1].split("-")))' "$name")"
   P_DESC=""
-  P_STACK=""
   P_RULES=""
   local want_docs=1 want_planning=1
   while (( $# )); do
     case "$1" in
       --title) P_TITLE="${2:?}"; shift 2 ;;
       --desc)  P_DESC="${2:?}";  shift 2 ;;
-      --stack) P_STACK="${2:?}"; shift 2 ;;
       --rules) P_RULES="${2:?}"; shift 2 ;;   # light | standard | strict
       --no-docs)     want_docs=0; shift ;;
       --no-planning) want_planning=0; shift ;;
       *) die "unknown option: $1" ;;
     esac
   done
-  if [[ -n "$P_STACK" && ! -f "$TEMPLATES_DIR/stacks/$P_STACK.json" ]]; then
-    die "unknown stack '$P_STACK'. available: $(cmd_stacks | tr '\n' ' ')"
-  fi
   [[ -n "$P_DESC" ]] || P_DESC="$P_TITLE."
 
   local dest="$PROJECTS_DIR/$name"
@@ -76,8 +71,8 @@ cmd_new() {
   fi
   render "$TPL/gitignore.tmpl" "$dest/.gitignore"
 
-  # A valid manifest with no repos yet, ready for add-repo. json.dump keeps any title or
-  # description safe; --stack is only validated above, repos carry their own stack.
+  # A valid manifest with no repos yet, ready for add-repo, which records each repo's stack.
+  # json.dump keeps any title or description safe.
   python3 - "$dest/project.json" "$name" "$P_TITLE" "$P_DESC" "$P_RULES" "$TEMPLATES_DIR/rules/profiles.json" <<'PY'
 import json, sys
 dest, name, title, desc, rules, profiles = sys.argv[1:7]
@@ -101,7 +96,7 @@ PY
     render "$TPL/mkdocs.yml.tmpl"  "$dest/mkdocs.yml"
   fi
 
-  bash "$SCRIPTS/rules.sh" sync >/dev/null || die "rules: could not render the profile into AGENTS.md"
+  bash "$SCRIPTS/rules.sh" sync "$name" >/dev/null || die "rules: could not render the profile into AGENTS.md"
   ok "created projects/$name"
   proj check --quiet || warn "manifest needs a repo before it will validate — see below"
   echo

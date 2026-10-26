@@ -25,7 +25,17 @@ them. Each project picks how strict its rules are.
 
 - Claude Code and/or Codex
 - `git`, `bash`, `python3`; `node` for the Ponytail plugin's hooks
-- The toolchain of each stack you use (Flutter, Go, Node.js — see `templates/stacks/`)
+- The toolchain of each stack you use (Flutter, Go, Node.js — see `templates/stacks/`). A Flutter
+  repo that pins its SDK in `.fvmrc` also needs [fvm](https://fvm.app).
+
+Run `bash .claude/scripts/env.sh` (`/env-check`) to see what is missing and how to install it on
+your platform.
+
+| Platform | How |
+|---|---|
+| macOS | Works as is. |
+| Linux | Works as is. |
+| Windows | **WSL2 (recommended):** clone and work inside the Linux file system. **Git Bash:** turn on Developer Mode, run `git config --global core.symlinks true` and set `MSYS=winsymlinks:nativestrict` *before* cloning, so `.agents/skills` and worktree links are real links; make `python3` resolve to Python 3. |
 
 ## Start
 
@@ -122,6 +132,7 @@ repository, so this template never carries project data.
 | `/verify` | `verify.sh <project>/<repo> [--full]` |
 | `/checkpoint` · `/resume` | `state.sh phase …` · `state.sh show` |
 | `/doctor` | `audit.sh` |
+| `/env-check` | `env.sh` |
 
 The full table is in `AGENTS.md`; every agent, command and skill is listed in
 `.claude/AGENTS.md`.

@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-10-26 12:45_
+_Generated 2026-10-26 13:56_
 
 ## Agents (27)
 
@@ -44,7 +44,7 @@ _Generated 2026-10-26 12:45_
 | `ux-designer` | opus/medium | Acts as a senior UX designer for any project in this workspace. Designs screen flows, interaction patterns, empty/error/loading states, and component specifications that fit the target project's own design system. Use when a PRD needs UX detail, when reviewing flow quality, or when designing a new screen from scratch. |
 | `ux-writer` | sonnet/medium | Principal UX writer / copy editor (seasoned consumer-product content designer) for every project in this workspace and every surface (Flutter app, Next.js web, Go backend). Writes and reviews user-facing text — labels, buttons, titles, hints, empty/error/loading states, dialogs, toasts, web pages, API error messages, emails — for a consistent calm voice, correct terminology, and sentence case, and applies the right localization rule for whichever surface the file lives in. Use when adding or changing copy, reviewing a screen/page's text, or sweeping a feature for hardcoded/inconsistent strings in any repo. |
 
-## Slash commands (32)
+## Slash commands (33)
 
 | Command | Purpose |
 |---|---|
@@ -59,6 +59,7 @@ _Generated 2026-10-26 12:45_
 | `/disk-prune` | Reclaim regenerable build artifacts across every project's repos — dry run by default, requires explicit confirmation to delete |
 | `/disk-report` | Report disk usage across the whole studio workspace — reclaimable artifacts, shared cache, worktree slots, and a free-space verdict |
 | `/doctor` | Health check for the whole studio AI toolkit and the docs agents depend on — roster freshness, dangling references, dead paths in AGENTS.md, hardcoded credentials, worktree/disk state, and stale runs |
+| `/env-check` | Check that this machine (macOS, Linux, or Windows via WSL2 or Git Bash) has what the workspace needs — bash, git, python3, working symlinks, and each project's toolchain — and print the fix for anything missing. |
 | `/hunt-bugs` | Proactive bug sweep across a project's Flutter app — static analysis, crash risks, data integrity, sync bugs, and resource leaks. Pass a feature name or path to scope the hunt, or leave empty for a full sweep. |
 | `/new-feature` | Scaffold a complete Clean Architecture feature in a project's Flutter app — entity, models, mapper, datasource, repository, use cases, BLoCs, and screen. Runs senior-mobile-engineer with the project's own conventions. |
 | `/new-project` | Register a new project in this workspace — scaffolds the manifest, AGENTS.md, planning/ and docs/ from templates, then wires its repos in. Pass a project name, or leave empty to be asked. |
@@ -117,6 +118,7 @@ _Generated 2026-10-26 12:45_
 |---|---|
 | `.claude/scripts/audit.sh` | Consistency audit for the whole studio AI toolkit + the docs agents rely on. |
 | `.claude/scripts/changelog.sh` | Keep a Changelog (keepachangelog.com/1.1.0) generation from conventional commits. |
+| `.claude/scripts/env.sh` | Check that this machine can run the workspace, and say how to fix what is missing. |
 | `.claude/scripts/gen-image.sh` | Generate an image with the Gemini API. The key comes from $GEMINI_API_KEY or the macOS Keychain |
 | `.claude/scripts/plan.sh` | Planning index + drift detection. Frontmatter is the single source of truth. |
 | `.claude/scripts/pr.sh` | Generate a PR description grounded in real commits, a real diff, and a real |

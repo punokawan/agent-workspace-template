@@ -109,9 +109,10 @@ project — an example, never a target.
 | Slash command | Script (`bash .claude/scripts/…`) |
 |---|---|
 | `/projects` | `project.sh list` · `show <name>` · `check` |
-| `/new-project` | `project.sh new <name> --stack <stack>` |
+| `/new-project` | `project.sh new <name> --rules <profile>` |
 | `/verify` | `verify.sh <project>/<repo> [--full]` |
 | `/doctor` | `audit.sh` |
+| `/env-check` | `env.sh` (what this machine is missing, per platform) |
 | `/wt-start` | `wt.sh start <project>/<repo> <type>/<slug>` |
 | `/wt-finish` | `wt.sh land <project>/<repo> <slug>` |
 | `/wt-list` | `wt.sh list` |

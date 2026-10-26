@@ -244,7 +244,8 @@ cmd_close() {
     fi
   fi
   local id; id="$(resolve "${1:-}")"
-  sed -i '' 's/^- \*\*Status:\*\* active/- **Status:** complete/' "$(run_path "$id")/run.md"
+  sed -i.bak 's/^- \*\*Status:\*\* active/- **Status:** complete/' "$(run_path "$id")/run.md" \
+    && rm -f "$(run_path "$id")/run.md.bak"   # -i.bak: the one form GNU and BSD sed both accept
   cmd_log "run_closed" "" "$id" >/dev/null
   [[ "$(cmd_current)" == "$id" ]] && : > "$CURRENT_PTR"
   ok "run $id closed — $(grep -m1 '^- \*\*Goal:\*\*' "$(run_path "$id")/run.md" | sed 's/^- \*\*Goal:\*\* //')"

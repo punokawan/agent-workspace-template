@@ -6,5 +6,5 @@
 #   rules.sh default <profile>                  profile new projects start on
 #   rules.sh profile new <name> [from <p>] | add|remove <name> <module> | delete <name>
 #   rules.sh adopt <project> [profile]          bring an existing project in
-#   rules.sh sync | check                       re-render the blocks / fail when stale
+#   rules.sh sync [project] | check             re-render the blocks / fail when stale
 exec python3 "$(dirname "${BASH_SOURCE[0]}")/_rules.py" "$@"

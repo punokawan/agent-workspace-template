@@ -17,7 +17,7 @@ cmd_report() {
   local free; free=$(free_bytes)
   echo "STUDIO DISK REPORT — $(date '+%Y-%m-%d %H:%M')"
   echo "==================================================="
-  printf 'Free on /Users : %s\n' "$(human "$free")"
+  printf 'Free disk      : %s\n' "$(human "$free")"
 
   if   (( free < DANGER_FREE )); then printf 'Verdict        : \033[31mCRITICAL\033[0m — prune before starting new work\n'
   elif (( free < WARN_FREE  )); then printf 'Verdict        : \033[33mTIGHT\033[0m — worktree cap %s enforced\n' "$WT_CAP"
@@ -61,7 +61,7 @@ cmd_report() {
       n=$((n+1))
       printf '  %-44s %8s  last-used %s\n' \
         "${d#"$WT_DIR"/}" "$(du -sh "$d" 2>/dev/null | cut -f1)" \
-        "$(date -r "$d" '+%Y-%m-%d %H:%M')"
+        "$(fmt_mtime "$d")"
     done < <(find "$WT_DIR" -mindepth 3 -maxdepth 3 -type d 2>/dev/null | sort)
   fi
   (( n == 0 )) && echo "  (none)"
@@ -82,7 +82,12 @@ cmd_prune() {
     while IFS= read -r pd; do
       [[ -n "$pd" ]] || continue
       while IFS= read -r hit; do
-        [[ -n "$hit" && ! -L "$hit" ]] && targets+=("$hit")
+        [[ -n "$hit" && ! -L "$hit" ]] || continue
+        # A name match is not proof of a build folder: never delete anything git tracks.
+        if [[ -n "$(git -C "$d" ls-files -- "${hit#"$d"/}" 2>/dev/null | head -1)" ]]; then
+          warn "kept ${hit#"$ROOT"/} — it holds tracked source"; continue
+        fi
+        targets+=("$hit")
       done < <(find "$d" -maxdepth 2 -name "$pd" -type d -prune 2>/dev/null)
     done < <(proj field "$p" "$r" prune_dirs)
   done < <(proj resolve all)

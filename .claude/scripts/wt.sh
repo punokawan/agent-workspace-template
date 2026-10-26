@@ -128,7 +128,7 @@ cmd_prune() {
   local n; n="$(count_wt)"
   while (( n >= WT_CAP )); do
     local oldest
-    oldest="$(live_wt | while read -r d; do stat -f '%m %N' "$d"; done \
+    oldest="$(live_wt | while read -r d; do echo "$(mtime "$d") $d"; done \
               | sort -n | head -1 | cut -d' ' -f2-)"
     [[ -n "$oldest" ]] || break
     wt_parts "$oldest"
@@ -139,13 +139,13 @@ cmd_prune() {
     # that is between edits, leaves no porcelain output, and concurrent sessions
     # share this cap — so recency is the only signal that someone is still in
     # there. Refuse rather than delete another session's working tree.
-    local age=$(( $(date +%s) - $(stat -f '%m' "$oldest") ))
+    local age=$(( $(date +%s) - $(mtime "$oldest") ))
     if (( age < WT_IDLE_SECS )); then
       die "cap $WT_CAP reached, and the LRU target $WPROJ/$WREPO/$WSLUG was used $(( age / 60 ))m ago — it may be in use by another session.
   Free a slot yourself:   wt.sh drop <project>/<repo> <slug>
   Or raise the cap:       STUDIO_WT_CAP=$(( WT_CAP + 1 )) wt.sh start ..."
     fi
-    warn "cap $WT_CAP reached — LRU-pruning $WPROJ/$WREPO/$WSLUG (clean, last used $(date -r "$oldest" '+%Y-%m-%d %H:%M'))"
+    warn "cap $WT_CAP reached — LRU-pruning $WPROJ/$WREPO/$WSLUG (clean, last used $(fmt_mtime "$oldest"))"
     cmd_drop "$WPROJ/$WREPO" "$WSLUG" --force
     n="$(count_wt)"
   done

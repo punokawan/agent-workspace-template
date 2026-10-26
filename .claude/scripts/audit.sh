@@ -65,14 +65,16 @@ for p in $(grep -rhoIE '\.claude/scripts/[a-z_]+\.(sh|py)' "$ROOT/.claude" "$ROO
 done
 (( bad == 0 )) && pass "all referenced scripts exist"
 
-# 6 — every skill referenced by backtick-name exists
+# 6 — every skill a guide, command, agent or skill names ("the `x` skill") exists
 bad=0
-for s in $(grep -rhoE '`[a-z][a-z-]{4,}`' "$ROOT/.claude/commands" "$ROOT/AGENTS.md" 2>/dev/null | tr -d '`' | sort -u); do
+for s in $(grep -rhoE '`[a-z][a-z0-9-]+` skill' "$ROOT/.claude" "$ROOT/AGENTS.md" "$ROOT/templates" 2>/dev/null \
+             | sed -E 's/`([^`]+)` skill/\1/' | sort -u); do
   [[ -d "$ROOT/.claude/skills/$s" ]] && continue
-  [[ -f "$ROOT/.claude/commands/$s.md" ]] && continue
-  [[ -f "$ROOT/.claude/agents/$s.md" ]] && continue
+  compgen -G "$PROJECTS_DIR/*/.claude/skills/$s" >/dev/null && continue
+  compgen -G "$PROJECTS_DIR/*/*/.claude/skills/$s" >/dev/null && continue
+  fail "a skill is named but does not exist: $s"; bad=1
 done
-pass "skill/command cross-references resolve"
+(( bad == 0 )) && pass "every named skill exists"
 
 # 7 — paths claimed in each project's AGENTS.md exist
 bad=0
@@ -197,6 +199,13 @@ for pj in "$PROJECTS_DIR"/*/; do
   (( total > 32768 )) && { fail "${pj#"$ROOT"/} guides total $total bytes — over Codex's 32 KiB; trim the project or repo guide, or use a lighter profile"; over=1; }
 done
 (( over == 0 )) && pass "every project's guides fit Codex's 32 KiB"
+
+# 19 — the toolkit's own tests (rules rendering) pass
+if python3 -m unittest discover -s "$SCRIPTS/tests" >/dev/null 2>&1; then
+  pass "toolkit tests pass"
+else
+  fail "toolkit tests fail — run: python3 -m unittest discover -s .claude/scripts/tests"
+fi
 
 # 16 — facts a project declares as identical across its repos really are
 if python3 "$ROOT/.claude/scripts/_parity.py" --quiet >/dev/null 2>&1; then
