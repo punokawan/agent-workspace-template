@@ -110,6 +110,7 @@ transport/handler → service → data access (store/dao) → domain/entity
 - Route not in Go 1.22 `"METHOD /path"` form where the project uses it; public/protected middleware swapped; handler not registered
 - Inline magic strings or numbers that the project keeps as constants
 - Config field added but not loaded from file/env; hardcoded port, URL, or secret
+- A `/verify` file-size warning: the change grew a file past the stack limit or added one over it — name the split from the project's File size rule (sibling files in the same package, one route-registration function per resource). Untouched large files are not findings
 
 ---
 

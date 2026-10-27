@@ -41,7 +41,7 @@ Rules live as modules in `templates/rules/`. `core/` is always on and renders in
 |---|---|
 | `light` | none — core only |
 | `standard` | verify-gate, code-style, surgical-changes, studio-defaults, commit-discipline |
-| `strict` | all of the above plus worktree-flow, run-state, offline-tests, incident-analysis, capacity-review |
+| `strict` | all of the above plus worktree-flow, run-state, file-size, offline-tests, incident-analysis, capacity-review |
 | custom | whatever `rules.sh profile new/add/remove` puts in it |
 
 `templates/rules/profiles.json` is the source of these lists and of the default profile for new

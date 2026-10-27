@@ -90,6 +90,7 @@ Project rules are findings too: a breach of a layering rule or contract in `proj
 - No duplicate CTAs or controls in the same section for the same action
 - No duplicated queries, zod schemas, helpers, API routes, state branches, or formatters
 - Layout, spacing, responsive behavior, dark mode, loading, empty, error, and disabled states match nearby screens
+- No `/verify` file-size warning left unaddressed: a file this change grew past the stack limit, or added over it, is split as the project's File size rule describes (WARNING). Untouched large files are not findings
 
 ## Report format
 

@@ -38,6 +38,7 @@ Before reviewing, read, in this order:
 - Duplicate destructive or financial actions that can mislead users → **High**
 - New helper, widget, rule, route, endpoint, formatter, or constant duplicating an existing owner → **Medium/High**
 - Secrets or PII in code, logs, fixtures, or changelog → **Critical** (report location and class, never the value)
+- A `/verify` file-size warning (the change grew a file past its stack limit, or added one over it) → **Medium**; name the split the project's File size rule describes. Files already large and untouched are not findings.
 
 ## Flutter checklist (priority order)
 

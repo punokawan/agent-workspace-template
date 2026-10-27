@@ -73,8 +73,11 @@ def load_project(name):
             raise ManifestError(f"{name}: a repo entry has no 'id'")
         if "stack" not in repo:
             raise ManifestError(f"{name}/{repo['id']}: no 'stack'")
-        merged = dict(load_stack(repo["stack"]))
+        stack = load_stack(repo["stack"])
+        merged = dict(stack)
         merged.update(repo)                      # inline keys win over the preset
+        # file_size merges key by key, so overriding the limit keeps the preset's excludes.
+        merged["file_size"] = {**stack.get("file_size", {}), **repo.get("file_size", {})}
         for key in INHERITED:
             merged.setdefault(key, [] if key != "verify" else {"quick": [], "full": []})
         merged["project"] = name

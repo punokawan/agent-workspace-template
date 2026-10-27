@@ -68,7 +68,7 @@ mkdir -p "$RESULT_DIR"
 RESULT="$RESULT_DIR/$(date '+%Y%m%d-%H%M%S')-$$.txt"
 TIMEOUT_SECONDS="${STUDIO_VERIFY_TIMEOUT_SECONDS:-2700}"
 STALL_SECONDS="${STUDIO_VERIFY_STALL_SECONDS:-900}"
-FAILED=(); PASSED=(); SKIPPED=()
+FAILED=(); PASSED=(); SKIPPED=(); WARNED=()
 
 run_check() {
   local name="$1" dir="$2"; shift 2
@@ -129,6 +129,13 @@ verify_dir() {
 for a in json.load(sys.stdin)["cmd"]: sys.stdout.write(a+"\0")')
     run_check "$label: $name" "$dir" "${cmd[@]}"
   done 3< <(CHECK_DIR="$dir" proj checks "$project" "$repo" "$MODE")
+  # Warn-only: the file-size rule never changes the verdict.
+  local w
+  while IFS= read -r w; do
+    [[ -n "$w" ]] || continue
+    WARNED+=("$label: file-size $w")
+    printf '%s\twarn\n' "$label: file-size $w" >> "$RESULT"
+  done < <(STUDIO_ROOT="$ROOT" python3 "$SCRIPTS/_filesize.py" "$project" "$repo" "$dir")
   rm -rf "$lock"
 }
 
@@ -155,9 +162,10 @@ echo "VERIFICATION RESULT"
 echo "=============================================================="
 for p in "${PASSED[@]}";  do printf '  \033[32mPASS\033[0m  %s\n' "$p"; done
 for s in "${SKIPPED[@]}"; do printf '  \033[33mSKIP\033[0m  %s\n' "$s"; done
+for w in "${WARNED[@]}";  do printf '  \033[33mWARN\033[0m  %s\n' "$w"; done
 for f in "${FAILED[@]}";  do printf '  \033[31mFAIL\033[0m  %s\n' "$f"; done
 echo
-printf 'passed=%d failed=%d skipped=%d\n' "${#PASSED[@]}" "${#FAILED[@]}" "${#SKIPPED[@]}"
+printf 'passed=%d failed=%d skipped=%d warned=%d\n' "${#PASSED[@]}" "${#FAILED[@]}" "${#SKIPPED[@]}" "${#WARNED[@]}"
 echo "full log: $LOG"
 echo "result summary: $RESULT"
 

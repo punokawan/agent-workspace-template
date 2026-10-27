@@ -64,5 +64,14 @@
     ".g.dart",
     ".freezed.dart",
     ".gr.dart"
-  ]
+  ],
+  "file_size": {
+    "limit": 400,
+    "exclude": [
+      "test/*",
+      "*_test.dart",
+      "*/l10n/*",
+      "*app_localizations*.dart"
+    ]
+  }
 }

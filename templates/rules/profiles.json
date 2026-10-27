@@ -20,6 +20,7 @@
       "verify-gate",
       "run-state",
       "code-style",
+      "file-size",
       "surgical-changes",
       "studio-defaults",
       "commit-discipline",

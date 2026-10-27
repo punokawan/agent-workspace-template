@@ -78,5 +78,15 @@
     ".next/",
     ".open-next/",
     "next-env.d.ts"
-  ]
+  ],
+  "file_size": {
+    "limit": 300,
+    "exclude": [
+      "*.test.*",
+      "*.spec.*",
+      "e2e/*",
+      "*.d.ts",
+      "*/migrations/*"
+    ]
+  }
 }

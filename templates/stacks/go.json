@@ -68,5 +68,12 @@
     "cmd",
     "internal"
   ],
-  "generated_markers": []
+  "generated_markers": [],
+  "file_size": {
+    "limit": 500,
+    "exclude": [
+      "*_test.go",
+      "*/migrations/*"
+    ]
+  }
 }
