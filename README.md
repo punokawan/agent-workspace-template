@@ -1,7 +1,7 @@
 # Agent workspace template
 
 One workspace for running several product projects with **Claude Code** and **Codex** from a
-single shared toolkit: 27 specialist agents, 32 slash commands, 25 skills and the scripts behind
+single shared toolkit: 27 specialist agents, 32 slash commands, 26 skills and the scripts behind
 them. Each project picks how strict its rules are.
 
 ## What you get
@@ -149,5 +149,6 @@ The full table is in `AGENTS.md`; every agent, command and skill is listed in
 
 ## License
 
-The skills are marked `license: Proprietary`. This repository is private; do not redistribute
+The skills are marked `license: Proprietary`, except `security-audit`, vendored from
+Cloudflare under MIT (see its `LICENSE` and `UPSTREAM.md`). This repository is private; do not redistribute
 it without the owner's permission.
