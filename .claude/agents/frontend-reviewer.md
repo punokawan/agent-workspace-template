@@ -42,6 +42,7 @@ Read before auditing, in this order:
 2b. `projects/<project>/GLOSSARY.md` and the sections of `projects/<project>/CONTRACTS.md` the change touches, each if it exists — the full vocabulary and contract text; a name the glossary lists under "Not called" is a finding
 3. `projects/<project>/**/.claude/skills/<project>-web-patterns/SKILL.md` (its "Review checks") and `projects/<project>/**/.claude/skills/<project>-code-consistency/SKILL.md`, each only if it exists
 4. The nearest existing page/component/route that owns similar behavior
+5. `.claude/skills/seo-geo/SKILL.md` when the diff touches a public route, metadata, sitemap/robots, or JSON-LD — grade with its severity table
 
 Project rules are findings too: a breach of a layering rule or contract in `projects/<project>/AGENTS.md` is CRITICAL.
 

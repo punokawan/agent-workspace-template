@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-10-27 14:01_
+_Generated 2026-10-27 20:13_
 
 ## Agents (27)
 
@@ -82,7 +82,7 @@ _Generated 2026-10-27 14:01_
 | `/wt-list` | Show all active worktrees across every project — branch, size, dirty state, commits ahead of the integration branch — plus slot usage and disk verdict |
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 
-## Skills (26)
+## Skills (27)
 
 | Skill | Loads for |
 |---|---|
@@ -103,6 +103,7 @@ _Generated 2026-10-27 14:01_
 | `owner-report` | How to write an analysis, incident report or decision document for the project owner or other non-developers — format choice, a five-sentence opening, one plain diagram, a glossary, and technical detail kept in an appendix. Load before writing any report or explanation meant for someone who does not read code. |
 | `planning` | Planning-system rules for every project — plan frontmatter as the status source of truth, plan.sh, folder roles, PRD and tech-doc split, templates, and the status update checklist. Load whenever creating, reviewing, scoring, updating, or organizing files under projects/<project>/planning/. |
 | `security-audit` | Security guidance and vulnerability review for codebases, APIs, services, CLI tools, libraries, and daemons. Use for security questions, focused reviews, vulnerability research, security audits, or pen tests. Run the complete workflow only for explicit codebase audit or pen-test requests, full/comprehensive/end-to-end reviews, or requested report artifacts. |
+| `seo-geo` | Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content. |
 | `session-continuity` | Durable run-state protocol for work in every project — how to create, update, and resume a run so any session can pick up an in-flight task after /clear, a crash, or days away. Load this at the start of any multi-step task and whenever the user says "resume", "continue", or "where were we". |
 | `solid-principles` | SOLID principles applied to studio Flutter/Dart apps (Clean Architecture + BLoC) — a violation and fix for each principle, common anti-patterns, and a review quick-check. |
 | `storage-management` | Disk-budget rules for the studio workspace — shared build caches, worktree storage cap, safe prune targets, and the pre-flight check required before creating a worktree or running a build. Load this before creating/removing worktrees, before any full build, or whenever disk pressure is suspected. |

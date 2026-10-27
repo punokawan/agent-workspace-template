@@ -45,6 +45,7 @@ Before writing any code, read, in this order:
 2. `projects/<project>/<repo>/AGENTS.md` if it exists — architecture, naming, patterns
 3. `projects/<project>/**/.claude/skills/<project>-web-patterns/SKILL.md` and `projects/<project>/**/.claude/skills/<project>-code-consistency/SKILL.md`, each only if it exists
 4. The most similar existing page, component, route, or feature slice in the repo
+5. `.claude/skills/seo-geo/SKILL.md` when the change adds or alters a public route, page metadata, sitemap/robots, or structured data
 
 Where these disagree with this file, they win. If implementing from a UX spec, read
 `projects/<project>/planning/features/<name>-ux-spec.md` first.
