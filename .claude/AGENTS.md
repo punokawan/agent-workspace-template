@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-10-27 20:13_
+_Generated 2026-10-31 10:25_
 
 ## Agents (27)
 
@@ -44,7 +44,7 @@ _Generated 2026-10-27 20:13_
 | `ux-designer` | opus/medium | Acts as a senior UX designer for any project in this workspace. Designs screen flows, interaction patterns, empty/error/loading states, and component specifications that fit the target project's own design system. Use when a PRD needs UX detail, when reviewing flow quality, or when designing a new screen from scratch. |
 | `ux-writer` | sonnet/medium | Principal UX writer / copy editor (seasoned consumer-product content designer) for every project in this workspace and every surface (Flutter app, Next.js web, Go backend). Writes and reviews user-facing text — labels, buttons, titles, hints, empty/error/loading states, dialogs, toasts, web pages, API error messages, emails — for a consistent calm voice, correct terminology, and sentence case, and applies the right localization rule for whichever surface the file lives in. Use when adding or changing copy, reviewing a screen/page's text, or sweeping a feature for hardcoded/inconsistent strings in any repo. |
 
-## Slash commands (33)
+## Slash commands (34)
 
 | Command | Purpose |
 |---|---|
@@ -55,6 +55,7 @@ _Generated 2026-10-27 20:13_
 | `/arch-review` | Independent code review for a project's Flutter code — layer violations, SOLID principles, testability, and naming. Runs mobile-reviewer on staged/changed files or a specified path. |
 | `/audit-performance` | Flutter performance audit for a project's app — widget rebuild waste, list rendering, main-thread heavy work, local-DB query patterns, and memory leaks. Pass a feature or path to scope, or leave empty to audit the whole presentation layer. |
 | `/checkpoint` | Write the current session's progress, decisions, and verification status to durable run state so any future session can resume exactly here |
+| `/codex` | Hand a task to Codex end to end — Claude writes the brief, Codex makes it (2D image or sprite, 3D model through Blender, or code), Claude reviews, sends fixes back, and delivers |
 | `/copy-review` | Review and fix a project's user-facing copy across any repo (Flutter app, Next.js web, Go backend) — voice, terminology, casing, punctuation — and apply the right localization rule for that surface. Pass a path, feature name, or leave empty to check the git diff. |
 | `/disk-prune` | Reclaim regenerable build artifacts across every project's repos — dry run by default, requires explicit confirmation to delete |
 | `/disk-report` | Report disk usage across the whole studio workspace — reclaimable artifacts, shared cache, worktree slots, and a free-space verdict |
@@ -82,7 +83,7 @@ _Generated 2026-10-27 20:13_
 | `/wt-list` | Show all active worktrees across every project — branch, size, dirty state, commits ahead of the integration branch — plus slot usage and disk verdict |
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 
-## Skills (27)
+## Skills (28)
 
 | Skill | Loads for |
 |---|---|
@@ -90,6 +91,7 @@ _Generated 2026-10-27 20:13_
 | `changelog-and-release` | How every project manages versioning, changelogs, and releases — the generated Keep a Changelog format via changelog.sh, semver+buildNumber in pubspec.yaml, per-repo release scripts, commit conventions (commit subjects become changelog entries), and the tagging hand-off. Load before cutting a release, writing a changelog entry, or bumping a version. |
 | `clean-architecture` | Studio Flutter Clean Architecture rules — layer boundaries, dependency direction, what belongs where, and the pattern each layer follows (entities, repositories, use cases, DTOs, mappers, datasources, BLoCs, DI). Load for any implementation, review, or refactor of Flutter/Dart app code in any project. |
 | `code-review` | How to review code in any studio project — severity taxonomy, consistency contract, finding format, scope, verdict, plus the Flutter/Clean Architecture checklist. Load when reviewing a diff, a landed change, or a newly scaffolded feature. Go and Next.js reviews also use backend-reviewer / frontend-reviewer and their stack skills. |
+| `codex-delegate` | End-to-end delegation to Codex CLI (signed in with ChatGPT, no API key) — Claude writes the brief, dispatches it through codex.sh, reviews the result with its own eyes and tools, sends fixes back, and delivers. Three modes — asset (2D images, sprites, icons, textures, concept art through Codex's built-in image generation, cleaned into real sprites), model (3D models Codex scripts in Blender's bpy, run headless outside its sandbox, exported as .glb), and code (implementation Claude specifies, tests and reviews). Load when a task needs generated images or 3D assets, when the user asks to hand work to Codex, or on /codex. |
 | `copywriting` | UX-writing and copy craft for every project (Flutter app, Next.js web, Go backend) — the two governing rules, voice principles, casing, one-word-per-concept terminology, button/title/empty/error/confirmation/toast patterns, number and date phrasing, punctuation, and the per-surface localization rules. Project voice, glossary, and locales live in projects/<project>/AGENTS.md and the <project>-copywriting overlay. Load whenever you write, edit, or review any text a person can read. |
 | `dart-analyze` | How to run and interpret dart/flutter analyze in any studio Flutter app — FVM, reading output, severity, fix workflow, when to run, and suppression rules. Each project's configured lint set lives in its analysis_options.yaml and app overlay. |
 | `dart-style` | Studio Dart style — naming, file layout, immutability, null-safety, freezed and sealed-class usage, Equatable events and states. Project naming tables and model shapes live in the <project>-app-patterns overlay. |
@@ -120,6 +122,7 @@ _Generated 2026-10-27 20:13_
 |---|---|
 | `.claude/scripts/audit.sh` | Consistency audit for the whole studio AI toolkit + the docs agents rely on. |
 | `.claude/scripts/changelog.sh` | Keep a Changelog (keepachangelog.com/1.1.0) generation from conventional commits. |
+| `.claude/scripts/codex.sh` | Delegate work to Codex CLI (signed in with ChatGPT) — the codex-delegate skill's runner. |
 | `.claude/scripts/env.sh` | Check that this machine can run the workspace, and say how to fix what is missing. |
 | `.claude/scripts/gen-image.sh` | Generate an image with the Gemini API. The key comes from $GEMINI_API_KEY or the macOS Keychain |
 | `.claude/scripts/plan.sh` | Planning index + drift detection. Frontmatter is the single source of truth. |
