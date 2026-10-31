@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-10-31 10:25_
+_Generated 2026-10-31 12:25_
 
 ## Agents (27)
 
@@ -83,7 +83,7 @@ _Generated 2026-10-31 10:25_
 | `/wt-list` | Show all active worktrees across every project — branch, size, dirty state, commits ahead of the integration branch — plus slot usage and disk verdict |
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 
-## Skills (28)
+## Skills (29)
 
 | Skill | Loads for |
 |---|---|
@@ -104,6 +104,7 @@ _Generated 2026-10-31 10:25_
 | `mkdocs` | How every project's engineering docs site works — MkDocs Material, one mkdocs.yml and docs/ tree per project, local dev server, adding a page and registering it in nav, available Markdown extensions, writing style, the mirror rule for cited code paths, and common mistakes. A project's tree and nav live in the <project>-docs overlay. |
 | `owner-report` | How to write an analysis, incident report or decision document for the project owner or other non-developers — format choice, a five-sentence opening, one plain diagram, a glossary, and technical detail kept in an appendix. Load before writing any report or explanation meant for someone who does not read code. |
 | `planning` | Planning-system rules for every project — plan frontmatter as the status source of truth, plan.sh, folder roles, PRD and tech-doc split, templates, and the status update checklist. Load whenever creating, reviewing, scoring, updating, or organizing files under projects/<project>/planning/. |
+| `reel-production` | How to plan and produce short vertical explainer reels (9:16, 15–40 s) for any project — choosing the pipeline (code-drawn film in a Motion artifact or HTML renderer, Blender clips, rotoscoped SVG, three.js), the ground rules (real reference for anything that must be true, commercial licences, generative tools kept away from technically exact content, drafts labelled inside the film), the work loop (storyboard → approval gates → contact sheet → independent review → owner), and the lessons from hand and body animation. references/tooling.md compares the tools (HyperFrames, ComfyUI, OneTake, collage B-roll skills, Claude Animation Base, Lemo-Opuscar, Rive, Spine, Remotion, Motion Canvas, three.js, Blender, MediaPipe, MANO-based mocap) with licence and Mac support; references/hands.md covers animating hands and bodies and the capture shot list. Load before making or revising a reel, choosing a video tool, or animating a hand, pose or technique. |
 | `security-audit` | Security guidance and vulnerability review for codebases, APIs, services, CLI tools, libraries, and daemons. Use for security questions, focused reviews, vulnerability research, security audits, or pen tests. Run the complete workflow only for explicit codebase audit or pen-test requests, full/comprehensive/end-to-end reviews, or requested report artifacts. |
 | `seo-geo` | Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content. |
 | `session-continuity` | Durable run-state protocol for work in every project — how to create, update, and resume a run so any session can pick up an in-flight task after /clear, a crash, or days away. Load this at the start of any multi-step task and whenever the user says "resume", "continue", or "where were we". |
