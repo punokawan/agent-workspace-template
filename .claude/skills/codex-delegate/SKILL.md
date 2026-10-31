@@ -186,6 +186,10 @@ Each finding goes back as a new `exec`, as concretely as a bug report:
 
 Add a test for code bugs first. Repeat steps 3–4.
 
+For images, text alone rarely fixes a precise pose (a hand position, a grip, a camera angle) —
+it tends to repeat the same mistake. Once one image is right, pass it with `--image` and ask
+for "the same subject, camera moved to …"; it carries the identity and the pose across.
+
 Known Blender traps worth naming in a brief before they happen:
 - One voxel remesh over parts that should stay apart (fingers, legs, teeth) fuses them. Design
   gaps wider than the parts' thickness. Remesh only the body, and attach the separate parts

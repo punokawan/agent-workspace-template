@@ -103,7 +103,8 @@ def cmd_exec(argv):
         cmd += ["-m", o["--model"]]
     for img in o["--image"]:
         cmd += ["-i", os.path.abspath(img)]
-    code = run(cmd + [prompt], int(o.get("--timeout", 900)), log)
+    # `--` ends the options: -i takes several values and would swallow the prompt otherwise.
+    code = run(cmd + ["--", prompt], int(o.get("--timeout", 900)), log)
     if os.path.exists(last) and os.path.getsize(last):
         print(open(last, errors="replace").read().rstrip())
     else:

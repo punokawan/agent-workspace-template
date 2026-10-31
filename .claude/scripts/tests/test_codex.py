@@ -54,6 +54,15 @@ class ExecTest(unittest.TestCase):
         a = self.argv()
         self.assertEqual(a[a.index("-s") + 1], "workspace-write")
 
+    def test_image_flag_does_not_swallow_the_prompt(self):
+        img = os.path.join(self.d, "ref.png")
+        open(img, "wb").write(b"x")
+        r = self.run_exec("--image", img, "draw it")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        a = self.argv()
+        self.assertEqual(a[-2:], ["--", "draw it"])
+        self.assertEqual(a[a.index("-i") + 1], img)
+
     def test_timeout_kills_and_exits_124(self):
         r = self.run_exec("--timeout", "1", "slow", FAKE_SLEEP="1")
         self.assertEqual(r.returncode, 124)
