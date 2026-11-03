@@ -61,11 +61,12 @@ Rebase conflicts → resolve in the worktree, re-run step 5, then retry.
 ```bash
 bash $W/wt.sh land <project>/<repo> <slug>
 ```
-This rebases, fast-forward merges into the integration branch, and prints
-the exact push + branch-delete commands. Run those on confirmation:
+This rebases, fast-forward merges into the integration branch, then retires the worktree
+(local-only files archived to `.cache/wt-archive/`, worktree removed, local branch deleted) and
+prints the push command. Pass `--keep` only when a follow-up is planned in the worktree. Run on
+confirmation:
 ```bash
 git -C projects/<project>/<repo> push origin <base>
-git -C projects/<project>/<repo> branch -d <branch>
 git -C projects/<project>/<repo> push origin --delete <branch>   # if it was pushed
 ```
 `land` refuses if it is not a clean fast-forward — re-run the rebase rather than making a merge
@@ -86,7 +87,7 @@ Verified  : <checks + exit codes>
 Changelog : <n entries under [Unreleased]>
 Landed on : <integration branch> @ <sha>   (pushed: yes/no)
 Branch    : deleted local + remote / kept because <reason>
-Next      : /wt-drop <project>/<repo> <slug>
+Worktree  : retired (archive: <path or none>) / kept with --keep because <reason>
 ```
 
 ## Rules
@@ -95,6 +96,6 @@ Next      : /wt-drop <project>/<repo> <slug>
 - Never merge into `main`, push `main`, or open an integration → `main` PR. That promotion is the
   user's alone — see `/release`.
 - Never leave the working branch alive once its commits are on the integration branch.
-- Never delete the worktree here. That is `/wt-drop`.
+- Never leave the landed worktree behind: `land` retires it unless `--keep` was passed for a planned follow-up.
 - The only write to a user checkout permitted here is the fast-forward of the integration branch
   performed by `wt.sh land`, and only when that checkout is clean.

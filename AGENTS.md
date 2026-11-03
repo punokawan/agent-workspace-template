@@ -117,6 +117,7 @@ project — an example, never a target.
 | `/wt-finish` | `wt.sh land <project>/<repo> <slug>` |
 | `/wt-list` | `wt.sh list` |
 | `/wt-drop` | `wt.sh drop <project>/<repo> <slug>` |
+| `/wt-sweep` | `wt.sh sweep [--apply]` (retire clean, landed, idle worktrees) |
 | `/checkpoint` | `state.sh phase <name> <state>` |
 | `/resume` | `state.sh show` |
 | `/disk-report` · `/disk-prune` | `storage.sh report` · `storage.sh prune [scope]` |

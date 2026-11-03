@@ -134,6 +134,16 @@ else
   printf '%s\n' "$storage_out" | sed -n '3,8p' | sed 's/^/        /'
 fi
 
+# 9b — no landed worktree left behind (clean, fully on its integration branch, idle)
+sweep_out="$(bash "$SCRIPTS/wt.sh" sweep 2>&1 || true)"
+landed="$(grep -c '^  retire ' <<<"$sweep_out" || true)"
+if (( landed > 0 )); then
+  fail "$landed landed worktree(s) still on disk — retire them: wt.sh sweep --apply"
+  grep '^  retire ' <<<"$sweep_out" | sed 's/^  retire /        /'
+else
+  pass "no landed worktrees left on disk"
+fi
+
 # 10 — stale open runs
 open=$(grep -l '^- \*\*Status:\*\* active' "$STATE_DIR"/*/run.md 2>/dev/null | wc -l | tr -d ' ')
 if (( open > 3 )); then

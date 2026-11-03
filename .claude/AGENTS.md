@@ -44,7 +44,7 @@ _Generated 2026-10-31 12:25_
 | `ux-designer` | opus/medium | Acts as a senior UX designer for any project in this workspace. Designs screen flows, interaction patterns, empty/error/loading states, and component specifications that fit the target project's own design system. Use when a PRD needs UX detail, when reviewing flow quality, or when designing a new screen from scratch. |
 | `ux-writer` | sonnet/medium | Principal UX writer / copy editor (seasoned consumer-product content designer) for every project in this workspace and every surface (Flutter app, Next.js web, Go backend). Writes and reviews user-facing text — labels, buttons, titles, hints, empty/error/loading states, dialogs, toasts, web pages, API error messages, emails — for a consistent calm voice, correct terminology, and sentence case, and applies the right localization rule for whichever surface the file lives in. Use when adding or changing copy, reviewing a screen/page's text, or sweeping a feature for hardcoded/inconsistent strings in any repo. |
 
-## Slash commands (34)
+## Slash commands (35)
 
 | Command | Purpose |
 |---|---|
@@ -82,6 +82,7 @@ _Generated 2026-10-31 12:25_
 | `/wt-finish` | Finish work in a worktree — verify, generate the changelog entry, rebase onto the repo's integration branch, fast-forward it in, push, and delete the branch. No PR: feature work lands directly on the integration branch. |
 | `/wt-list` | Show all active worktrees across every project — branch, size, dirty state, commits ahead of the integration branch — plus slot usage and disk verdict |
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
+| `/wt-sweep` | Retire every worktree whose work is already on its integration branch — clean, fully landed, idle — archiving its local-only files first, so disk and slots come back |
 
 ## Skills (29)
 

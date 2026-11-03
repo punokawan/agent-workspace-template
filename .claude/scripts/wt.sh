@@ -8,7 +8,9 @@
 #   wt.sh drop <target> <slug> [--force]
 #   wt.sh prune                     — enforce the LRU cap
 #   wt.sh push <target> <slug>      — rebase on the integration branch + push
-#   wt.sh land <target> <slug>      — ff-merge into the integration branch, delete the branch
+#   wt.sh land <target> <slug> [--keep] — ff-merge into the integration branch, then retire the
+#                                    worktree (archive local-only files, drop, delete the branch)
+#   wt.sh sweep [--apply]           — retire every clean, landed, idle worktree (dry run by default)
 #   wt.sh sync-config <target> <slug> — re-copy untracked local config into an existing worktree
 #
 # <target> is <project>/<repo>, or a bare <repo> when a project is active.
@@ -254,7 +256,115 @@ cmd_drop() {
   git -C "$REPO_DIR" worktree remove --force "$wt" || die "worktree remove failed"
   git -C "$REPO_DIR" worktree prune
   unlink_project_context "$PROJECT"
-  ok "removed worktree $PROJECT/$REPO/$slug (branch $br kept — delete with: git -C $REPO_DIR branch -D $br)"
+  if [[ -n "${WT_RETIRING:-}" ]]; then ok "removed worktree $PROJECT/$REPO/$slug"
+  else ok "removed worktree $PROJECT/$REPO/$slug (branch $br kept — delete with: git -C $REPO_DIR branch -d $br)"; fi
+}
+
+# ---- retiring landed worktrees -------------------------------------------------------
+# A worktree whose branch is fully on the local integration branch holds nothing git does
+# not already have, except gitignored local files (run ledgers, review diffs, an edited
+# .env). Those are archived first, so retiring a worktree never loses anything.
+WT_ARCHIVE_DIR="$CACHE_DIR/wt-archive"
+WT_ARCHIVE_MAX_KB=$(( ${STUDIO_WT_ARCHIVE_MAX_MB:-200} * 1024 ))
+
+# Is <wt>'s HEAD contained in the local integration branch (origin's when there is no local)?
+wt_is_landed() { # <wt> <repo_dir> <base>
+  local into="refs/heads/$3"
+  git -C "$2" rev-parse --verify --quiet "$into" >/dev/null || into="refs/remotes/origin/$3"
+  git -C "$2" merge-base --is-ancestor "$(git -C "$1" rev-parse HEAD)" "$into" 2>/dev/null
+}
+
+# Gitignored paths worth keeping. Skipped: node_modules, cache symlinks, the stack's build
+# output (prune_dirs, e.g. .next, build), *.tsbuildinfo, and local config copies identical to
+# the main checkout's. One path per line.
+wt_local_only() { # <wt> <repo_dir> <project> <repo>
+  local p build
+  build="$(proj field "$3" "$4" prune_dirs 2>/dev/null || true)"
+  git -C "$1" status --ignored --porcelain=v1 2>/dev/null | sed -n 's/^!! //p' | while IFS= read -r p; do
+    p="${p%/}"
+    [[ -L "$1/$p" ]] && continue
+    case "/$p/" in */node_modules/*) continue ;; esac
+    case "$p" in *.tsbuildinfo) continue ;; esac
+    if [[ -n "$build" ]] && grep -qxF "${p%%/*}" <<<"$build"; then continue; fi
+    if [[ -f "$1/$p" && -f "$2/$p" ]] && cmp -s "$1/$p" "$2/$p"; then continue; fi
+    echo "$p"
+  done
+}
+
+# A file touched inside the idle window means a session may still be in there. Clean is not idle.
+# Prints the first such path (find -quit: no `| head`, which SIGPIPEs under pipefail).
+wt_recent_change() { # <wt>
+  local mins=$(( (WT_IDLE_SECS + 59) / 60 )) gd hit
+  hit="$(find "$1" \( -name node_modules -o -name .git \) -prune -o -type f -mmin "-$mins" -print -quit 2>/dev/null || true)"
+  if [[ -z "$hit" ]]; then
+    gd="$(git -C "$1" rev-parse --absolute-git-dir 2>/dev/null || true)"
+    [[ -n "$gd" ]] && hit="$(find "$gd" -maxdepth 1 -type f -mmin "-$mins" -print -quit 2>/dev/null || true)"
+  fi
+  echo "$hit"
+}
+
+# Archive local-only files, remove the worktree, delete its (verified-landed) local branch.
+retire_wt() { # <project> <repo> <slug>
+  local wt repo_dir base br files kb archive=""
+  wt="$(wt_path "$1" "$2" "$3")"; repo_dir="$(repo_dir "$1" "$2")"; base="$(base_branch "$1" "$2")"
+  br="$(git -C "$wt" rev-parse --abbrev-ref HEAD)"
+  [[ -z "$(git -C "$wt" status --porcelain)" ]] || die "$1/$2/$3 has uncommitted changes — not retiring it"
+  wt_is_landed "$wt" "$repo_dir" "$base" || die "$1/$2/$3 ($br) is not fully on $base — not retiring it"
+  files="$(wt_local_only "$wt" "$repo_dir" "$1" "$2")"
+  if [[ -n "$files" ]]; then
+    kb="$(cd "$wt" && printf '%s\n' "$files" | tr '\n' '\0' | xargs -0 du -sk 2>/dev/null | awk '{s+=$1} END {print s+0}')"
+    (( kb <= WT_ARCHIVE_MAX_KB )) || die "$1/$2/$3 holds ${kb} KB of local-only files (cap $(( WT_ARCHIVE_MAX_KB / 1024 )) MB) — back them up, then wt.sh drop"
+    archive="$WT_ARCHIVE_DIR/$1/$2/$3-$(date +%Y%m%d-%H%M%S).tar.gz"
+    mkdir -p "$(dirname "$archive")"
+    printf '%s\n' "$files" | tar -czf "$archive" -C "$wt" -T - || die "archiving local files of $1/$2/$3 failed — nothing removed"
+    info "archived local-only files → ${archive#"$ROOT"/}"
+  fi
+  local tip; tip="$(git -C "$wt" rev-parse HEAD)"
+  WT_RETIRING=1 cmd_drop "$1/$2" "$3"
+  # Landed was verified above, so this is `branch -d` semantics against the integration branch
+  # (plain -d would compare against whatever the main checkout has checked out).
+  if [[ "$br" != "HEAD" && "$br" != "$base" && "$br" != "main" ]] \
+     && git -C "$repo_dir" update-ref -d "refs/heads/$br" "$tip" 2>/dev/null; then
+    ok "deleted local branch $br (fully on $base)"
+  fi
+  if git -C "$repo_dir" rev-parse --verify --quiet "refs/remotes/origin/$br" >/dev/null; then
+    warn "remote branch origin/$br still exists — deleting it is outward-facing, ask first:"
+    echo "    git -C ${repo_dir#"$ROOT"/} push origin --delete $br"
+  fi
+}
+
+# Every worktree that is clean, fully landed and idle. Dry run unless --apply.
+cmd_sweep() {
+  local apply="${1:-}" found=0 kept=0 d br base repo_dir reason here files
+  [[ -z "$apply" || "$apply" == "--apply" ]] || die "usage: wt.sh sweep [--apply]"
+  here="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+  while IFS= read -r d; do
+    [[ -n "$d" ]] || continue
+    wt_parts "$d"
+    is_repo "$WPROJ" "$WREPO" || continue
+    repo_dir="$(repo_dir "$WPROJ" "$WREPO")"; base="$(base_branch "$WPROJ" "$WREPO")"
+    br="$(git -C "$d" rev-parse --abbrev-ref HEAD 2>/dev/null)"
+    reason=""
+    if [[ "$d" == "$here" ]]; then reason="this session's own worktree"
+    elif [[ -n "$(git -C "$d" status --porcelain 2>/dev/null)" ]]; then reason="uncommitted changes"
+    elif ! wt_is_landed "$d" "$repo_dir" "$base"; then
+      reason="$(git -C "$repo_dir" rev-list --count "$base..$(git -C "$d" rev-parse HEAD)" 2>/dev/null || echo '?') commit(s) not on $base"
+    elif [[ -n "$(wt_recent_change "$d")" ]]; then reason="changed in the last $(( WT_IDLE_SECS / 60 )) min — may be in use"
+    fi
+    if [[ -n "$reason" ]]; then
+      kept=$((kept+1)); printf '  keep   %-40s %s\n' "$WPROJ/$WREPO/$WSLUG" "$reason"; continue
+    fi
+    found=$((found+1))
+    printf '  retire %-40s %s, %s, landed on %s\n' "$WPROJ/$WREPO/$WSLUG" "$br" "$(du -sh "$d" 2>/dev/null | cut -f1)" "$base"
+    files="$(wt_local_only "$d" "$repo_dir" "$WPROJ" "$WREPO")"
+    [[ -z "$files" ]] || printf '%s\n' "$files" | sed -n '1,6s/^/           keep in archive: /p'
+    if [[ "$apply" == "--apply" ]]; then ( retire_wt "$WPROJ" "$WREPO" "$WSLUG" ) || warn "skipped $WPROJ/$WREPO/$WSLUG"; fi
+  done < <(live_wt | sort)
+  echo
+  if (( found == 0 )); then ok "nothing to retire ($kept kept)"
+  elif [[ "$apply" == "--apply" ]]; then ok "retired $found worktree(s), $kept kept — $(count_wt)/$WT_CAP slots used"
+  else info "$found worktree(s) can be retired, $kept kept. Dry run — re-run with: wt.sh sweep --apply"
+  fi
 }
 
 cmd_push() {
@@ -312,16 +422,24 @@ cmd_land() {
   git -C "$REPO_DIR" merge --ff-only "$br" || { git -C "$REPO_DIR" checkout "$prev" --quiet; die "not a fast-forward — re-run the rebase"; }
   ok "$base fast-forwarded to $(git -C "$REPO_DIR" rev-parse --short HEAD)"
 
+  # Landed work leaves nothing in the worktree git lacks: retire it now (local-only files are
+  # archived first) so slots and disk come back. --keep holds it, e.g. for a follow-up fix.
+  local project="$PROJECT" repo="$REPO" repo_dir="$REPO_DIR"
+  if [[ "${3:-}" == "--keep" ]]; then
+    info "worktree kept (--keep) — retire it later with: wt.sh sweep --apply"
+  else
+    retire_wt "$project" "$repo" "$slug"
+  fi
+
   warn "push is outward-facing — run this yourself when ready:"
-  echo "    git -C $REPO_DIR push origin $base"
-  echo "    git -C $REPO_DIR branch -d $br && git push origin --delete $br   # after the push lands"
+  echo "    git -C $repo_dir push origin $base"
 }
 
 case "${1:-list}" in
   start) shift; cmd_start "$@" ;;   list) cmd_list ;;
   cd)    shift; cmd_cd "$@" ;;      drop) shift; cmd_drop "$@" ;;
   prune) cmd_prune ;;               push) shift; cmd_push "$@" ;;
-  land)  shift; cmd_land "$@" ;;
+  land)  shift; cmd_land "$@" ;;    sweep) shift; cmd_sweep "$@" ;;
   sync-config) shift; cmd_sync_config "$@" ;;
-  *) die "usage: wt.sh {start|list|cd|drop|prune|push|land|sync-config}" ;;
+  *) die "usage: wt.sh {start|list|cd|drop|prune|push|land|sweep|sync-config}" ;;
 esac

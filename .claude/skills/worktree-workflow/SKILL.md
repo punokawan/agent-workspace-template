@@ -35,6 +35,8 @@ W=.claude/scripts
 bash $W/wt.sh start <project>/<repo> <type>/<slug>     # branch off the integration branch, link caches, copy config
 bash $W/wt.sh list                           # what's in flight, dirty state, commits ahead
 bash $W/wt.sh push  <project>/<repo> <slug>            # rebase on the integration branch, push
+bash $W/wt.sh land  <project>/<repo> <slug> [--keep]   # ff into the integration branch, then retire the worktree
+bash $W/wt.sh sweep [--apply]                          # retire every clean, landed, idle worktree (dry run by default)
 bash $W/wt.sh drop  <project>/<repo> <slug>            # remove worktree (refuses if dirty)
 ```
 
@@ -69,9 +71,25 @@ full-stack change is traceable from either side.
 3. Changelog: `bash $W/changelog.sh add <project>/<repo> <slug>` — folds commits into `[Unreleased]`.
    Commit that too.
 4. Rebase onto the integration branch: `bash $W/wt.sh push <project>/<repo> <slug>`.
-5. Merge it in — fast-forward only — and push the integration branch.
-6. Delete the branch (local **and** remote) and drop the worktree:
-   `bash $W/wt.sh drop <project>/<repo> <slug>`.
+5. Merge it in — fast-forward only: `bash $W/wt.sh land <project>/<repo> <slug>`. Once the
+   fast-forward succeeds, `land` retires the worktree in the same step — local-only files are
+   archived to `.cache/wt-archive/<project>/<repo>/<slug>-<time>.tar.gz`, the worktree is
+   removed and the local branch deleted. `--keep` holds it for a planned follow-up only.
+6. Push the integration branch (on the user's confirmation), and delete the remote branch if it
+   was ever pushed.
+
+## Retiring worktrees
+
+A worktree whose branch is fully on the integration branch holds nothing git lacks, so it must
+not sit on disk. Run `bash $W/wt.sh sweep` at the start and end of every session; it lists each
+worktree as `retire` or `keep` with the reason, and `--apply` retires the `retire` ones.
+
+It retires only a worktree that is **clean**, **fully on the local integration branch**, and
+**untouched for the idle window** (`STUDIO_WT_IDLE_SECS`, 90 min: another session may be
+reading in a clean tree). Before removing, it archives gitignored files that are not build
+output, `node_modules`, cache links or unchanged config copies; above
+`STUDIO_WT_ARCHIVE_MAX_MB` (200) it refuses and asks for a manual backup. `/doctor` fails while
+a landed worktree is left.
 
 There is **no pull request**. Feature work lands on the integration branch directly. Promoting the
 integration branch to `main` is the user's decision and happens separately — see `git-workflow`.
@@ -93,6 +111,7 @@ integration branch to `main` is the user's decision and happens separately — s
   outward-facing and hard to reverse.
 - **Always** delete the working branch once its work is on the integration branch — local and
   remote. A branch that outlives its merge is the thing this model exists to prevent.
+- **Never** leave a landed worktree on disk: `land` retires it, `sweep --apply` catches the rest.
 
 ## Binding to run state
 

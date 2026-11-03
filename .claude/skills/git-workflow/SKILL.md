@@ -193,10 +193,9 @@ BASE=<integration>                 # from project.sh show
 W=.claude/scripts
 bash $W/verify.sh wt:$R/${B#*/} --full   # 1. must exit 0
 bash $W/wt.sh push $R ${B#*/}            # 2. rebase onto origin/$BASE — linear history
-bash $W/wt.sh land $R ${B#*/}            # 3. fast-forward $BASE, prints push + delete commands
+bash $W/wt.sh land $R ${B#*/}            # 3. fast-forward $BASE, retire the worktree + local branch
 git -C projects/$R push origin $BASE     # 4. push the integration branch (confirm first)
-git -C projects/$R branch -d $B          # 5. delete local
-git -C projects/$R push origin --delete $B   # 6. delete remote (if it was ever pushed)
+git -C projects/$R push origin --delete $B   # 5. delete remote (if it was ever pushed)
 ```
 
 If `land` refuses to fast-forward, the rebase in step 2 did not take — **do not** fall back to a

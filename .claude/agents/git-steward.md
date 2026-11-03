@@ -98,8 +98,9 @@ from production — it may sit behind.
 # Pre-flight first — must exit 0
 bash .claude/scripts/verify.sh wt:<project>/<repo>/<slug> --full
 
-# Rebase, fast-forward into the integration branch, push, delete the branch
+# Rebase, fast-forward into the integration branch, retire the worktree and local branch
 bash .claude/scripts/wt.sh land <project>/<repo> <slug>
+# Then, on the user's confirmation: push the integration branch
 ```
 
 Feature work does not get a pull request. If the fast-forward is refused, re-run the rebase —
