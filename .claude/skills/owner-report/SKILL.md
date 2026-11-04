@@ -35,6 +35,9 @@ the code.
 
 ## Rules
 
+- Write every sentence in the `ste-writing` style (section 8, Reports): status first, one fact per
+  sentence, numbers instead of adjectives, no filler. It applies in Indonesian too.
+
 - State what is verified and what is estimated; never round an estimate up to a fact.
 - A decision needs options: give at least two, with what each costs and risks.
 - Keep it as short as the decision allows.

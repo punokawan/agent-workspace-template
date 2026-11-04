@@ -126,6 +126,8 @@ Safe to parallelise:
 5. **Return format** — the final diff/data/decision, not a narrated walkthrough
 6. **Handoff** — who's next
 
+Write the brief in the `ste-writing` style: one instruction per sentence, imperative, condition first, exact values verbatim, rulings a reviewer can mark ✅ or ❌.
+
 Point at **paths**, don't paste file contents — agents can read. Paste an excerpt only when
 precision beats a re-read.
 
@@ -162,7 +164,9 @@ To brief an agent:
 
 ## The HANDOFF block
 
-Every agent ends with this; the pipeline advances only when the next agent has read it.
+Every agent ends with this; the pipeline advances only when the next agent has read it. Write
+it and every report in the `ste-writing` style (section 8): status first, one fact per line, exact
+commands and exit codes.
 
 ```
 HANDOFF → <agent name or "user">

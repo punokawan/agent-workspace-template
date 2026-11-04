@@ -84,7 +84,7 @@ _Generated 2026-10-31 12:25_
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 | `/wt-sweep` | Retire every worktree whose work is already on its integration branch — clean, fully landed, idle — archiving its local-only files first, so disk and slots come back |
 
-## Skills (29)
+## Skills (30)
 
 | Skill | Loads for |
 |---|---|
@@ -110,6 +110,7 @@ _Generated 2026-10-31 12:25_
 | `seo-geo` | Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content. |
 | `session-continuity` | Durable run-state protocol for work in every project — how to create, update, and resume a run so any session can pick up an in-flight task after /clear, a crash, or days away. Load this at the start of any multi-step task and whenever the user says "resume", "continue", or "where were we". |
 | `solid-principles` | SOLID principles applied to studio Flutter/Dart apps (Clean Architecture + BLoC) — a violation and fix for each principle, common anti-patterns, and a review quick-check. |
+| `ste-writing` | Write briefs, agent instructions, technical documents and every report in a controlled style based on ASD-STE100 Simplified Technical English — one instruction or fact per sentence, short active sentences, one word for one meaning, conditions before actions, exact values verbatim. Covers agent dispatch briefs, AGENTS.md and skill text, runbooks, task docs, review findings, agent reports and HANDOFFs, status reports to the owner (English and Indonesian), commit messages and PR descriptions. Load before you write or review any of those. Not for user-facing UI copy (use copywriting) and not a licensed copy of the ASD-STE100 specification. |
 | `storage-management` | Disk-budget rules for the studio workspace — shared build caches, worktree storage cap, safe prune targets, and the pre-flight check required before creating a worktree or running a build. Load this before creating/removing worktrees, before any full build, or whenever disk pressure is suspected. |
 | `tdd` | Test-Driven Development for Flutter/BLoC Clean Architecture apps — the TDD cycle, bloc_test patterns, mocking, what to test and why, test layout, and coverage targets per layer. Project facts (mock library, test paths, fixtures, run command) live in the project's app overlay. |
 | `test-case-design` | How to derive test cases for Flutter/BLoC Clean Architecture code — equivalence partitioning, boundary analysis, decision tables, state transition testing, and edge case identification per layer. Use before writing test code to ensure nothing important is missed. |
