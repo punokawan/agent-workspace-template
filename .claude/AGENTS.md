@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-11-04 09:45_
+_Generated 2026-11-04 10:07_
 
 ## Agents (27)
 
@@ -84,7 +84,7 @@ _Generated 2026-11-04 09:45_
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 | `/wt-sweep` | Retire every worktree whose work is already on its integration branch — clean, fully landed, idle — archiving its local-only files first, so disk and slots come back |
 
-## Skills (53)
+## Skills (54)
 
 | Skill | Loads for |
 |---|---|
@@ -136,6 +136,7 @@ _Generated 2026-11-04 09:45_
 | `storage-management` | Disk-budget rules for the studio workspace — shared build caches, worktree storage cap, safe prune targets, and the pre-flight check required before creating a worktree or running a build. Load this before creating/removing worktrees, before any full build, or whenever disk pressure is suspected. |
 | `tdd` | Test-Driven Development for Flutter/BLoC Clean Architecture apps — the TDD cycle, bloc_test patterns, mocking, what to test and why, test layout, and coverage targets per layer. Project facts (mock library, test paths, fixtures, run command) live in the project's app overlay. |
 | `test-case-design` | How to derive test cases for Flutter/BLoC Clean Architecture code — equivalence partitioning, boundary analysis, decision tables, state transition testing, and edge case identification per layer. Use before writing test code to ensure nothing important is missed. |
+| `threejs-web` | When and how to put a three.js (WebGL) scene in a web app, including three.js as an alternative to pre-rendered motion assets (frame sequences, video, GIF, Lottie, Rive) — live glTF animation in the browser or offline rendering to video/frames — plus the decision gate before 3D, vanilla three vs React Three Fiber, client-only loading in Next.js App Router, asset formats and size budgets (glTF/GLB, Draco/Meshopt, KTX2), frame-loop and GPU performance, disposal, reduced motion and accessibility, WebGL fallback and context loss, Core Web Vitals, CSP for decoders, offline tests, and a review checklist. Load before you add, change or review any three.js, R3F or WebGL code in a web repo. For UI motion use animate; for video reels use reel-production or motion-reel. |
 | `variant` | Builds multiple variants of a component you're working on and helps you iterate and pick one. |
 | `verification` | Anti-hallucination protocol for all work in every project — evidence grades, the mandatory verification gate before claiming anything is done, and the exact vocabulary for stating uncertainty. Load this before reporting completion, before making any factual claim about the codebase, and before any agent hands off to another. |
 | `workspace-maintenance` | How this workspace's toolkit is organised — where shared, project and repo skills live, how Codex reaches them, where agents, commands and scripts go, and how to register a project. Load before adding, moving or renaming a skill, agent, command or project. |
