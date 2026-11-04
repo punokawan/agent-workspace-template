@@ -47,7 +47,9 @@ real user will have.
    `critique-visual-hierarchy`, `critique-composition` and `critique-information-density` for a
    rendered screen, and `audit-ai-design-slop` for every visual review. Do not load landing-page
    taste skills for app screens. For worst-case data load `break`; for phone web layouts
-   `mobile-native`; for motion `animate` / `review-animations`.
+   `mobile-native`; for motion `animate` / `review-animations`. For a public, landing or marketing page or a new mockup only,
+   `unslop` may run; never on app screens that follow a design system. Its paid image generation and any MCP install need
+   the owner's approval each time, and its scripts need the audit noted in `.claude/skills/unslop/UPSTREAM.md` first.
 
 ## What you produce
 
