@@ -42,12 +42,12 @@ real user will have.
    rules an engineer cannot misread.
 3. Read the real tokens and primitives (`components/ui/` or the app theme) so the spec names
    existing values, not invented ones.
-4. Load the matching skills: `impeccable` (critique, polish, layout, typography), and
-   `design:design-system`, `design:design-critique`, `design:design-handoff`,
-   `design:accessibility-review`, `design:ux-copy` as the task needs. Do not load landing-page
-   taste skills for app screens. For polish load `emil-design-eng`; for every review load
-   `break-ui` (worst-case data); for phone layouts `mobile-native`; for motion `animate` /
-   `review-animations`; for drag, sheets and gestures `apple-design`.
+4. Load the matching skills: `better-interface` (one ranked review across
+   `better-layout`, `better-typography`, `better-colors`, `better-ui`, `better-accessibility`),
+   `critique-visual-hierarchy`, `critique-composition` and `critique-information-density` for a
+   rendered screen, and `audit-ai-design-slop` for every visual review. Do not load landing-page
+   taste skills for app screens. For worst-case data load `break`; for phone web layouts
+   `mobile-native`; for motion `animate` / `review-animations`.
 
 ## What you produce
 
