@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-11-04 18:54_
+_Generated 2026-11-06 14:37_
 
 ## Agents (27)
 
@@ -84,7 +84,7 @@ _Generated 2026-11-04 18:54_
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 | `/wt-sweep` | Retire every worktree whose work is already on its integration branch — clean, fully landed, idle — archiving its local-only files first, so disk and slots come back |
 
-## Skills (56)
+## Skills (58)
 
 | Skill | Loads for |
 |---|---|
@@ -141,9 +141,11 @@ _Generated 2026-11-04 18:54_
 | `unslop` | Turns vibecoded, AI-looking UI into a designed interface with its own character. Finds a direction from the product itself, then fixes spacing, color, icons, copy, type, layout, details, visuals and motion in that order, and can generate a real hero visual with an image tool when one is available. Use when the user asks to unslop, polish, clean up or redesign a screen so it stops looking AI-generated, or when a UI shows the usual tells like purple gradients, glows, gradient text, emoji labels, "New ✨" badges, glossy blobs, uppercase tracked labels, pulsing elements or uneven spacing. Works on React, Tailwind, HTML and CSS, for dashboards, apps and landing pages. |
 | `variant` | Builds multiple variants of a component you're working on and helps you iterate and pick one. |
 | `verification` | Anti-hallucination protocol for all work in every project — evidence grades, the mandatory verification gate before claiming anything is done, and the exact vocabulary for stating uncertainty. Load this before reporting completion, before making any factual claim about the codebase, and before any agent hands off to another. |
+| `wizard` | Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself. |
 | `workspace-maintenance` | How this workspace's toolkit is organised — where shared, project and repo skills live, how Codex reaches them, where agents, commands and scripts go, and how to register a project. Load before adding, moving or renaming a skill, agent, command or project. |
 | `workspace-orchestration` | Routing brain for work in every project — decides whether to decompose a task, which specialist agent to dispatch, what runs in parallel vs. sequence, which model tier and effort each gets, and the handoff contract between them. Load this at the start of any non-trivial task and whenever more than one repo or discipline is involved. For the specialist agents in this workspace's .claude/agents only — not Orca workers or savvy-flow. |
 | `worktree-workflow` | How all new work is done in every project — in an isolated git worktree on a short-lived branch, never in the main checkouts, so the user can keep working undisturbed. Covers worktree lifecycle, the storage-safe creation path, merging into the repo's integration branch without a PR, changelog hand-off, and cleanup. Load this before starting any code change, and before creating or merging a branch. |
+| `writing-for-agents` | Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md. |
 
 ## Scripts
 
