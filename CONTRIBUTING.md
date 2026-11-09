@@ -74,7 +74,8 @@ them and decide with the table in [When skills collide](#when-skills-collide).
 `plugins/marketing-skills/` is the reference: 61 skills from two libraries, each with a `SOURCES.md`.
 
 1. Ask the maintainer, then scaffold the library. Each `--source` gets a short key; the tool pins the
-   commit, reads the licence and copyright, and writes the credit everywhere:
+   commit, reads the licence and copyright, writes the credit everywhere, and lists the library in
+   both marketplace files (Claude Code and Codex):
 
    ```bash
    bash .claude/scripts/skills.sh new-library <name> \
@@ -108,6 +109,7 @@ them and decide with the table in [When skills collide](#when-skills-collide).
    bash .claude/scripts/skills.sh validate <name>       # frontmatter, names, links, script syntax
    bash .claude/scripts/skills.sh sources check <name>  # every part has a row; "as is" really is
    bash .claude/scripts/skills.sh index <name>          # README skill table
+   bash .claude/scripts/skills.sh marketplaces          # installable from Claude Code and Codex
    bash .claude/scripts/upstream.sh lint
    ```
 

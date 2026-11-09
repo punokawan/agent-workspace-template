@@ -12,6 +12,7 @@ Commands (run through skills.sh):
                         write SOURCES.md for a skill that comes from one source
     snapshot <plugin>   export each source at its pinned commit; prints the folder `sources` uses
     index <plugin>      rebuild the skill table in the plugin README
+    marketplaces        every library in plugins/ is listed in both marketplace files (offline)
 
 A merged library names its sources in UPSTREAM.md blocks (`mode: merged`, `key`, `credit`, `root`) and
 may keep `library.json` with `categories` (README table) and `context` (a shared context file only its
@@ -558,12 +559,45 @@ def cmd_new_library(args):
     market["plugins"].append({"name": name, "description": title or f"Merged skill library: {name}",
                               "source": f"./plugins/{name}"})
     open(mp, "w", encoding="utf-8").write(json.dumps(market, indent=2, ensure_ascii=False) + "\n")
-    print(f"created plugins/{name} with {len(credits)} source(s); registered in .claude-plugin/marketplace.json")
+    cp = os.path.join(ROOT, ".agents", "plugins", "marketplace.json")
+    codex = json.load(open(cp, encoding="utf-8")) if os.path.isfile(cp) else \
+        {"name": market.get("name", "punokawan"), "interface": {"displayName": market.get("name", "punokawan")}, "plugins": []}
+    codex["plugins"].append({"name": name, "source": {"source": "local", "path": f"./plugins/{name}"},
+                             "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"}})
+    os.makedirs(os.path.dirname(cp), exist_ok=True)
+    open(cp, "w", encoding="utf-8").write(json.dumps(codex, indent=2, ensure_ascii=False) + "\n")
+    print(f"created plugins/{name} with {len(credits)} source(s); registered in .claude-plugin/marketplace.json "
+          "(Claude Code) and .agents/plugins/marketplace.json (Codex)")
     print("next: read CONTRIBUTING.md (Path C), then fill docs/MAPPING.md before copying any skill")
     return 0
 
 
-COMMANDS = {"overlap": cmd_overlap, "validate": cmd_validate, "sources": cmd_sources, "snapshot": cmd_snapshot,
+def cmd_marketplaces(args):
+    """Every library in plugins/ must be installable from both Claude Code and Codex."""
+    libs = sorted(d for d in os.listdir(os.path.join(ROOT, "plugins"))
+                  if os.path.isdir(os.path.join(ROOT, "plugins", d, "skills"))) if os.path.isdir(os.path.join(ROOT, "plugins")) else []
+    problems = []
+    for label, rel in (("Claude Code", ".claude-plugin/marketplace.json"), ("Codex", ".agents/plugins/marketplace.json")):
+        path = os.path.join(ROOT, rel)
+        listed = {}
+        if os.path.isfile(path):
+            for p in json.load(open(path, encoding="utf-8")).get("plugins", []):
+                src = p.get("source")
+                listed[p.get("name")] = src.get("path") if isinstance(src, dict) else src
+        for lib in libs:
+            if listed.get(lib, "").rstrip("/") != f"./plugins/{lib}":
+                problems.append(f"{lib}: not listed in {rel} ({label}) as ./plugins/{lib}")
+        for lib in libs:
+            for manifest in (".claude-plugin/plugin.json", ".codex-plugin/plugin.json"):
+                if label == "Claude Code" and not os.path.isfile(os.path.join(ROOT, "plugins", lib, manifest)):
+                    problems.append(f"{lib}: {manifest} missing")
+    print(f"libraries: {len(libs)}  problems: {len(problems)}")
+    for p in problems:
+        print("PROBLEM", p)
+    return 1 if problems else 0
+
+
+COMMANDS = {"marketplaces": cmd_marketplaces, "overlap": cmd_overlap, "validate": cmd_validate, "sources": cmd_sources, "snapshot": cmd_snapshot,
             "index": cmd_index, "new-library": cmd_new_library}
 
 

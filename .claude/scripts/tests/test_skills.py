@@ -104,9 +104,21 @@ class SkillsTest(unittest.TestCase):
         self.assertNotIn("{{", "".join(open(os.path.join(b, f)).read() for b, _, fs in os.walk(lib) for f in fs))
         market = json.load(open(os.path.join(self.root, ".claude-plugin", "marketplace.json")))
         self.assertEqual(market["plugins"][-1]["source"], "./plugins/seo-lib")
+        codex = json.load(open(os.path.join(self.root, ".agents", "plugins", "marketplace.json")))
+        self.assertEqual(codex["plugins"][-1]["source"], {"source": "local", "path": "./plugins/seo-lib"})
+        self.assertIn("codex plugin add seo-lib@punokawan", open(os.path.join(lib, "README.md")).read())
+        r = self.skills("marketplaces")
+        self.assertEqual(r.returncode, 0, r.stdout)
         self.assertEqual(self.run_cmd("_upstream.py", "lint").returncode, 0)
         r = self.skills("new-library", "seo-lib", "--source", f"t=file://{self.up}")
         self.assertIn("already exists", r.stderr)
+
+    def test_marketplaces_flags_a_library_missing_for_codex(self):
+        self.new_library()
+        open(os.path.join(self.root, ".agents", "plugins", "marketplace.json"), "w").write('{"plugins": []}')
+        r = self.skills("marketplaces")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("seo-lib: not listed in .agents/plugins/marketplace.json (Codex)", r.stdout)
 
     def test_new_library_refuses_a_source_without_licence(self):
         os.remove(os.path.join(self.up, "LICENSE"))

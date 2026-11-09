@@ -136,7 +136,8 @@ for lib in "$ROOT"/plugins/*/; do
   name=$(basename "$lib")
   python3 "$SCRIPTS/_skills.py" validate "$name" >/dev/null 2>&1 || { fail "plugins/$name fails validation — run: bash .claude/scripts/skills.sh validate $name"; bad=1; }
 done
-(( bad == 0 )) && pass "skill libraries in plugins/ validate"
+python3 "$SCRIPTS/_skills.py" marketplaces >/dev/null 2>&1 || { fail "a library is missing from a marketplace file — run: bash .claude/scripts/skills.sh marketplaces"; bad=1; }
+(( bad == 0 )) && pass "skill libraries in plugins/ validate and are listed for Claude Code and Codex"
 
 # 9 — worktrees are cache-linked and disk is within budget
 # NOTE: capture first. `... | grep -q` makes grep exit on the first match, which

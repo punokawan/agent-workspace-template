@@ -4,10 +4,15 @@
 
 ## Install
 
-```
-/plugin marketplace add punokawan/agent-workspace-template
-/plugin install {{name}}@punokawan
-```
+The skills follow the open Agent Skills format (a folder with `SKILL.md`): they work in Claude Code,
+Codex and any agent that reads that format.
+
+- **Claude Code:** `/plugin marketplace add punokawan/agent-workspace-template`, then
+  `/plugin install {{name}}@punokawan`.
+- **Codex:** `codex plugin marketplace add punokawan/agent-workspace-template`, then
+  `codex plugin add {{name}}@punokawan`.
+- **Other agents, or only some skills:** copy folders from `skills/` into `.agents/skills/` (or the
+  folder your agent reads). Keep `LICENSE` with any copy.
 
 ## Skills
 

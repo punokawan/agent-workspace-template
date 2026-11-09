@@ -19,18 +19,27 @@ See [Credits](#credits). The full topic-by-topic comparison is in
 
 ## Install
 
-The plugin ships in this workspace's local marketplace (`.claude-plugin/marketplace.json` at the
-workspace root, marketplace name `punokawan`).
+The skills follow the open [Agent Skills](https://agentskills.io) format (a folder with `SKILL.md`),
+so they work in Claude Code, Codex and any agent that reads that format. Scripts inside the skills
+need only `python3` or `node`.
+
+### Claude Code
 
 In an interactive Claude Code session:
 
 ```
-/plugin marketplace add <path-to-the-workspace>
+/plugin marketplace add punokawan/agent-workspace-template
 /plugin install marketing-skills@punokawan
 ```
 
-Or in `~/.claude/settings.json` (user level, so every project gets it). `path` is the absolute path
-of the marketplace root, the folder that contains `.claude-plugin/marketplace.json`:
+From a terminal, the same with `claude plugin marketplace add punokawan/agent-workspace-template` and
+`claude plugin install marketing-skills@punokawan`. Skills then appear as `marketing-skills:<name>`
+and load on their own when a request matches; call one directly with `/marketing-skills:<name>`.
+Update later with `claude plugin marketplace update punokawan`, then
+`claude plugin update marketing-skills@punokawan`.
+
+Inside this workspace you can point at the checkout instead: replace the repository name with the
+absolute path of the workspace root, or add it to `~/.claude/settings.json`:
 
 ```json
 {
@@ -41,9 +50,34 @@ of the marketplace root, the folder that contains `.claude-plugin/marketplace.js
 }
 ```
 
-Turn off any other plugin that is also named `marketing-skills` (for example
-`marketing-skills@claude-code-skills`), so the two do not compete. Codex reads the same skills
-through `.codex-plugin/plugin.json`.
+Turn off any other plugin also named `marketing-skills` (for example
+`marketing-skills@claude-code-skills`), so the two do not compete.
+
+### Codex
+
+```
+codex plugin marketplace add punokawan/agent-workspace-template
+codex plugin add marketing-skills@punokawan
+```
+
+Or run `/plugins` inside a Codex session and pick **marketing-skills**. Update later with
+`codex plugin marketplace upgrade`. A local checkout works too: pass its absolute path to
+`codex plugin marketplace add`. Codex reads `.agents/plugins/marketplace.json` at the repository root
+and `.codex-plugin/plugin.json` in this folder.
+
+### Other agents, or only some skills
+
+Copy the skill folders into the folder your agent reads, for example `.agents/skills/` (shared by
+many agents) or `.claude/skills/`:
+
+```bash
+git clone https://github.com/punokawan/agent-workspace-template.git
+cp -r agent-workspace-template/plugins/marketing-skills/skills/* .agents/skills/      # all skills
+cp -r agent-workspace-template/plugins/marketing-skills/skills/{cro,copywriting} .agents/skills/
+```
+
+Copy `product-marketing` with any selection: the other skills read the product context it defines.
+Keep `LICENSE` with any copy. A copy does not update itself; pull and copy again.
 
 ## How the skills work together
 

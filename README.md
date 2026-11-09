@@ -1,8 +1,9 @@
 # Agent workspace template
 
 One workspace for running several product projects with **Claude Code** and **Codex** from a
-single shared toolkit: 27 specialist agents, 32 slash commands, 26 skills and the scripts behind
-them. Each project picks how strict its rules are.
+single shared toolkit: 27 specialist agents, 35 slash commands, 59 skills and the scripts behind
+them, plus the `marketing-skills` plugin (61 skills, installable in Claude Code and Codex). Each
+project picks how strict its rules are.
 
 ## What you get
 

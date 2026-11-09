@@ -11,6 +11,7 @@
 #                                         — SOURCES.md for a skill taken from one source
 #   skills.sh snapshot <plugin>           — export each source at its pinned commit (used by sources)
 #   skills.sh index <plugin>              — rebuild the plugin README skill table
+#   skills.sh marketplaces                — every library listed for Claude Code and Codex
 #
 # Contributor guide: CONTRIBUTING.md. Nothing here runs upstream code.
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
