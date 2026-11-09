@@ -124,5 +124,6 @@ project — an example, never a target.
 | plan status | `plan.sh set <id> <status> "<why>" && bash .claude/scripts/plan.sh index` |
 | docs path check | `python3 .claude/scripts/_docs.py` |
 | vendored skills | `upstream.sh check` · `diff <name>` · `pull <name>` · `add <repo> <path>` |
+| skill authoring | `skills.sh overlap <skill>` · `new-library <name> --source k=<repo>` · `validate`/`sources check`/`index <library>` (guide: `CONTRIBUTING.md`) |
 | `/codex` | `codex.sh exec <dir> [--write] "<brief>"` · `blender <script.py>` · `sprite <in> <out>` |
 | rule profiles | `rules.sh list` · `set <project> <profile>` · `enable`/`disable <project> <module>` |

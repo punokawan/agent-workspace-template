@@ -147,6 +147,13 @@ The full table is in `AGENTS.md`; every agent, command and skill is listed in
 - **Fork it:** set `source` in `templates/rules/profiles.json` to your repository and run
   `rules.sh sync`, so generated blocks name your fork.
 
+## Contributing skills
+
+[CONTRIBUTING.md](CONTRIBUTING.md) shows the four ways to add a skill: write your own, vendor one
+unchanged (`upstream.sh add`), merge several libraries into one (`skills.sh new-library`, like
+`plugins/marketing-skills/`), or add a source to an existing library. Each path keeps every upstream
+credit and checks for collisions first (`skills.sh overlap`), so no topic ends up with two skills.
+
 ## License
 
 MIT, see [LICENSE](LICENSE). Vendored skills keep their upstream licence: each one has its own

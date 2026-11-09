@@ -63,7 +63,13 @@ because one source supplies every file unchanged.
 - Merged plugins (`mode: merged`) are never updated automatically. `diff` maps each changed upstream
   file to the merged skill that came from it through `SOURCES.md`; the plugin's `UPSTREAM.md`
   lists the remaining steps.
-- Colliding sources become one skill with a `SOURCES.md` provenance table, not two skills.
+- Colliding sources become one skill with a `SOURCES.md` provenance table, not two skills. Run
+  `bash .claude/scripts/skills.sh overlap <skill>` before adding any skill; `upstream.sh add` runs
+  it and stops on a name collision.
+- A library merged from several sources lives in `plugins/<name>/`: scaffold it with
+  `skills.sh new-library`, check it with `skills.sh validate`, `sources check` and `index`.
+  `CONTRIBUTING.md` holds the full contributor flow (paths A–D); `plugins/marketing-skills/` is the
+  reference library.
 - Clones are cached in the main checkout's `.cache/upstream/`, shared by every worktree.
 - After `add`, run `bash .claude/scripts/roster.sh`.
 

@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-11-09 10:15_
+_Generated 2026-11-09 12:17_
 
 ## Agents (27)
 
@@ -162,6 +162,7 @@ _Generated 2026-11-09 10:15_
 | `.claude/scripts/project.sh` | Project registry CLI — the only supported way to add a project to this workspace. |
 | `.claude/scripts/roster.sh` | Generate .claude/AGENTS.md from the actual frontmatter of every agent, command, and skill. |
 | `.claude/scripts/rules.sh` | Choose which rule modules each project follows, and render them into its AGENTS.md. |
+| `.claude/scripts/skills.sh` | Skill authoring: catch collisions early, keep merged libraries credited and checkable. |
 | `.claude/scripts/state.sh` | Durable run state so any session can resume any task after /clear, a crash, or a day off. |
 | `.claude/scripts/storage.sh` | Disk-budget management for the studio workspace. |
 | `.claude/scripts/upstream.sh` | Vendored skills: track each one's upstream source and update it from there. |

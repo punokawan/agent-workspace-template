@@ -129,6 +129,15 @@ else
   fail "UPSTREAM.md block problems — run: bash .claude/scripts/upstream.sh lint"
 fi
 
+# 8c — every merged skill library passes its offline checks
+bad=0
+for lib in "$ROOT"/plugins/*/; do
+  [[ -d "$lib/skills" ]] || continue
+  name=$(basename "$lib")
+  python3 "$SCRIPTS/_skills.py" validate "$name" >/dev/null 2>&1 || { fail "plugins/$name fails validation — run: bash .claude/scripts/skills.sh validate $name"; bad=1; }
+done
+(( bad == 0 )) && pass "skill libraries in plugins/ validate"
+
 # 9 — worktrees are cache-linked and disk is within budget
 # NOTE: capture first. `... | grep -q` makes grep exit on the first match, which
 # SIGPIPEs storage.sh; with pipefail (set by lib.sh) that reads as a failed pipeline

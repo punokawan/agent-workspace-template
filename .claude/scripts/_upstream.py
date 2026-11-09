@@ -23,8 +23,9 @@ Commands (run through upstream.sh):
                             what changed upstream; for merged mode, which merged skill each file feeds
     pull <name> [--to SHA] [--force]
                             copy mode only: replace the files with a newer commit, bump the pin
-    add <repo> <path> [--name N] [--commit SHA] [--extra FILE] [--licence L]
-                            vendor a new skill into .claude/skills/<name>, unchanged
+    add <repo> <path> [--name N] [--commit SHA] [--extra FILE] [--licence L] [--allow-overlap]
+                            vendor a new skill into .claude/skills/<name>, unchanged; stops on a name
+                            collision (skills.sh overlap) unless --allow-overlap
 
 Upstream clones live in the main checkout's .cache/upstream/ (bare, blobless). No upstream code runs,
 except the vendored skill-security-auditor (a static scanner), and only after its UPSTREAM.md records
@@ -57,7 +58,7 @@ AUDITOR = os.path.join(ROOT, ".claude", "skills", "skill-security-auditor", "scr
 IGNORED = {"UPSTREAM.md", ".DS_Store"}
 BLOCK = re.compile(r"```upstream\n(.*?)```", re.S)
 SHA = re.compile(r"^[0-9a-f]{40}$")
-KEYS = {"repo", "path", "commit", "mode", "licence", "extra", "files", "root", "key", "ref"}
+KEYS = {"repo", "path", "commit", "mode", "licence", "extra", "files", "root", "key", "ref", "credit"}
 
 
 class Fail(Exception):
@@ -492,7 +493,27 @@ def licence_name(text):
     return ""
 
 
+def overlap_ok(name, skill_md, force=False):
+    """Collision check before vendoring: same name stops; similar topics are printed for a decision."""
+    import tempfile
+    import _skills
+    tmp = tempfile.mkdtemp(prefix="overlap-")
+    try:
+        os.makedirs(os.path.join(tmp, name))
+        open(os.path.join(tmp, name, "SKILL.md"), "wb").write(skill_md)
+        clash = _skills.cmd_overlap([os.path.join(tmp, name)], quiet=True)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    if clash and not force:
+        print(f"stopped: a skill named `{name}` already exists. Merge the two into one skill with a "
+              "SOURCES.md table (CONTRIBUTING.md, path C), or pass --allow-overlap after the owner agrees.")
+        return False
+    return True
+
+
 def cmd_add(args):
+    force = "--allow-overlap" in args
+    args[:] = [a for a in args if a != "--allow-overlap"]
     name = take(args, "--name")
     commit = take(args, "--commit")
     extra = take(args, "--extra")
@@ -517,6 +538,8 @@ def cmd_add(args):
     licence = licence or licence_name(blob(d, commit, lic_src).decode(errors="replace")) or "check-by-hand"
     e = {"id": name, "name": name, "dir": dest, "path": path, "extra": extra or "", "repo": repo}
     exp = expected_files(d, e, commit)
+    if "SKILL.md" in exp and not overlap_ok(name, blob(d, commit, exp["SKILL.md"]), force=force):
+        return 1
     os.makedirs(dest)
     write_files(d, e, commit, exp)
     lines = [f"repo: {repo}", f"path: {path}", f"commit: {commit}", "mode: copy", f"licence: {licence}"]

@@ -1,0 +1,115 @@
+{
+  "categories": [
+    [
+      "Foundations and strategy",
+      [
+        "product-marketing",
+        "marketing-ops",
+        "marketing-plan",
+        "marketing-council",
+        "marketing-ideas",
+        "marketing-loops",
+        "marketing-psychology",
+        "customer-research",
+        "marketing-strategy-pmm",
+        "brand-guidelines",
+        "business-name-fit",
+        "offers",
+        "competitor-profiling",
+        "reverse-engineer-marketing",
+        "ai-decision-authority"
+      ]
+    ],
+    [
+      "Conversion (CRO)",
+      [
+        "cro",
+        "signup",
+        "onboarding",
+        "popups",
+        "paywalls",
+        "ab-testing",
+        "lead-magnets"
+      ]
+    ],
+    [
+      "Copy and content",
+      [
+        "copywriting",
+        "copy-editing",
+        "content-strategy",
+        "content-production",
+        "content-humanizer",
+        "prompt-engineer-toolkit"
+      ]
+    ],
+    [
+      "SEO and AI search",
+      [
+        "seo-audit",
+        "ai-seo",
+        "schema",
+        "programmatic-seo",
+        "site-architecture",
+        "local-seo-manager",
+        "link-building",
+        "directory-submissions"
+      ]
+    ],
+    [
+      "Paid and measurement",
+      [
+        "ads",
+        "ad-creative",
+        "analytics",
+        "conversion-tracking",
+        "attribution",
+        "campaign-analytics",
+        "marketing-demand-acquisition"
+      ]
+    ],
+    [
+      "Channels",
+      [
+        "emails",
+        "cold-email",
+        "sms",
+        "social",
+        "social-media-analyzer",
+        "x-twitter-growth",
+        "community-marketing",
+        "influencer-marketing",
+        "public-relations",
+        "co-marketing",
+        "events",
+        "video",
+        "youtube-full",
+        "image"
+      ]
+    ],
+    [
+      "Growth and retention",
+      [
+        "pricing",
+        "referrals",
+        "free-tools",
+        "launch",
+        "churn-prevention",
+        "aso"
+      ]
+    ],
+    [
+      "Sales and go-to-market",
+      [
+        "competitors",
+        "sales-enablement",
+        "prospecting",
+        "revops"
+      ]
+    ]
+  ],
+  "context": {
+    "file": ".agents/product-marketing.md",
+    "owner": "product-marketing"
+  }
+}

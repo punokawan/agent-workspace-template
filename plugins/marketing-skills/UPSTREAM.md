@@ -6,6 +6,7 @@ path: skills, tools
 commit: 96798cf38736ecdba015a1d2b0521b0c8f8f41dd
 mode: merged
 key: corey
+credit: Corey Haines
 licence: MIT
 ```
 
@@ -16,6 +17,7 @@ root: marketing-skill
 commit: 8f082544116fc0d014188e521ca40304cdfc86b0
 mode: merged
 key: ali
+credit: Alireza Rezvani
 licence: MIT
 ```
 
@@ -43,7 +45,8 @@ in the workspace (local, not committed).
   (owner rule, 2026-11-09). This also applies to any source added later.
 - **Per-skill provenance.** Every skill has `SOURCES.md`: one row per section of SKILL.md and per
   file, with the source repository, upstream skill, file and commit, and `as is`, `edited: …` or
-  `new: …`. `scripts/sources.py check` verifies the rows against the source snapshots.
+  `new: …`. `bash .claude/scripts/skills.sh sources check marketing-skills` verifies the rows against
+  the sources at the pinned commits.
 - **Names.** A topic both libraries cover keeps Corey Haines' name; a skill only Alireza Rezvani
   has keeps his name. Old names map to merged names in `docs/MAPPING.md`.
 - **Content.** Corey Haines' version is the base of every shared topic. Material from Alireza
@@ -59,8 +62,8 @@ in the workspace (local, not committed).
   `VERSIONS.md`, `partners.json`. From Alireza Rezvani: `content-creator` (a deprecated alias) and the
   `marketing-skills` index skill (replaced by the router), and the per-skill `README.md` install notes
   (the plugin README covers install).
-- **Added here.** `README.md`, this file, `docs/`, `scripts/validate.py`, `scripts/build_index.py`,
-  the plugin manifests.
+- **Added here.** `README.md`, this file, `docs/`, `library.json` (README categories and the shared
+  context file), the plugin manifests. Checks run through the workspace `skills.sh`.
 
 ## Review (read-only, 2026-11-09)
 
@@ -98,9 +101,10 @@ Both blocks above are `mode: merged`: the workspace tool reports changes but nev
    same compare-and-merge step as the original merge, following `docs/COMPARISON.md`.
 3. Carry each change into the merged skill by hand. Then set the new `commit` in the block, update
    each touched skill's `metadata.sources` and its `SOURCES.md` rows (regenerate single-source
-   skills with `scripts/sources.py generate`), and bump `version` in both plugin manifests.
-4. Refresh the snapshots in `.cache/marketing-merge/sources/` to the new commits, then run
-   `python3 scripts/validate.py`, `python3 scripts/sources.py check --sources <snapshots>` and
-   `python3 scripts/build_index.py`, and re-run the security scan.
+   skills with `bash .claude/scripts/skills.sh sources generate marketing-skills <skill> <key>
+   <upstream-path>`), and bump `version` in both plugin manifests.
+4. Run `bash .claude/scripts/skills.sh validate marketing-skills`, `sources check marketing-skills`
+   (it exports both sources at the new commits) and `index marketing-skills`, and re-run the security
+   scan.
 5. Installed copies do not follow the repo: run `claude plugin marketplace update punokawan` and
    `claude plugin update marketing-skills@punokawan`.
