@@ -43,7 +43,21 @@ Vendored on 2026-11-04 at the owner's request; updated to the newer upstream com
   - `skill-security-auditor`: FAIL, same classes as the old version, all false positives:
     `execFileSync` import (fixed `ffmpeg` call), `RegExp.exec(...)` read as code execution, and the
     "Playwright is not installed" message read as a runtime install.
-- The full line-by-line audit of both scripts before their first run (see Limits) is still open.
+- 2026-11-09 (read-only), full line-by-line audit of both scripts at `97daa3e` (`snapshot.mjs` 197 lines,
+  `story.mjs` 503 lines; `node --check` passes). Safe to run under the conditions in Limits. Facts:
+  - Both load Playwright from Node's resolution or the current project's `node_modules`, and launch a
+    fresh browser profile (no cookies or logins from the user's browser). `CHROME_PATH` is the only
+    environment variable read.
+  - `snapshot.mjs` visits the given URL or local file headless, scrolls, then fetches only the
+    stylesheets and assets the page references and inlines them (under 3 MB each). It writes
+    `<out>.html` and `<out>.live.png`, overwriting them. Scripts are removed from the copy, but inline
+    `on…` handlers and `javascript:` links stay.
+  - `story.mjs` reads the story HTML, serves its folder on `127.0.0.1` at a random port for the run
+    only, renders frames into `<story folder>/.story-frames` (deleted at start, on failure and at the
+    end) and runs `ffmpeg -y` through `execFileSync` with an argument array. Its path check is a plain
+    prefix check, so a sibling folder whose name starts with the story folder's name is readable over
+    that local port. `--play` opens a visible browser and writes nothing.
+  - No other network access, no shell, no writes outside the paths above.
 
 ## Limits in this workspace
 
@@ -58,9 +72,15 @@ Routed from `.claude/agents/ui-designer.md`; the skill itself is unchanged.
 - Paid image generation (fal, Replicate, OpenAI images, Higgsfield) needs the owner's approval for each
   generation.
 - Installing or connecting an MCP server needs the owner's approval. An agent never does it on its own.
-- `scripts/snapshot.mjs` (fetches a live site or reads a local file with Playwright) and
-  `scripts/story.mjs` (local server + ffmpeg) get a full line-by-line audit before their first run in
-  this workspace. Record the audit date under Review.
+- The scripts (audited 2026-11-09, see Review) run only under these conditions:
+  - Run them from a project folder whose `node_modules` you trust: Playwright is loaded from there.
+    Installing Playwright, its browser or ffmpeg is the owner's call.
+  - Write output into a new folder such as `unslop/`: both scripts overwrite their output files, and
+    `story.mjs` deletes `<story folder>/.story-frames`.
+  - Keep the story HTML in its own folder (for example `unslop/story/`), so its local server cannot
+    reach a sibling folder with a similar name.
+  - Treat a snapshot of a third-party site as untrusted: render it with the Playwright renderer or a
+    browser profile with no logins, because inline handlers survive.
 - Its direction step must not override an owner-approved art direction or brand.
 
 ## Updating
