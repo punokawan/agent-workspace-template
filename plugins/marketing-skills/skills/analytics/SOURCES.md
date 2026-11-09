@@ -1,0 +1,47 @@
+# Sources: analytics
+
+| Part | From | Upstream file | Changed here |
+|---|---|---|---|
+| frontmatter | corey `analytics` @96798cf | skills/analytics/SKILL.md | edited: description opens with what the skill does, adds event naming, events firing twice and funnel drop-off triggers and an ads route for ROAS/CPA math; version reset to 1.0.0; `sources` added |
+| frontmatter | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § Proactive Triggers | edited: point 1 (events firing on every page load) became the "events firing twice" trigger |
+| SKILL.md § title and intro | corey `analytics` @96798cf | skills/analytics/SKILL.md § Analytics Tracking | edited: role sentence kept; Scope paragraph added |
+| SKILL.md § title and intro | merge | — | new: Scope paragraph sets the boundary with conversion-tracking, attribution and ads |
+| SKILL.md § Initial Assessment | corey `analytics` @96798cf | skills/analytics/SKILL.md § Initial Assessment | edited: item 4 (Mode) added |
+| SKILL.md § Initial Assessment | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § How This Skill Works | edited: the three modes (set up, audit, debug) became item 4 with a route for each |
+| SKILL.md § Core Principles | corey `analytics` @96798cf | skills/analytics/SKILL.md § Core Principles | as is |
+| SKILL.md § Tracking Plan Framework | corey `analytics` @96798cf | skills/analytics/SKILL.md § Tracking Plan Framework | as is |
+| SKILL.md § Event Naming Conventions | corey `analytics` @96798cf | skills/analytics/SKILL.md § Event Naming Conventions | edited: two Best Practices bullets added |
+| SKILL.md § Event Naming Conventions | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/references/event-taxonomy-guide.md § Action Vocabulary, § Complete SaaS Event Catalog | edited: one-verb-per-meaning rule with a pointer to the vocabulary; required vs optional property marking |
+| SKILL.md § Essential Events | corey `analytics` @96798cf | skills/analytics/SKILL.md § Essential Events | as is |
+| SKILL.md § Event Properties | corey `analytics` @96798cf | skills/analytics/SKILL.md § Event Properties | as is |
+| SKILL.md § GA4 Implementation | corey `analytics` @96798cf | skills/analytics/SKILL.md § GA4 Implementation | edited: Quick Setup steps 3 and 5 extended |
+| SKILL.md § GA4 Implementation | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § GA4 Setup | edited: enhanced-measurement duplicate warning (step 3); key events rename and 30-per-property limit (step 5); the claim that key events apply retroactively dropped |
+| SKILL.md § Google Tag Manager | corey `analytics` @96798cf | skills/analytics/SKILL.md § Google Tag Manager | as is |
+| SKILL.md § UTM Parameter Strategy | corey `analytics` @96798cf | skills/analytics/SKILL.md § UTM Parameter Strategy | edited: "External links only" bullet added to Naming Conventions |
+| SKILL.md § UTM Parameter Strategy | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § Cross-Platform Tracking (UTM Strategy rule) | edited: "never tag organic or direct traffic" restated as no UTMs on internal links |
+| SKILL.md § Debugging and Validation | corey `analytics` @96798cf | skills/analytics/SKILL.md § Debugging and Validation | edited: pointer to debugging-playbook.md and § Flag Without Being Asked added |
+| SKILL.md § Debugging and Validation | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § Proactive Triggers | edited: points 1, 2, 4, 5, 6 became § Flag Without Being Asked; point 3 (GA4 vs Ads mismatch) routed to conversion-tracking |
+| SKILL.md § Privacy and Compliance | corey `analytics` @96798cf | skills/analytics/SKILL.md § Privacy and Compliance | edited: consent-mode bullet extended |
+| SKILL.md § Privacy and Compliance | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § Data Quality (Consent Management Impact) | edited: basic vs advanced consent mode; expected consent rates by region dropped (unsourced) |
+| SKILL.md § Funnel Analysis | ali `campaign-analytics` @8f08254 | skills/campaign-analytics/SKILL.md § How to Use (Funnel Analysis), § Scripts (2. funnel_analyzer.py) | edited: rewritten for the adapted script (`--file`, rise warning, +1pt lift) |
+| SKILL.md § Output Format | corey `analytics` @96798cf | skills/analytics/SKILL.md § Output Format | edited: corey text and code block kept; ### Tracking Audit subsection added (from ali analytics-tracking) |
+| SKILL.md § Overview | corey `analytics` @96798cf | skills/analytics/SKILL.md § Overview | as is (heading inside the Output Format code block) |
+| SKILL.md § Events | corey `analytics` @96798cf | skills/analytics/SKILL.md § Events | as is (heading inside the Output Format code block) |
+| SKILL.md § Custom Dimensions | corey `analytics` @96798cf | skills/analytics/SKILL.md § Custom Dimensions | as is (heading inside the Output Format code block) |
+| SKILL.md § Conversions | corey `analytics` @96798cf | skills/analytics/SKILL.md § Conversions | edited: code block kept; § Tracking Audit output follows it |
+| SKILL.md § Conversions › Tracking Audit | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § Output Artifacts, § Communication | edited: audit row (gap analysis, prioritized fix list) and the communication standard (bottom line first, what/why/how, owners, confidence) became the five audit blocks; the 0-100 data quality score dropped |
+| SKILL.md § Task-Specific Questions | corey `analytics` @96798cf | skills/analytics/SKILL.md § Task-Specific Questions | as is |
+| SKILL.md § Tool Integrations | corey `analytics` @96798cf | skills/analytics/SKILL.md § Tool Integrations | as is |
+| SKILL.md § Related Skills | corey `analytics` @96798cf | skills/analytics/SKILL.md § Related Skills | edited: ads line and closing "Sources and credits" line added |
+| evals/evals.json | corey `analytics` @96798cf | skills/analytics/evals/evals.json | as is |
+| references/debugging-playbook.md | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/references/debugging-playbook.md | edited: debug stack, tools, issue/fix sections and checklist kept and tightened; § Issue: Conversions not matching between GA4 and Google Ads cut to a hand-off to conversion-tracking; links to gtm-implementation.md and ga4-implementation.md sections added |
+| references/event-library.md | corey `analytics` @96798cf | skills/analytics/references/event-library.md | edited: § Naming Vocabulary, four retention events, the required/optional rule and § Tracking Plan Governance added; everything else as is |
+| references/event-library.md | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/references/event-taxonomy-guide.md § Action Vocabulary, § Casing & Characters, § Retention Events, § Taxonomy Governance | edited: verb table and naming rules → § Naming Vocabulary; save_offer_accepted, subscription_paused, subscription_reactivated, churn_risk_detected and save_offer_shown → subscription table; required/optional columns → one rule; status/owner columns, change protocol and schema_version → § Tracking Plan Governance |
+| references/funnel-analysis.md | ali `campaign-analytics` @8f08254 | skills/campaign-analytics/references/funnel-optimization-framework.md | edited: stage model, bottleneck diagnosis table, stage-to-skill routing, anti-patterns and review cadence kept; funnel math folded into the +1pt lift reading and routed to this library's skills; per-stage tactic lists and benchmark ranges dropped; output-reading section written for the script |
+| references/ga4-implementation.md | corey `analytics` @96798cf | skills/analytics/references/ga4-implementation.md | edited: key events naming, custom dimension limits, filter Testing state and cross-domain test step added |
+| references/ga4-implementation.md | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/SKILL.md § Key Events Configuration, § Cross-Domain Tracking, § Bot Filtering; references/event-taxonomy-guide.md § Custom Dimensions & Metrics | edited: key events rename and curation rule; cross-domain DebugView test; filter activation; dimension limits corrected (item-scoped is 10 on standard properties) |
+| references/gtm-implementation.md | corey `analytics` @96798cf | skills/analytics/references/gtm-implementation.md | edited: § Single-Page App Page Views, publishing protocol, environments and consent notes added |
+| references/gtm-implementation.md | ali `analytics-tracking` @8f08254 | skills/analytics-tracking/references/gtm-patterns.md § Pattern 4, § Pattern 6, § GTM Version Control | edited: SPA approaches with the enhanced-measurement history option and a test; publishing protocol and environments; wait_for_update and basic vs advanced consent (the dataLayer "basic consent" push dropped, it does not set consent) |
+| scripts/funnel_analyzer.py | ali `campaign-analytics` @8f08254 | skills/campaign-analytics/scripts/funnel_analyzer.py | edited: `--file`/`--json` replace the positional file and `--format`; demo run with no input; count and stage-length validation with clear errors; warning when a count rises between stages; +1pt lift column (from § Funnel Math and Revenue Impact of funnel-optimization-framework.md); segment stage table |
+
+corey = https://github.com/coreyhaines31/marketingskills (MIT, Corey Haines) · ali = https://github.com/alirezarezvani/claude-skills, folder marketing-skill/ (MIT, Alireza Rezvani)

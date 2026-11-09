@@ -1,0 +1,17 @@
+{
+  "name": "punokawan",
+  "owner": {
+    "name": "punokawan"
+  },
+  "metadata": {
+    "description": "Plugins maintained in the punokawan agent workspace",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "marketing-skills",
+      "description": "Merged marketing library (coreyhaines31/marketingskills + alirezarezvani/claude-skills marketing-skill) for every project and language",
+      "source": "./plugins/marketing-skills"
+    }
+  ]
+}

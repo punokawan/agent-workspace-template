@@ -1,0 +1,10 @@
+{
+  "name": "marketing-skills",
+  "description": "One marketing library for every project and language: CRO, copywriting, SEO and AI search, paid ads, analytics, email, social, launch, pricing, positioning and growth. Merged from coreyhaines31/marketingskills and alirezarezvani/claude-skills (both MIT).",
+  "version": "1.0.0",
+  "author": {
+    "name": "punokawan"
+  },
+  "license": "MIT",
+  "skills": "./skills/"
+}
