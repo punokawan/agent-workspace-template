@@ -1,7 +1,7 @@
 ---
 name: workspace-orchestration
 description: Routing brain for work in every project — decides whether to decompose a task, which specialist agent to dispatch, what runs in parallel vs. sequence, which model tier and effort each gets, and the handoff contract between them. Load this at the start of any non-trivial task and whenever more than one repo or discipline is involved. For the specialist agents in this workspace's .claude/agents only — not Orca workers or savvy-flow.
-license: Proprietary
+license: MIT
 compatibility: Claude Code Agent tool
 ---
 

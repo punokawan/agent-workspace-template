@@ -1,7 +1,7 @@
 ---
 name: flutter-ui-patterns
 description: Studio Flutter presentation-layer conventions — screen structure, shared widgets, theme tokens, navigation, BlocBuilder/Listener/Consumer choice, loading/empty/error states, constants, l10n, and UI anti-patterns. Project screen layouts, widget libraries, and routers live in the <project>-app-patterns overlay.
-license: Proprietary
+license: MIT
 compatibility: Flutter with flutter_bloc
 ---
 

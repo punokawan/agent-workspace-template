@@ -1,7 +1,7 @@
 ---
 name: storage-management
 description: Disk-budget rules for the studio workspace — shared build caches, worktree storage cap, safe prune targets, and the pre-flight check required before creating a worktree or running a build. Load this before creating/removing worktrees, before any full build, or whenever disk pressure is suspected.
-license: Proprietary
+license: MIT
 compatibility: macOS, bash, git worktree
 ---
 

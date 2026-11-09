@@ -1,7 +1,7 @@
 ---
 name: git-workflow
 description: Two-branch development rules for every repo in every project — the production + integration branch model (names from project.json), short-lived working branches merged locally without a PR, commit conventions, hotfix flow, and release hand-off. Load this whenever making commits, cutting or merging branches, or preparing a release in any project.
-license: Proprietary
+license: MIT
 compatibility: git, gh CLI
 ---
 

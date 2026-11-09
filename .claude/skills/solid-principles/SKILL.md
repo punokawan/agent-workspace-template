@@ -1,7 +1,7 @@
 ---
 name: solid-principles
 description: SOLID principles applied to studio Flutter/Dart apps (Clean Architecture + BLoC) — a violation and fix for each principle, common anti-patterns, and a review quick-check.
-license: Proprietary
+license: MIT
 compatibility: Flutter/Dart with freezed, flutter_bloc, get_it
 ---
 

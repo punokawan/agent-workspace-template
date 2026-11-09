@@ -1,7 +1,7 @@
 ---
 name: threejs-web
 description: When and how to put a three.js (WebGL) scene in a web app, including three.js as an alternative to pre-rendered motion assets (frame sequences, video, GIF, Lottie, Rive) — live glTF animation in the browser or offline rendering to video/frames — plus the decision gate before 3D, vanilla three vs React Three Fiber, client-only loading in Next.js App Router, asset formats and size budgets (glTF/GLB, Draco/Meshopt, KTX2), frame-loop and GPU performance, disposal, reduced motion and accessibility, WebGL fallback and context loss, Core Web Vitals, CSP for decoders, offline tests, and a review checklist. Load before you add, change or review any three.js, R3F or WebGL code in a web repo. For UI motion use animate; for video reels use reel-production or motion-reel.
-license: Proprietary
+license: MIT
 ---
 
 # three.js on the web

@@ -1,7 +1,7 @@
 ---
 name: verification
 description: Anti-hallucination protocol for all work in every project — evidence grades, the mandatory verification gate before claiming anything is done, and the exact vocabulary for stating uncertainty. Load this before reporting completion, before making any factual claim about the codebase, and before any agent hands off to another.
-license: Proprietary
+license: MIT
 compatibility: bash, fvm, go, npm
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: copywriting
 description: UX-writing and copy craft for every project (Flutter app, Next.js web, Go backend) — the two governing rules, voice principles, casing, one-word-per-concept terminology, button/title/empty/error/confirmation/toast patterns, number and date phrasing, punctuation, and the per-surface localization rules. Project voice, glossary, and locales live in projects/<project>/AGENTS.md and the <project>-copywriting overlay. Load whenever you write, edit, or review any text a person can read.
-license: Proprietary
+license: MIT
 compatibility: Flutter gen-l10n, Next.js, Go REST API (error codes)
 ---
 

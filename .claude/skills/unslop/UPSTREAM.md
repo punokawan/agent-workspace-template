@@ -8,7 +8,7 @@ To update: re-download every file at a newer commit, change the SHA here, and re
 
 Use in this workspace (routed from .claude/agents/ui-designer.md; the skill itself is unchanged):
 - Use it only for public, landing and marketing pages, and for new mockups. Never on app screens that already follow a
-  design system (for RukunKita: docs/agent/06_design.md); use better-interface and audit-ai-design-slop there.
+  design system (the project's own design doc names it); use better-interface and audit-ai-design-slop there.
 - Paid image generation (fal, Replicate, OpenAI images, Higgsfield) needs the owner's approval for each generation.
 - Installing or connecting an MCP server needs the owner's approval. An agent never does it on its own.
 - scripts/snapshot.mjs (fetches a live site with Playwright) and scripts/story.mjs (local server + ffmpeg) get a full line-by-line

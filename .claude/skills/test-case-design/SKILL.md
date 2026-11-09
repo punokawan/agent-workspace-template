@@ -1,7 +1,7 @@
 ---
 name: test-case-design
 description: How to derive test cases for Flutter/BLoC Clean Architecture code — equivalence partitioning, boundary analysis, decision tables, state transition testing, and edge case identification per layer. Use before writing test code to ensure nothing important is missed.
-license: Proprietary
+license: MIT
 compatibility: Flutter/Dart
 ---
 

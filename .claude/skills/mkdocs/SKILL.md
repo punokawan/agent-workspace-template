@@ -1,7 +1,7 @@
 ---
 name: mkdocs
 description: How every project's engineering docs site works — MkDocs Material, one mkdocs.yml and docs/ tree per project, local dev server, adding a page and registering it in nav, available Markdown extensions, writing style, the mirror rule for cited code paths, and common mistakes. A project's tree and nav live in the <project>-docs overlay.
-license: Proprietary
+license: MIT
 compatibility: MkDocs >= 1.5, mkdocs-material >= 9.5, Python 3.x
 ---
 

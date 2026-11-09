@@ -1,7 +1,7 @@
 ---
 name: changelog-and-release
 description: How every project manages versioning, changelogs, and releases — the generated Keep a Changelog format via changelog.sh, semver+buildNumber in pubspec.yaml, per-repo release scripts, commit conventions (commit subjects become changelog entries), and the tagging hand-off. Load before cutting a release, writing a changelog entry, or bumping a version.
-license: Proprietary
+license: MIT
 compatibility: scripts/release.sh, pubspec.yaml, CHANGELOG.md, git tags
 ---
 

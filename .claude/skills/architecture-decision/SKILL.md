@@ -1,7 +1,7 @@
 ---
 name: architecture-decision
 description: How to answer a business, product or architecture question that has real trade-offs — as a principal architect and sparring partner, not an order-taker. Gives the nine-part structure (system summary, problem, root cause, impact, trade-offs, recommendation, alternative, hidden risks, future), and when to skip it for a short answer. Load when the user weighs a design, a vendor, a platform, a pricing or scaling choice, or asks "should we…".
-license: Proprietary
+license: MIT
 ---
 
 # Architecture decision

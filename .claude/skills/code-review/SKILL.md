@@ -1,7 +1,7 @@
 ---
 name: code-review
 description: How to review code in any studio project — severity taxonomy, consistency contract, finding format, scope, verdict, plus the Flutter/Clean Architecture checklist. Load when reviewing a diff, a landed change, or a newly scaffolded feature. Go and Next.js reviews also use backend-reviewer / frontend-reviewer and their stack skills.
-license: Proprietary
+license: MIT
 compatibility: Any stack; detailed checklist for Flutter/Dart (Clean Architecture + BLoC)
 ---
 

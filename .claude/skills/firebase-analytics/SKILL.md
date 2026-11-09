@@ -1,7 +1,7 @@
 ---
 name: firebase-analytics
 description: How to implement Firebase Analytics in a Flutter/BLoC app the right way — where to call it (BLoC success branch, not widgets), one project-wide accessor, screen tracking once at the router, user identity and properties, built-in vs custom events, event naming rules, privacy boundaries, a testable AnalyticsService abstraction, first-use milestones, and DebugView. Project specifics (singleton, event catalog, per-BLoC map) live in the <project>-analytics overlay.
-license: Proprietary
+license: MIT
 compatibility: firebase_analytics, Flutter/BLoC
 ---
 

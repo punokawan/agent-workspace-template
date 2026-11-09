@@ -1,7 +1,7 @@
 ---
 name: reel-production
 description: How to plan and produce short vertical explainer reels (9:16, 15–40 s) for any project — choosing the pipeline (code-drawn film in a Motion artifact or HTML renderer, Blender clips, rotoscoped SVG, three.js), the ground rules (real reference for anything that must be true, commercial licences, generative tools kept away from technically exact content, drafts labelled inside the film), the work loop (storyboard → approval gates → contact sheet → independent review → owner), and the lessons from hand and body animation. references/tooling.md compares the tools (HyperFrames, ComfyUI, OneTake, collage B-roll skills, Claude Animation Base, Lemo-Opuscar, Rive, Spine, Remotion, Motion Canvas, three.js, Blender, MediaPipe, MANO-based mocap) with licence and Mac support; references/hands.md covers animating hands and bodies and the capture shot list. Load before making or revising a reel, choosing a video tool, or animating a hand, pose or technique.
-license: Proprietary
+license: MIT
 compatibility: macOS Apple Silicon or Linux; Blender 4.2+ for 3D clips; Node 22+ for HTML renderers; MediaPipe for pose data
 ---
 

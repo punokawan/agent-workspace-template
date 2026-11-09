@@ -1,7 +1,7 @@
 ---
 name: flutter-performance
 description: Flutter performance patterns for studio apps — widget rebuild reduction, BlocBuilder optimization, list rendering, compute/isolates for heavy work, local-database query patterns, images, and memory management. Project-specific patterns already in a codebase live in the <project>-app-patterns overlay.
-license: Proprietary
+license: MIT
 compatibility: Flutter/Dart with flutter_bloc
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: l10n
 description: Localization rules for Flutter apps using ARB files and gen-l10n — where strings live, how to add one to every locale, key naming, parameterized and plural strings, the generate step, and common mistakes. Project facts (locales, template locale, generated class, accessor, generate command) live in the project's app overlay.
-license: Proprietary
+license: MIT
 compatibility: Flutter gen-l10n, ARB
 ---
 

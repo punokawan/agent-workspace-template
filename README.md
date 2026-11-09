@@ -149,6 +149,6 @@ The full table is in `AGENTS.md`; every agent, command and skill is listed in
 
 ## License
 
-The skills are marked `license: Proprietary`, except `security-audit`, vendored from
-Cloudflare under MIT (see its `LICENSE` and `UPSTREAM.md`). This repository is private; do not redistribute
-it without the owner's permission.
+MIT, see [LICENSE](LICENSE). Vendored skills keep their upstream licence: each one has its own
+`LICENSE` and `UPSTREAM.md` (MIT, or CC BY 4.0 for `unslop`). The `marketing-skills` plugin credits
+its sources in `plugins/marketing-skills/README.md` and in a `SOURCES.md` per skill.

@@ -1,7 +1,7 @@
 ---
 name: dependency-maintenance
 description: How to safely update dependencies and SDK versions in any project, per stack — Flutter SDK via FVM, Dart pub packages, Android/iOS platform layers, Go modules, and Next.js/npm packages — and a structured process for triaging and fixing breakage after each update step.
-license: Proprietary
+license: MIT
 compatibility: Flutter (FVM), Dart pub, Go modules, npm, Android Gradle, iOS CocoaPods
 ---
 

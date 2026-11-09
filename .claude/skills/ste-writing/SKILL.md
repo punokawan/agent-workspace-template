@@ -1,7 +1,7 @@
 ---
 name: ste-writing
 description: Write briefs, agent instructions, technical documents and every report in a controlled style based on ASD-STE100 Simplified Technical English — one instruction or fact per sentence, short active sentences, one word for one meaning, conditions before actions, exact values verbatim. Covers agent dispatch briefs, AGENTS.md and skill text, runbooks, task docs, review findings, agent reports and HANDOFFs, status reports to the owner (English and Indonesian), commit messages and PR descriptions. Load before you write or review any of those. Not for user-facing UI copy (use copywriting) and not a licensed copy of the ASD-STE100 specification.
-license: Proprietary
+license: MIT
 ---
 
 # STE writing for briefs and documents

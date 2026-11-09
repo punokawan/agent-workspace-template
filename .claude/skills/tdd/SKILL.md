@@ -1,7 +1,7 @@
 ---
 name: tdd
 description: Test-Driven Development for Flutter/BLoC Clean Architecture apps — the TDD cycle, bloc_test patterns, mocking, what to test and why, test layout, and coverage targets per layer. Project facts (mock library, test paths, fixtures, run command) live in the project's app overlay.
-license: Proprietary
+license: MIT
 compatibility: Flutter/Dart with bloc_test, flutter_test, mocktail or mockito
 ---
 

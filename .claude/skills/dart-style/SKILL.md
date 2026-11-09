@@ -1,7 +1,7 @@
 ---
 name: dart-style
 description: Studio Dart style — naming, file layout, immutability, null-safety, freezed and sealed-class usage, Equatable events and states. Project naming tables and model shapes live in the <project>-app-patterns overlay.
-license: Proprietary
+license: MIT
 compatibility: Flutter/Dart with freezed, equatable
 ---
 

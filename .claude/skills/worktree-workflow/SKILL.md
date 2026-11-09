@@ -1,7 +1,7 @@
 ---
 name: worktree-workflow
 description: How all new work is done in every project — in an isolated git worktree on a short-lived branch, never in the main checkouts, so the user can keep working undisturbed. Covers worktree lifecycle, the storage-safe creation path, merging into the repo's integration branch without a PR, changelog hand-off, and cleanup. Load this before starting any code change, and before creating or merging a branch.
-license: Proprietary
+license: MIT
 compatibility: git worktree, gh CLI, macOS
 ---
 

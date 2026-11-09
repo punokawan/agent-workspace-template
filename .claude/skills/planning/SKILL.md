@@ -1,7 +1,7 @@
 ---
 name: planning
 description: Planning-system rules for every project — plan frontmatter as the status source of truth, plan.sh, folder roles, PRD and tech-doc split, templates, and the status update checklist. Load whenever creating, reviewing, scoring, updating, or organizing files under projects/<project>/planning/.
-license: Proprietary
+license: MIT
 compatibility: Markdown planning docs, Claude agents, slash commands
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: dart-analyze
 description: How to run and interpret dart/flutter analyze in any studio Flutter app — FVM, reading output, severity, fix workflow, when to run, and suppression rules. Each project's configured lint set lives in its analysis_options.yaml and app overlay.
-license: Proprietary
+license: MIT
 compatibility: Flutter/Dart with flutter_lints, FVM
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: owner-report
 description: How to write an analysis, incident report or decision document for the project owner or other non-developers — format choice, a five-sentence opening, one plain diagram, a glossary, and technical detail kept in an appendix. Load before writing any report or explanation meant for someone who does not read code.
-license: Proprietary
+license: MIT
 ---
 
 # Owner report

@@ -1,7 +1,7 @@
 ---
 name: session-continuity
 description: Durable run-state protocol for work in every project — how to create, update, and resume a run so any session can pick up an in-flight task after /clear, a crash, or days away. Load this at the start of any multi-step task and whenever the user says "resume", "continue", or "where were we".
-license: Proprietary
+license: MIT
 compatibility: bash, git
 ---
 

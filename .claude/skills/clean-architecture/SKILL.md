@@ -1,7 +1,7 @@
 ---
 name: clean-architecture
 description: Studio Flutter Clean Architecture rules — layer boundaries, dependency direction, what belongs where, and the pattern each layer follows (entities, repositories, use cases, DTOs, mappers, datasources, BLoCs, DI). Load for any implementation, review, or refactor of Flutter/Dart app code in any project.
-license: Proprietary
+license: MIT
 compatibility: Flutter/Dart with flutter_bloc, get_it, equatable, a project Result<T> type
 ---
 

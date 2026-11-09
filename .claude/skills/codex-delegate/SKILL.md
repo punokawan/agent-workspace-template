@@ -1,7 +1,7 @@
 ---
 name: codex-delegate
 description: End-to-end delegation to Codex CLI (signed in with ChatGPT, no API key) — Claude writes the brief, dispatches it through codex.sh, reviews the result with its own eyes and tools, sends fixes back, and delivers. Three modes — asset (2D images, sprites, icons, textures, concept art through Codex's built-in image generation, cleaned into real sprites), model (3D models Codex scripts in Blender's bpy, run headless outside its sandbox, exported as .glb), and code (implementation Claude specifies, tests and reviews). Load when a task needs generated images or 3D assets, when the user asks to hand work to Codex, or on /codex.
-license: Proprietary
+license: MIT
 compatibility: codex-cli 0.163+, Blender 4+ for model mode, Pillow for sprite cleanup and review sheets
 ---
 
