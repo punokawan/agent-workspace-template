@@ -122,6 +122,13 @@ if grep -rlEi '(api[_-]?token|secret|password|private[_-]key)[\"'"'"']?\s*[:=]\s
 fi
 (( bad == 0 )) && pass "no hardcoded credentials under .claude/"
 
+# 8b — every vendored skill names its upstream (repo, path, pinned commit, licence)
+if out=$(python3 "$SCRIPTS/_upstream.py" lint 2>&1); then
+  pass "vendored skills pin their upstream ($(printf '%s\n' "$out" | tail -1))"
+else
+  fail "UPSTREAM.md block problems — run: bash .claude/scripts/upstream.sh lint"
+fi
+
 # 9 — worktrees are cache-linked and disk is within budget
 # NOTE: capture first. `... | grep -q` makes grep exit on the first match, which
 # SIGPIPEs storage.sh; with pipefail (set by lib.sh) that reads as a failed pipeline

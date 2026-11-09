@@ -1,8 +1,17 @@
 # Upstream
 
+```upstream
+repo: https://github.com/jakubkrehel/skills
+path: skills/better-typography
+commit: 60bf140e43c98b248e6594487384ec967e89d98a
+mode: copy
+licence: MIT
+extra: LICENSE
+```
+
 Vendored unchanged from https://github.com/jakubkrehel/skills (`skills/better-typography`, plus `LICENSE`), commit `60bf140e43c98b248e6594487384ec967e89d98a`, MIT.
 Only this file is ours. Reviewed 2026-11-03 (security + fit, read-only; no scripts run).
-To update: re-download every file at a newer commit, change the SHA here, and review the diff.
+To update: `bash .claude/scripts/upstream.sh diff better-typography`, then `pull better-typography`.
 
 Notes:
 - Web recipes (CSS/Tailwind/ARIA). For the Flutter app the principles and numbers apply; `flutter-ui-patterns` stays the code authority.

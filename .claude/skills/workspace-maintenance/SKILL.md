@@ -24,6 +24,44 @@ itself changes.
   script from the Scripts table in the workspace `AGENTS.md`.
 - After adding or renaming an agent, command or skill: `bash .claude/scripts/roster.sh`.
 
+## Vendored skills
+
+A skill taken from another repository keeps its upstream name and content, its `LICENSE`, and an
+`UPSTREAM.md` that starts with one block per source:
+
+```upstream
+repo: https://github.com/<owner>/<repo>
+path: skills/<name>
+commit: <full 40-character sha>
+mode: copy              # copy = unchanged; merged = adapted (marketing-skills)
+licence: MIT
+extra: LICENSE          # repo-root files copied next to the skill
+```
+
+Optional keys: `files` (take only these files), `ref` (branch to follow), and for merged plugins
+`key` and `root` (how `SOURCES.md` rows name that source). Prose below the block keeps the credit,
+the review date and the limits in this workspace.
+
+| Task | Command (`bash .claude/scripts/upstream.sh …`) |
+|---|---|
+| Vendor a new skill unchanged | `add <repo-url> <path> [--name N]`, then fill Credit and Review |
+| See which upstreams moved, and local drift | `check [name…]` |
+| Read what changed upstream | `diff <name> [--stat]` |
+| Take the newer commit (copy mode) | `pull <name>`; refuses when the local copy was edited |
+| Validate every block (offline; `/doctor` runs it) | `lint` |
+
+- Ask the owner before vendoring a new source. Read every new or changed script before its first
+  run; `add` and `pull` list them.
+- `add` and `pull` run the vendored `skill-security-auditor` on the new files, but only while its
+  own `UPSTREAM.md` records a dated review. A FAIL there needs reading, not trust: the known false
+  positives are listed in that file.
+- Merged plugins (`mode: merged`) are never updated automatically. `diff` maps each changed upstream
+  file to the merged skill that came from it through `SOURCES.md`; the plugin's `UPSTREAM.md`
+  lists the remaining steps.
+- Colliding sources become one skill with a `SOURCES.md` provenance table, not two skills.
+- Clones are cached in the main checkout's `.cache/upstream/`, shared by every worktree.
+- After `add`, run `bash .claude/scripts/roster.sh`.
+
 ## Adding a project
 
 Register it with `/new-project`. It needs `projects/<name>/project.json` and

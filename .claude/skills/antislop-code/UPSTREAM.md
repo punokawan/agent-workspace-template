@@ -1,5 +1,15 @@
 # Upstream
 
+```upstream
+repo: https://github.com/miqdadbadjuber/anti-slop
+path: skills/antislop-code
+commit: 941b1532f9cc8ffde766bca5921d75257c9e5762
+mode: copy
+licence: MIT
+extra: LICENSE
+files: SKILL.md
+```
+
 - Source: https://github.com/miqdadbadjuber/anti-slop, `skills/antislop-code/SKILL.md` and `LICENSE`
 - Commit: 941b1532f9cc8ffde766bca5921d75257c9e5762 (main, 2026-11-04)
 - Licence: MIT. Keep `LICENSE` with any copy.

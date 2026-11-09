@@ -123,5 +123,6 @@ project — an example, never a target.
 | `/disk-report` · `/disk-prune` | `storage.sh report` · `storage.sh prune [scope]` |
 | plan status | `plan.sh set <id> <status> "<why>" && bash .claude/scripts/plan.sh index` |
 | docs path check | `python3 .claude/scripts/_docs.py` |
+| vendored skills | `upstream.sh check` · `diff <name>` · `pull <name>` · `add <repo> <path>` |
 | `/codex` | `codex.sh exec <dir> [--write] "<brief>"` · `blender <script.py>` · `sprite <in> <out>` |
 | rule profiles | `rules.sh list` · `set <project> <profile>` · `enable`/`disable <project> <module>` |

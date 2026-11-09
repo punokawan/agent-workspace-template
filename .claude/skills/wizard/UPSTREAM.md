@@ -1,5 +1,14 @@
 # Upstream
 
+```upstream
+repo: https://github.com/mattpocock/skills
+path: skills/engineering/wizard
+commit: 4ae2317ddb22b046e26455e4f9c9b3aaaf62212d
+mode: copy
+licence: MIT
+extra: LICENSE
+```
+
 - Credit: Matt Pocock, "Skills for Real Engineers" — https://github.com/mattpocock/skills
 - Source: `skills/engineering/wizard/` (SKILL.md, template.sh, agents/openai.yaml) and `LICENSE`
 - Commit: 4ae2317ddb22b046e26455e4f9c9b3aaaf62212d (upstream HEAD on 2026-11-06)

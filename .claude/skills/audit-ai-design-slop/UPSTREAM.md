@@ -1,8 +1,17 @@
 # Upstream
 
+```upstream
+repo: https://github.com/MengTo/Skills
+path: agent-skills/ui/audit-ai-design-slop
+commit: 1de14e21b2ba8937c0f7f6ddca581cf7cd9d94af
+mode: copy
+licence: MIT
+extra: LICENSE
+```
+
 Vendored unchanged from https://github.com/MengTo/Skills (`agent-skills/ui/audit-ai-design-slop`, plus `LICENSE`), commit `1de14e21b2ba8937c0f7f6ddca581cf7cd9d94af`, MIT.
 Only this file is ours. Reviewed 2026-11-03 (security + fit, read-only; no scripts run).
-To update: re-download every file at a newer commit, change the SHA here, and review the diff.
+To update: `bash .claude/scripts/upstream.sh diff audit-ai-design-slop`, then `pull audit-ai-design-slop`.
 
 Notes:
 - `audit-ai-design-slop` reads `../no-ai-design-slop/ARTICLE.md`; keep both installed together.

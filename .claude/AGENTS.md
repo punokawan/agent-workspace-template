@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-11-06 14:37_
+_Generated 2026-11-09 10:15_
 
 ## Agents (27)
 
@@ -84,7 +84,7 @@ _Generated 2026-11-06 14:37_
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 | `/wt-sweep` | Retire every worktree whose work is already on its integration branch — clean, fully landed, idle — archiving its local-only files first, so disk and slots come back |
 
-## Skills (58)
+## Skills (59)
 
 | Skill | Loads for |
 |---|---|
@@ -131,6 +131,7 @@ _Generated 2026-11-06 14:37_
 | `security-audit` | Security guidance and vulnerability review for codebases, APIs, services, CLI tools, libraries, and daemons. Use for security questions, focused reviews, vulnerability research, security audits, or pen tests. Run the complete workflow only for explicit codebase audit or pen-test requests, full/comprehensive/end-to-end reviews, or requested report artifacts. |
 | `seo-geo` | Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content. |
 | `session-continuity` | Durable run-state protocol for work in every project — how to create, update, and resume a run so any session can pick up an in-flight task after /clear, a crash, or days away. Load this at the start of any multi-step task and whenever the user says "resume", "continue", or "where were we". |
+| `skill-security-auditor` | "Use before installing any skill or plugin from an untrusted source, or when asked if a skill is safe. Scans scripts, SKILL.md and dependencies for exfiltration, dangerous calls and prompt injection with skill_security_auditor.py." |
 | `solid-principles` | SOLID principles applied to studio Flutter/Dart apps (Clean Architecture + BLoC) — a violation and fix for each principle, common anti-patterns, and a review quick-check. |
 | `state-machine` | Renders every state of a component you choose on a throwaway page, with mock data and a switcher, so you can work on each state. |
 | `ste-writing` | Write briefs, agent instructions, technical documents and every report in a controlled style based on ASD-STE100 Simplified Technical English — one instruction or fact per sentence, short active sentences, one word for one meaning, conditions before actions, exact values verbatim. Covers agent dispatch briefs, AGENTS.md and skill text, runbooks, task docs, review findings, agent reports and HANDOFFs, status reports to the owner (English and Indonesian), commit messages and PR descriptions. Load before you write or review any of those. Not for user-facing UI copy (use copywriting) and not a licensed copy of the ASD-STE100 specification. |
@@ -163,5 +164,6 @@ _Generated 2026-11-06 14:37_
 | `.claude/scripts/rules.sh` | Choose which rule modules each project follows, and render them into its AGENTS.md. |
 | `.claude/scripts/state.sh` | Durable run state so any session can resume any task after /clear, a crash, or a day off. |
 | `.claude/scripts/storage.sh` | Disk-budget management for the studio workspace. |
+| `.claude/scripts/upstream.sh` | Vendored skills: track each one's upstream source and update it from there. |
 | `.claude/scripts/verify.sh` | Ground-truth verification. Runs REAL toolchain checks and prints REAL output. |
 | `.claude/scripts/wt.sh` | Isolated worktrees so new work never disturbs your main checkouts. |

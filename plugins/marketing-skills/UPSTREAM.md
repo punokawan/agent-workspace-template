@@ -1,5 +1,24 @@
 # Upstream
 
+```upstream
+repo: https://github.com/coreyhaines31/marketingskills
+path: skills, tools
+commit: 96798cf38736ecdba015a1d2b0521b0c8f8f41dd
+mode: merged
+key: corey
+licence: MIT
+```
+
+```upstream
+repo: https://github.com/alirezarezvani/claude-skills
+path: marketing-skill/skills, marketing-skill/video-content-strategist
+root: marketing-skill
+commit: 8f082544116fc0d014188e521ca40304cdfc86b0
+mode: merged
+key: ali
+licence: MIT
+```
+
 This plugin is an adaptation that merges two MIT libraries. Keep `LICENSE` (both copyright
 notices) and the Credits section of `README.md` in any copy.
 
@@ -69,12 +88,19 @@ in the workspace (local, not committed).
 
 ## Updating
 
-1. Fetch newer commits of both upstreams into `.cache/marketing-merge/sources/` (outside the plugin).
-2. Diff old commit → new commit per upstream skill, and carry each change into the merged skill,
-   following the decisions in `docs/COMPARISON.md`. New upstream skills go through the same
-   compare-and-merge step.
-3. Update the commits above, each touched skill's `metadata.sources` and its `SOURCES.md` rows
-   (regenerate single-source skills with `scripts/sources.py generate`); bump `version` in both
-   plugin manifests.
-4. Run `python3 scripts/validate.py`, `python3 scripts/sources.py check --sources <snapshots>` and
+Both blocks above are `mode: merged`: the workspace tool reports changes but never applies them.
+
+1. `bash .claude/scripts/upstream.sh check marketing-skills` shows whether either upstream has
+   changes under the paths taken.
+2. `bash .claude/scripts/upstream.sh diff marketing-skills:corey` (or `:ali`) lists the upstream
+   commits and the diff, and maps every changed file to the merged skill and part that came from
+   it (from the `SOURCES.md` rows). Files with no row are new upstream files: they go through the
+   same compare-and-merge step as the original merge, following `docs/COMPARISON.md`.
+3. Carry each change into the merged skill by hand. Then set the new `commit` in the block, update
+   each touched skill's `metadata.sources` and its `SOURCES.md` rows (regenerate single-source
+   skills with `scripts/sources.py generate`), and bump `version` in both plugin manifests.
+4. Refresh the snapshots in `.cache/marketing-merge/sources/` to the new commits, then run
+   `python3 scripts/validate.py`, `python3 scripts/sources.py check --sources <snapshots>` and
    `python3 scripts/build_index.py`, and re-run the security scan.
+5. Installed copies do not follow the repo: run `claude plugin marketplace update punokawan` and
+   `claude plugin update marketing-skills@punokawan`.

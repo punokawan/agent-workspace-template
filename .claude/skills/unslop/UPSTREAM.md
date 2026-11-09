@@ -1,10 +1,19 @@
 # Upstream
 
+```upstream
+repo: https://github.com/heydamir/unslop
+path: skills/unslop
+commit: a6f121eee5f29c2f74976b75456feae8b66afb3a
+mode: copy
+licence: CC-BY-4.0
+extra: LICENSE
+```
+
 Vendored unchanged from https://github.com/heydamir/unslop (`skills/unslop`, plus `LICENSE`), commit `a6f121eee5f29c2f74976b75456feae8b66afb3a`, CC BY 4.0.
 Created by Damir Sokolovsky (@heydamir, https://x.com/heydamir). Keep this credit in any copy or adaptation, and keep the
 "unslop by @heydamir" credit in every story video, as the licence asks.
 Only this file is ours. Reviewed 2026-11-04 (read-only: content, licence, secret scan, grep of both scripts; scripts not run).
-To update: re-download every file at a newer commit, change the SHA here, and review the diff.
+To update: `bash .claude/scripts/upstream.sh diff unslop`, then `pull unslop`.
 
 Use in this workspace (routed from .claude/agents/ui-designer.md; the skill itself is unchanged):
 - Use it only for public, landing and marketing pages, and for new mockups. Never on app screens that already follow a
