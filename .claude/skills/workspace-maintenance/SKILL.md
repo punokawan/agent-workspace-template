@@ -39,8 +39,13 @@ extra: LICENSE          # repo-root files copied next to the skill
 ```
 
 Optional keys: `files` (take only these files), `ref` (branch to follow), and for merged plugins
-`key` and `root` (how `SOURCES.md` rows name that source). Prose below the block keeps the credit,
-the review date and the limits in this workspace.
+`key` and `root` (how `SOURCES.md` rows name that source).
+
+Below the block every `UPSTREAM.md` uses the same layout as `plugins/marketing-skills/UPSTREAM.md`: a
+source table (repository, path, commit, licence with copyright), the credit and vendoring date, then
+`## What changed from upstream`, `## Review` (one dated entry per review), `## Limits in this
+workspace` and `## Updating`. `add` writes this layout; a copy-mode skill needs no `SOURCES.md`,
+because one source supplies every file unchanged.
 
 | Task | Command (`bash .claude/scripts/upstream.sh …`) |
 |---|---|

@@ -381,8 +381,47 @@ def auditor_reviewed():
     up = os.path.join(os.path.dirname(os.path.dirname(AUDITOR)), "UPSTREAM.md")
     if not (os.path.isfile(AUDITOR) and os.path.isfile(up)):
         return False
-    line = re.search(r"(?mi)^Review(?:ed)?\b.*$", open(up, encoding="utf-8").read())
-    return bool(line and re.search(r"\d{4}-\d{2}-\d{2}", line.group(0)) and "pending" not in line.group(0).lower())
+    return has_dated_review(open(up, encoding="utf-8").read())
+
+
+def has_dated_review(text):
+    """A dated entry in `## Review` (or a legacy `Reviewed <date>` line) that is not pending."""
+    sec = re.search(r"(?ms)^## Review\b.*?(?=^## |\Z)", text)
+    lines = sec.group(0).splitlines() if sec else []
+    lines += re.findall(r"(?mi)^Review(?:ed)?\b.*$", text)
+    return any(re.search(r"\d{4}-\d{2}-\d{2}", x) and "pending" not in x.lower() for x in lines)
+
+
+def render_upstream(name, block, licence_line, vendored, intro="", reviews=(), limits=(), update_extra=""):
+    """The UPSTREAM.md layout every copy-mode skill shares (same sections as marketing-skills)."""
+    b = dict(x.split(": ", 1) for x in block)
+    files = f" (only `{b['files']}`)" if b.get("files") else ""
+    extra = f", plus the repository `{b['extra']}`" if b.get("extra") else ""
+    out = ["# Upstream", "", "```upstream", *block, "```", "",
+           "| | Source |", "|---|---|",
+           f"| Repository | {b['repo']} |",
+           f"| Path taken | `{b['path']}/`{files}{extra} |",
+           "| Commit | see the block above |",
+           f"| Licence | {licence_line} |", "",
+           "Keep `LICENSE` with any copy.", "",
+           f"Vendored on {vendored}{intro}", "",
+           "## What changed from upstream", "",
+           "- **Nothing.** Every file is the upstream file at the pinned commit; only this file is ours.",
+           f"  `bash .claude/scripts/upstream.sh check {name}` proves it (it reports any local drift).",
+           "- **No SOURCES.md.** That table is for merged skills, where parts come from different sources. Here",
+           "  one source supplies every file unchanged, so the block above is the whole provenance.", "",
+           "## Review", ""]
+    out += [f"- {r}" for r in reviews] or ["- pending: security + fit review (read-only; no scripts run)."]
+    out += ["", "## Limits in this workspace", ""]
+    out += [f"- {x}" for x in limits] or ["- None recorded yet beyond the workspace rules."]
+    out += ["", "## Updating", "",
+            f"1. `bash .claude/scripts/upstream.sh diff {name}` — read every changed line, scripts in full.",
+            f"2. `bash .claude/scripts/upstream.sh pull {name}` — copies the files, bumps the commit, runs the scan."]
+    if update_extra:
+        out.append(f"3. {update_extra}")
+    out.append(f"{4 if update_extra else 3}. Add a dated entry under Review: what changed, the scan result, and why each finding is or is")
+    out.append("   not real.")
+    return "\n".join(out) + "\n"
 
 
 def audit(dirpath):
@@ -484,12 +523,11 @@ def cmd_add(args):
     if extra:
         lines.append(f"extra: {extra}")
     today = datetime.date.today().isoformat()
-    open(os.path.join(dest, "UPSTREAM.md"), "w", encoding="utf-8").write(
-        "# Upstream\n\n```upstream\n" + "\n".join(lines) + "\n```\n\n"
-        f"Vendored unchanged on {today}: upstream name and content kept. Only this file is ours.\n"
-        "Credit: <author>, <repository name>. Keep `LICENSE` with any copy.\n"
-        "Review: pending (security + fit, read-only; no scripts run).\n"
-        f"To update: `bash .claude/scripts/upstream.sh diff {name}`, then `pull {name}`.\n")
+    copyright = next((x.strip() for x in blob(d, commit, lic_src).decode(errors="replace").splitlines()
+                      if x.strip().lower().startswith("copyright")), "")
+    open(os.path.join(dest, "UPSTREAM.md"), "w", encoding="utf-8").write(render_upstream(
+        name, lines, f"{licence}, {copyright}" if copyright else licence, today,
+        intro=": upstream name and content kept. Credit: <author>, <repository name>."))
     print(f"vendored {len(exp)} files into {rel(dest)} at {commit[:10]} ({licence})")
     report_scripts(sorted(exp))
     audit(dest)

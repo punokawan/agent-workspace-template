@@ -72,6 +72,24 @@ class UpstreamTest(unittest.TestCase):
         self.assertIn("security scan: skipped", r.stdout)  # no reviewed auditor here
         self.assertEqual(self.run_cmd("lint").returncode, 0)
 
+    def test_add_writes_the_shared_layout_with_review_pending(self):
+        self.add()
+        up = open(os.path.join(self.skill(), "UPSTREAM.md")).read()
+        for head in ("## What changed from upstream", "## Review", "## Limits in this workspace", "## Updating"):
+            self.assertIn(head, up)
+        self.assertIn("| Licence | MIT, Copyright (c) 2026 Test |", up)
+        sys.path.insert(0, os.path.join(HERE, ".."))
+        import _upstream
+        self.assertFalse(_upstream.has_dated_review(up))       # pending never opens the scan gate
+
+    def test_review_gate_reads_both_layouts(self):
+        sys.path.insert(0, os.path.join(HERE, ".."))
+        import _upstream
+        self.assertTrue(_upstream.has_dated_review("## Review\n\n- 2026-11-09 (read-only): fine.\n\n## Limits\n"))
+        self.assertTrue(_upstream.has_dated_review("Reviewed 2026-11-03 (security + fit).\n"))
+        self.assertFalse(_upstream.has_dated_review("## Review\n\n- pending: 2026-11-09 review not done.\n"))
+        self.assertFalse(_upstream.has_dated_review("## Review\n\nnothing yet\n## Limits\n- 2026-11-09 x\n"))
+
     def test_add_refuses_existing_folder(self):
         self.add()
         r = self.run_cmd("add", self.url, "skills/demo")
