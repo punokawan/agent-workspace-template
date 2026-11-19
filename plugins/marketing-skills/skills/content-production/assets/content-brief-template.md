@@ -12,7 +12,7 @@
 | **Target Publish Date** | |
 | **Author / Owner** | |
 | **Content Type** | Blog post / Guide / Case study / Comparison / Listicle |
-| **Target Length** | ~___ words |
+| **Target Length** | ~___ words (planning aid only; Google has no preferred word count) |
 | **Goal** | Awareness / Lead gen / SEO / Thought leadership / Product education |
 
 ---
@@ -26,7 +26,7 @@
 | **Keyword Difficulty** | |
 | **Secondary Keywords** (2-4) | |
 | **Search Intent** | Informational / Commercial / Navigational |
-| **SERP Features to Target** | Featured snippet / FAQ / People Also Ask |
+| **SERP Features to Target** | Featured snippet / People Also Ask (not FAQ rich results: Google stopped showing them on 2026-05-07) |
 
 ---
 

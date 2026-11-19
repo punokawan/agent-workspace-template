@@ -1,11 +1,12 @@
 ---
 name: seo-geo
-description: Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content.
+description: Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content. Not for measuring a deployed URL with tools: that is the claude-seo plugin's `/seo` commands (see seo-routing).
 license: MIT
 compatibility: Next.js App Router (Metadata API, MetadataRoute)
 ---
 
 <!-- Parts adapted from marketing-skills by Alireza Rezvani (MIT): https://github.com/alirezarezvani/claude-skills -->
+<!-- Dated Google facts (2026-11-19) checked against claude-seo by Daniel Agrici (MIT) @468ed5b: https://github.com/AgriciDaniel/claude-seo -->
 # SEO and GEO (Next.js, all projects)
 
 Two audiences read a public page: search engines that rank it, and AI answer engines (ChatGPT,
@@ -33,10 +34,15 @@ Codex does not have them, so in Codex this file stands alone — follow it witho
 |---|---|
 | Audit a live site (technical + on-page), build a findings register | `marketing-skills:seo-audit` |
 | Make pages citable by AI answers, entity/facts page, `llms.txt` | `marketing-skills:ai-seo` |
-| Choose and validate JSON-LD types | `marketing-skills:schema-markup` |
+| Choose and validate JSON-LD types | `marketing-skills:schema` |
 | URL structure, internal links, hub pages, sitemap split | `marketing-skills:site-architecture` |
 | Many data-backed pages (directory, location, template pages) | `marketing-skills:programmatic-seo` |
 | Rewrite claims and page copy | `marketing-skills:copywriting`, with the workspace `copywriting` skill for voice |
+
+To measure a deployed page with tools (rendered vs raw HTML, PageSpeed and CrUX, Search Console,
+schema validation), use the claude-seo plugin's `/seo …` commands when it is installed (Claude Code
+only). The `seo-routing` skill maps every SEO need to this file, a marketing skill or a `/seo`
+command.
 
 A larger SEO pass works as a phased plan: audit → findings register with IDs → one task per
 fix → evidence (built HTML, `curl` headers, validator output) → owner actions (Search Console,
@@ -53,8 +59,9 @@ quick wins listed apart from heavy work. Two pages competing for the same query
 - **Every public route has a unique `title` and `description`**, static `metadata` or
   `generateMetadata` when it depends on data. Use a `title.template` in the layout so pages give
   only their own part and the brand is not repeated. Title about 50–60 characters, topic first,
-  brand last; description about 150–160 characters, plain sentences that say what the page is
-  and why to open it. No two pages share a title or description.
+  brand last; description in plain sentences that say what the page is and why to open it.
+  Google publishes no length limit for either; about 120–160 characters for the description only
+  avoids truncation (heuristic). No two pages share a title or description.
 - **One metadata builder per project** (a small helper the public pages call) gives every
   public page the same canonical, OG and Twitter defaults and a default 1200×630 share image;
   pages override only what differs.
@@ -87,6 +94,11 @@ quick wins listed apart from heavy work. Two pages competing for the same query
 - Large or data-backed URL sets get their own sitemap (`generateSitemaps` or a route handler)
   built from the database; a sitemap or index page stays 200 when a non-critical count fails.
 - Debug, test and error-demo routes return 404 in production.
+- **What Googlebot reads** (Google docs): the first 2 MB of HTML (64 MB of a PDF). In Next.js the
+  inline RSC payload counts toward it, so keep title, canonical, robots and JSON-LD early and avoid
+  inlining large data. Google renders no JS on a non-200 page. If JS changes the canonical, Google
+  may use either value; a `noindex` in the raw HTML can still apply after JS removes it. Set all of
+  them on the server.
 - Redirects use `permanentRedirect` (308) for moved content and `redirect` for flow steps; a
   removed page returns 404 or 410, never a 200 "not found" screen.
 
@@ -118,16 +130,17 @@ quick wins listed apart from heavy work. Two pages competing for the same query
 
 - One helper per project builds JSON-LD from typed data; pages pass data, never hand-write JSON.
   Render it as `<script type="application/ld+json">` with `JSON.stringify(data).replace(/</g,
-  '\\u003c')` so user text cannot close the tag. It renders on the server; JSON-LD injected
-  client-side or by a tag manager is often never indexed.
+  '\\u003c')` so user text cannot close the tag. It renders on the server. Google can read JS-generated JSON-LD,
+  but less reliably (notably `Product`), and most AI crawlers run no JS, so client-side or
+  tag-manager markup is a finding.
 - **One site-wide `@graph`** with stable `@id`s (`Organization`, `WebSite`, and the product as
   `SoftwareApplication` or `Product` with offers read from the live pricing config); other pages
   reference those `@id`s instead of redeclaring them. `SearchAction` only when site search exists.
   One entity is declared once: never a separate `Organization` and `LocalBusiness` for the same
   company. `Organization.sameAs` lists the official profiles.
 - Pick types that match the page: `Organization` and `WebSite` on the home page, `BreadcrumbList`
-  on nested pages, then per page type (`Event`, `Product`/`Offer`, `FAQPage`, `Article`,
-  `SoftwareApplication`). The overlay maps page types to schema.
+  on nested pages, then per page type (`Event`, `Product`/`Offer`, `Article`,
+  `SoftwareApplication`; `FAQPage` only for a real visible FAQ — see §6). The overlay maps page types to schema.
 - **Markup states only what the visible page states.** No hidden FAQ, no `aggregateRating`
   without real, shown reviews, no testimonials that are not verified and switched on by the owner.
   Mismatch is a Medium finding; fabricated reviews, ratings or prices are High.
@@ -144,7 +157,9 @@ quick wins listed apart from heavy work. Two pages competing for the same query
   section must still make sense when quoted alone.
 - **Extractable blocks**, as the content calls for them: a one- or two-sentence definition in the
   first ~300 words; numbered steps (5–10, each verb-first and self-contained) for "how to";
-  a table for "X vs Y"; an FAQ block worded the way people ask, with `FAQPage` markup.
+  a table for "X vs Y"; an FAQ block worded the way people ask. FAQ rich results stopped showing in
+  Google on 2026-05-07; `FAQPage` markup stays valid and harmless for a visible FAQ, but never add
+  it for a rich result. HowTo rich results ended in 2023.
 - **Sources on every statistic** ("<source>, <year>") and name and role on every quote; an
   unsourced number is less likely to be cited.
 - **Concrete and checkable:** numbers with units, dates, named entities, a short comparison table
@@ -163,12 +178,19 @@ quick wins listed apart from heavy work. Two pages competing for the same query
   (`GPTBot`, `ClaudeBot`, `Google-Extended`, `Applebot-Extended`, `CCBot`) decide whether content
   trains models. Blocking a search bot removes citations; never change the policy without the
   owner's call. Scrapers that ignore limits (e.g. `Bytespider`) are blocked by default. AI bots
-  get the same disallow list as everyone else: public paths only.
+  get the same disallow list as everyone else: public paths only. User-triggered fetchers may not
+  follow robots.txt (Google-Agent, Google-GeminiNotebook; OpenAI says it "may not apply" to
+  `ChatGPT-User`), so a private path needs auth, not only a disallow.
+- **Google's own AI features** are controlled per page by `nosnippet`, `data-nosnippet`,
+  `max-snippet` and `noindex`, and per site by the Search Console "Search generative AI" control
+  (include or exclude; all sites since 2026-08-31; not a ranking or training control). Changing that
+  control is an owner action.
 - `llms.txt` (a short markdown map of the key public pages) and optionally `llms-full.txt` are
   served by a route handler generated from config — prices and plans included — never a
-  hand-edited static file that drifts. Add them when the overlay asks.
+  hand-edited static file that drifts. Add them when the overlay asks. Google Search ignores
+  `llms.txt`, and no major AI search engine is known to use it: treat it as optional and cheap.
 - **Monitoring is an owner action** listed in the plan: test the top target queries in Perplexity
-  and ChatGPT, check AI Overview impressions in Search Console. When citations vanish, check
+  and ChatGPT, check the generative AI performance report in Search Console. When citations vanish, check
   `robots.ts` first, then whether the page structure changed.
 
 ## 7. Programmatic pages

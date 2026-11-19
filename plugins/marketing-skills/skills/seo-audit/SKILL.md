@@ -1,9 +1,9 @@
 ---
 name: seo-audit
-description: When the user wants to audit, review, or diagnose SEO issues on their site. Also use when the user mentions "SEO audit," "technical SEO," "why am I not ranking," "SEO issues," "on-page SEO," "meta tags review," "SEO health check," "my traffic dropped," "lost rankings," "not showing up in Google," "site isn't ranking," "Google update hit me," "page speed," "core web vitals," "crawl errors," "indexing issues," "stuck on page 2," "striking distance keywords," "title tag rewrite," "low CTR," "E-E-A-T," "keyword cannibalization," or "audit after a site migration." Use this even if the user just says something vague like "my SEO is bad" or "help with SEO" — start with an audit. For building pages at scale to target keywords, see programmatic-seo. For adding structured data, see schema. For AI search optimization, see ai-seo. For a local business's profile, map pack, citations, or reviews, see local-seo-manager.
+description: When the user wants to audit, review, or diagnose SEO issues on their site. Also use when the user mentions "SEO audit," "technical SEO," "why am I not ranking," "SEO issues," "on-page SEO," "meta tags review," "SEO health check," "my traffic dropped," "lost rankings," "not showing up in Google," "site isn't ranking," "Google update hit me," "page speed," "core web vitals," "crawl errors," "indexing issues," "stuck on page 2," "striking distance keywords," "title tag rewrite," "low CTR," "E-E-A-T," "keyword cannibalization," or "audit after a site migration." Use this even if the user just says something vague like "my SEO is bad" or "help with SEO" — start with an audit. For building pages at scale to target keywords, see programmatic-seo. For adding structured data, see schema. For AI search optimization, see ai-seo. For a local business's profile, map pack, citations, or reviews, see local-seo-manager. To measure a live URL with tools, use the claude-seo plugin's `/seo audit` or `/seo technical`.
 metadata:
   version: 1.0.0
-  sources: "corey:seo-audit@96798cf; ali:seo-audit@8f08254"
+  sources: "corey:seo-audit@96798cf; ali:seo-audit@8f08254; claude-seo:seo-technical@468ed5b; claude-seo:seo-page@468ed5b"
 ---
 
 # SEO Audit
@@ -89,6 +89,10 @@ Once the foundations are sound, the fastest wins are usually pages already ranki
 - Faceted navigation handled properly
 - Infinite scroll with pagination fallback
 - Session IDs not in URLs
+- No manual crawl-rate control exists: Search Console's crawl-rate setting was removed in January 2024 (Google announcement). Googlebot slows down on its own after 5xx errors or slow responses, so steer crawling with sitemaps, server speed, and robots rules.
+
+**Fetch Limits**
+- Googlebot fetches only the first 2 MB of an HTML file and the first 64 MB of a PDF, uncompressed (Google docs; long-standing, not a 2026 change). Content or JSON-LD past the cap is not indexed. Check pages bloated by inline base64 images, large inline CSS/JS, or huge navigation.
 
 ### Indexation
 
@@ -110,6 +114,16 @@ Once the foundations are sound, the fastest wins are usually pages already ranki
 - HTTP → HTTPS canonicals
 - www vs. non-www consistency
 - Trailing slash consistency
+- After a canonical fix, Google can keep the pages in the old duplicate cluster for up to two weeks while it re-evaluates them (reported by claude-seo without a dated source; not yet checked against Google's own page). An unchanged canonical right after the fix is not proof that the fix failed.
+
+### JavaScript Rendering
+
+Google's JavaScript SEO documentation (updated December 2025, Google docs) says:
+- If the canonical in the raw HTML differs from one that JavaScript sets, Google may use either. Serve the same canonical in both.
+- If the raw HTML has `noindex` and JavaScript removes it, Google may still apply the `noindex`. Serve the correct robots directive in the initial HTML.
+- Google does not render JavaScript on pages that return a non-200 status. Content or tags injected by JavaScript on those pages are invisible to it.
+
+**Back-button hijacking** (code that uses `history.pushState`/`replaceState` to stop the Back button working, including scripts from ad or third-party libraries) became a Google spam policy on 2026-04-13, with enforcement from 2026-06-15 (Google announcement). Report it as Critical.
 
 ### Site Speed & Core Web Vitals
 
@@ -236,7 +250,7 @@ Three equivalent placement methods: HTML `<link>` in `<head>`, HTTP `Link` heade
 
 **Check for:**
 - Unique descriptions per page
-- 150-160 characters
+- Roughly 120–160 characters, so the snippet is not cut off. Google publishes no length limit; this range is a truncation heuristic, not a Google rule. Say "may be truncated in results," never "too long for Google."
 - Includes primary keyword
 - Clear value proposition
 - Call to action
@@ -244,7 +258,7 @@ Three equivalent placement methods: HTML `<link>` in `<head>`, HTTP `Link` heade
 **Common issues:**
 - Duplicate descriptions
 - Auto-generated garbage
-- Too long/short
+- Likely truncated, or too short to say anything useful
 - No compelling reason to click
 
 ### Heading Structure
@@ -285,7 +299,7 @@ Three equivalent placement methods: HTML `<link>` in `<head>`, HTTP `Link` heade
 - Alt text describes image
 - Compressed file sizes
 - Modern formats (WebP)
-- Lazy loading implemented
+- Lazy loading for images below the fold only; never lazy-load the LCP image or the first visible image
 - Responsive images
 
 ### Internal Linking
@@ -340,6 +354,8 @@ Trust matters most: an untrustworthy page has low E-E-A-T however expert it look
 - Updated and current
 
 ### User Engagement Signals
+
+Use these as UX diagnostics only. Google does not document these analytics metrics as ranking signals, so use them to find pages that fail visitors, not to predict rankings.
 
 - Time on page
 - Bounce rate in context
@@ -480,6 +496,21 @@ Write for a technically aware reader who is not an SEO specialist: explain each 
 3. Any recent changes or migrations?
 4. Who are your top organic competitors?
 5. What's your current organic traffic baseline?
+
+---
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Full site audit | `/seo audit <url>` | Parallel subagents; `render_page.py` captures raw and rendered HTML; `google_report.py` writes a PDF report |
+| Traffic or ranking drop | `/seo audit <url>` (update-correlation step) | `seo_updates.py --since <yyyy-mm>` lists confirmed Google updates in the window before you blame a cause; an overlap is a hypothesis, not proof |
+| One page's on-page basics | `/seo page <url>` | `page_checks.py`: 47 checks with stable finding IDs |
+| Crawl, index, rendering, HTTPS | `/seo technical <url>` | `render_page.py` `js_gap` (raw vs rendered title, canonical, robots); `transport_check.py` (TLS, security headers, redirects); `sitemap_discovery.py` |
+| Field Core Web Vitals and index status | `/seo google pagespeed`, `crux-history`, `inspect <url>` | `pagespeed_check.py` (PSI + CrUX), `crux_history.py` (25-week trend), `gsc_inspect.py` (URL Inspection); needs Google API setup |
+| Sitemaps | `/seo sitemap <url>` | `sitemap_discovery.py` finds sitemaps from robots.txt declarations and common locations |
 
 ---
 

@@ -2,7 +2,7 @@
 
 | Part | From | Upstream file | Changed here |
 |---|---|---|---|
-| frontmatter | corey `link-building` @96798cf | skills/link-building/SKILL.md | edited: central pass (metadata version and sources, product context pointer, sources line) |
+| frontmatter | corey `link-building` @96798cf | skills/link-building/SKILL.md | edited: central pass (metadata version and sources, product context pointer, sources line); 2026-11-19: routing sentence to claude-seo `/seo backlinks` appended to the description |
 | SKILL.md § Before Starting | corey `link-building` @96798cf | skills/link-building/SKILL.md § Before Starting | edited: central pass (metadata version and sources, product context pointer, sources line) |
 | SKILL.md § Step 1: Confirm Links Are the Bottleneck | corey `link-building` @96798cf | skills/link-building/SKILL.md § Step 1: Confirm Links Are the Bottleneck | as is |
 | SKILL.md § Step 2: Have Something Worth Linking To | corey `link-building` @96798cf | skills/link-building/SKILL.md § Step 2: Have Something Worth Linking To | as is |
@@ -14,6 +14,7 @@
 | SKILL.md § Running It as a Loop | corey `link-building` @96798cf | skills/link-building/SKILL.md § Running It as a Loop | as is |
 | SKILL.md § Tools | corey `link-building` @96798cf | skills/link-building/SKILL.md § Tools | as is |
 | SKILL.md § Output Format | corey `link-building` @96798cf | skills/link-building/SKILL.md § Output Format | as is |
+| SKILL.md § Measure with claude-seo | claude-seo `seo-backlinks` @468ed5b | skills/seo-backlinks/SKILL.md; skills/seo/references/backlink-quality.md § Disavow Recommendations | new: pointers to /seo commands; note that their 10% toxic-ratio disavow trigger differs from references/risk-policy.md, which is kept |
 | SKILL.md § Related Skills | corey `link-building` @96798cf | skills/link-building/SKILL.md § Related Skills | edited: central pass (metadata version and sources, product context pointer, sources line) |
 | evals/evals.json | corey `link-building` @96798cf | skills/link-building/evals/evals.json | as is |
 | references/prospecting-and-outreach.md | corey `link-building` @96798cf | skills/link-building/references/prospecting-and-outreach.md | as is |

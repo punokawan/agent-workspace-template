@@ -1,6 +1,6 @@
 ---
 name: image
-description: "When the user wants to create, generate, edit, or optimize images for marketing — blog heroes, social graphics, product mockups, profile banners, listing visuals, or brand assets. Also use when the user mentions 'AI image generation,' 'generate an image,' 'create a graphic,' 'product mockup,' 'hero image,' 'social media graphic,' 'banner image,' 'cover photo,' 'profile banner,' 'listing screenshot,' 'Flux,' 'Flux Kontext,' 'Midjourney,' 'DALL-E,' 'GPT Image,' 'ChatGPT Images,' 'Ideogram,' 'Gemini image,' 'Nano Banana,' 'Recraft,' 'Stable Diffusion,' 'Canva,' 'Figma,' 'image optimization,' 'compress images,' 'WebP,' or 'OG image.' Use this for general-purpose marketing image creation and optimization. For paid ad image creative and platform-specific ad specs, see ad-creative. For video production, see video."
+description: "When the user wants to create, generate, edit, or optimize images for marketing — blog heroes, social graphics, product mockups, profile banners, listing visuals, or brand assets. Also use when the user mentions 'AI image generation,' 'generate an image,' 'create a graphic,' 'product mockup,' 'hero image,' 'social media graphic,' 'banner image,' 'cover photo,' 'profile banner,' 'listing screenshot,' 'Flux,' 'Flux Kontext,' 'Midjourney,' 'DALL-E,' 'GPT Image,' 'ChatGPT Images,' 'Ideogram,' 'Gemini image,' 'Nano Banana,' 'Recraft,' 'Stable Diffusion,' 'Canva,' 'Figma,' 'image optimization,' 'compress images,' 'WebP,' or 'OG image.' Use this for general-purpose marketing image creation and optimization. For paid ad image creative and platform-specific ad specs, see ad-creative. For video production, see video. To audit images on a live URL with tools, use the claude-seo plugin's `/seo images` instead."
 metadata:
   version: 1.0.0
   sources: "corey:image@96798cf (upstream v2.0.3)"
@@ -315,7 +315,7 @@ Generate OG images programmatically for pages with dynamic content (blog posts, 
 5. **Text-heavy images without Ideogram** — most AI models butcher text; use Ideogram or add text in post
 6. **Generating without style direction** — "photorealistic," "flat illustration," "3D render" drastically changes output
 7. **Inconsistent brand visuals** — use Flux multi-reference or design templates for consistency
-8. **Huge images on landing pages** — compress, resize, lazy load
+8. **Huge images on landing pages** — compress, resize, lazy load below the fold (never the LCP or first visible image)
 
 ---
 
@@ -327,6 +327,18 @@ Generate OG images programmatically for pages with dynamic content (blog posts, 
 4. Is this a one-off or a repeatable template?
 5. Do you have API keys for any image generation tools?
 6. Does this need to be optimized for web performance?
+
+---
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill. This skill stays the default for general marketing images.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Audit images on a live page | `/seo images <url>` | Alt text, file size, format, responsive images, lazy loading, and layout-shift checks on the live page |
+| Optimize image files | `/seo images optimize` | WebP/AVIF conversion and IPTC/XMP metadata |
+| SEO-specific image assets (OG, hero, product, infographic) | `/seo image-gen <use-case> <description>` | Gemini generation through the claude-seo "banana" extension (installed separately, needs a Gemini API key; generation costs money and it shows an estimate first) |
 
 ---
 

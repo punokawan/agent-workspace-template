@@ -1,9 +1,9 @@
 ---
 name: ai-seo
-description: "When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers. Also use when the user mentions 'AI SEO,' 'AEO,' 'GEO,' 'LLMO,' 'answer engine optimization,' 'generative engine optimization,' 'LLM optimization,' 'AI Overviews,' 'optimize for ChatGPT,' 'optimize for Perplexity,' 'AI citations,' 'AI visibility,' 'zero-click search,' 'how do I show up in AI answers,' 'LLM mentions,' 'optimize for Claude/Gemini,' 'llms.txt,' 'llms-full.txt,' 'OKF,' 'Open Knowledge Format,' 'knowledge bundle,' 'agent-readable site,' 'agent readiness,' 'is my site agent-ready,' 'WebMCP,' 'do listicles still work for AI,' 'ChatGPT stopped citing comparison pages,' 'how do LLMs see our brand,' 'LinkedIn for AEO,' or 'AI citation format shift.' Use this whenever someone wants their content to be cited or surfaced by AI assistants and AI search engines. For traditional technical and on-page SEO audits, see seo-audit. For structured data implementation, see schema."
+description: "When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers. Also use when the user mentions 'AI SEO,' 'AEO,' 'GEO,' 'LLMO,' 'answer engine optimization,' 'generative engine optimization,' 'LLM optimization,' 'AI Overviews,' 'optimize for ChatGPT,' 'optimize for Perplexity,' 'AI citations,' 'AI visibility,' 'zero-click search,' 'how do I show up in AI answers,' 'LLM mentions,' 'optimize for Claude/Gemini,' 'llms.txt,' 'llms-full.txt,' 'OKF,' 'Open Knowledge Format,' 'knowledge bundle,' 'agent-readable site,' 'agent readiness,' 'is my site agent-ready,' 'WebMCP,' 'do listicles still work for AI,' 'ChatGPT stopped citing comparison pages,' 'how do LLMs see our brand,' 'LinkedIn for AEO,' or 'AI citation format shift.' Use whenever someone wants to be cited or surfaced by AI assistants and AI search. For SEO audits, see seo-audit; for structured data, see schema. To measure a live URL with tools, use the claude-seo plugin's `/seo geo` or `/seo agentic`."
 metadata:
   version: 1.0.0
-  sources: "corey:ai-seo@96798cf; ali:aeo@8f08254"
+  sources: "corey:ai-seo@96798cf; ali:aeo@8f08254; claude-seo:seo-geo@468ed5b; claude-seo:seo-agentic@468ed5b; claude-seo:seo-google@468ed5b"
 ---
 
 # AI SEO
@@ -75,7 +75,9 @@ Gather this context (ask if not provided):
 | **Perplexity** | Always cites sources with links | Favors authoritative, recent, well-structured content |
 | **Gemini** | Google's AI assistant | Pulls from Google index + Knowledge Graph |
 | **Copilot** | Bing-powered AI search | Bing index + authoritative sources |
-| **Claude** | Brave Search (when enabled) | Training data + Brave search results |
+| **Claude** | Web search (when enabled; Brave Search has been reported as a backend, unconfirmed here) | Training data + search results; Anthropic's `Claude-SearchBot` is the crawler that decides citability in Claude's search features (`ClaudeBot` is training only) |
+
+**AI Overviews and AI Mode are two citation surfaces, not one.** In an Ahrefs study of 540K query pairs (third-party study), they reached the same conclusion about 86% of the time but cited the same URLs only 13.7% of the time. Check both.
 
 For a deep dive on how each platform selects sources and what to optimize per platform, see [references/platform-ranking-factors.md](references/platform-ranking-factors.md).
 
@@ -101,17 +103,18 @@ Google explicitly says:
 - **Don't chunk content for AI** — write for people, organize with normal headings and paragraphs
 - **Don't write separate content for AI** — that risks "scaled content abuse" spam policy
 - **Helpful, reliable, people-first content** wins — same E-E-A-T standards as regular Search
-- **No AI-specific Search Console reporting** — use standard SEO metrics
+- **No special ranking work for AI** — AI features use core Search ranking, so standard SEO metrics still apply. Search Console now has two AI-specific tools (see Search Console expectations below): the "Search generative AI" control (all sites since 2026-08-31) and a Generative AI performance report
+- **Google Search ignores `llms.txt`** and other AI text files (Google docs, note added 2026-06-15); they neither help nor harm Google visibility
 
 **Other AI engines (ChatGPT, Claude, Perplexity, Copilot) behave differently:**
 - They actively reward extractable structure — passages, FAQs, comparison tables, definition blocks
-- They parse `llms.txt`, structured pricing pages, and machine-readable files when present
+- They read structured pricing pages and machine-readable files they can fetch. `llms.txt` is different: no major AI search system is known to consume it today (Google staff statements and server-log studies, 2025–2026); AI coding agents (Cursor, Claude Code and similar) do read it for developer docs
 - They cite beyond top-ranked pages, including Reddit, Wikipedia, and review sites, in a mix that varies by engine
 
 **What this means for the work:**
-- The structural patterns in this skill (40–60 word answer blocks, FAQ schema, comparison tables) help **non-Google AI engines** materially. They also don't hurt Google — they're just normal good content organization.
+- The structural patterns in this skill (40–60 word answer blocks, visible FAQ sections, comparison tables) help **non-Google AI engines** materially. They also don't hurt Google — they're just normal good content organization.
 - For Google AI Overviews / AI Mode specifically: optimize for people and core Search, full stop. Strong E-E-A-T, original information, semantic HTML, clean indexability.
-- For ChatGPT/Claude/Perplexity: layer on the extractable structure + llms.txt + machine-readable files. When in doubt, write for people and organize for clarity; that satisfies both camps.
+- For ChatGPT/Claude/Perplexity: layer on the extractable structure + machine-readable files; add `llms.txt` only as optional, low-cost insurance (worth more on developer-docs sites). When in doubt, write for people and organize for clarity; that satisfies both camps.
 
 ### Query Fan-Out (Google AI Search)
 
@@ -173,7 +176,7 @@ For each priority page, verify:
 | Statistics with sources cited? | |
 | Comparison tables for "[X] vs [Y]" queries? | |
 | FAQ section with natural-language questions? | |
-| Schema markup (FAQ, HowTo, Article, Product)? | |
+| Schema markup that matches the page (Article, Product, Organization)? FAQPage and HowTo no longer earn Google rich results | |
 | Expert attribution (author name, credentials)? | |
 | Recently updated (within 6 months)? | |
 | Heading structure matches query patterns? | |
@@ -184,11 +187,13 @@ For each priority page, verify:
 Audit AI user agents by purpose. Search-discovery, user-triggered retrieval, model-training, and product-control tokens are not interchangeable:
 
 - **Search discovery:** `OAI-SearchBot` (ChatGPT), `PerplexityBot`, `Claude-SearchBot`, `meta-webindexer` (Meta AI), and the conventional search crawlers that feed an answer product
-- **User-triggered retrieval:** `ChatGPT-User`, `Claude-User`, `Perplexity-User`, and `meta-externalfetcher`; vendor handling can differ from automatic crawlers, so verify the current documentation
+- **User-triggered retrieval:** `ChatGPT-User`, `Claude-User`, `Perplexity-User`, and `meta-externalfetcher`; vendor handling can differ from automatic crawlers, so verify the current documentation. As documented at the time of writing: Google's user-triggered fetchers (`Google-Agent`, `Google-GeminiNotebook`, `Google Messages`) ignore robots.txt (Google docs); OpenAI says robots.txt "may not apply" to `ChatGPT-User`; Anthropic says `Claude-User` obeys it. Block the ones that ignore robots.txt with server-side access controls, not robots.txt
 - **Potential model training:** `GPTBot`, `ClaudeBot`, and `meta-externalagent`
 - **Google product control:** `Google-Extended` controls certain Gemini training and grounding uses of content Google already crawls; it does not affect Google Search inclusion or ranking
 
 Default to one wildcard (`User-agent: *`) rule that allows agents, and add named groups only for deliberate exceptions such as a training opt-out; an allowlist of named crawlers silently excludes agent search APIs that run their own crawlers, and a named group replaces the `*` rules for that bot. Check each relevant user-agent group and any WAF or CDN rules separately. A publisher can allow search discovery while disallowing model-development crawlers; do not infer that blocking a training crawler necessarily blocks citations. See [references/platform-ranking-factors.md](references/platform-ranking-factors.md) for the full robots.txt configuration.
+
+**Content-Signal** (`Content-Signal: search=yes, ai-input=yes, ai-train=no`, placed inside each relevant robots.txt group) states a preference per use: `search` (index and links), `ai-input` (content used as input to an AI answer), `ai-train` (model training). It comes from Cloudflare's Content Signals Policy (2025-09-24); it is not an adopted standard, and Google has made no statement on it. Present it as a stated preference with no confirmed effect.
 
 ---
 
@@ -339,7 +344,7 @@ Add these machine-readable files to your site root:
 
 **`/llms.txt`** — Context file for AI systems (see [llmstxt.org](https://llmstxt.org))
 
-If you don't have one yet, add an `llms.txt` that gives AI systems a quick overview of what your product does, who it's for, and links to key pages (including your pricing).
+If you don't have one yet, add an `llms.txt` that gives AI systems a quick overview of what your product does, who it's for, and links to key pages (including your pricing). Treat it as optional and low-cost: Google Search ignores it (Google docs, 2026-06-15), and no major AI search system is known to consume it today. AI coding agents do read it on developer-docs sites, where it pays off most.
 
 **`/okf/` — Open Knowledge Format bundle (Google-backed, v0.1)**
 
@@ -352,8 +357,8 @@ Structured data helps AI systems understand your content. Key schemas:
 | Content Type | Schema | Why It Helps |
 |-------------|--------|-------------|
 | Articles/Blog posts | `Article`, `BlogPosting` | Author, date, topic identification |
-| How-to content | `HowTo` | Step extraction for process queries |
-| FAQs | `FAQPage` | Direct Q&A extraction |
+| How-to content | `HowTo` | Step extraction for process queries (Google retired HowTo rich results in Sept 2023, Google announcement) |
+| FAQs | `FAQPage` | Direct Q&A extraction (Google stopped showing FAQ rich results on 2026-05-07, Google docs; the markup is still valid and harmless, but do not add it for rich results) |
 | Products | `Product` | Pricing, features, reviews |
 | Comparisons | `ItemList` | Structured comparison data |
 | Reviews | `Review`, `AggregateRating` | Trust signals |
@@ -436,7 +441,12 @@ AI answers are **non-deterministic** — one run is an anecdote, not a measureme
 
 ### Search Console expectations
 
-Google's guide is explicit: **there is no AI-specific Search Console reporting**. AI Overviews and AI Mode use core Search ranking, so the standard Search Console reports (Performance, Coverage, Core Web Vitals) are still what you measure with for Google. The third-party tools above are the only way to see cross-platform AI citation behavior.
+AI Overviews and AI Mode use core Search ranking, so the standard Search Console reports (Performance, Coverage, Core Web Vitals) are still what you measure with for Google. Search Console now adds two AI-specific tools:
+
+- **"Search generative AI" control** (rolled out to all sites 2026-08-31, Google announcement): include (default) or exclude a property from AI Overviews, AI Mode, and generative AI in Discover; child properties can inherit the setting. It is not a ranking signal, not a training control, and separate from `Google-Extended`. Since 2026-09-18 a site must also be included here to show as a Preferred Source in AI Mode and AI Overviews (Google docs).
+- **Generative AI performance report** (all sites since 2026-08-31, Google announcement): impressions in AI Overviews and AI Mode by page, country, device, and date. Impressions only: no clicks, CTR, position, or queries.
+
+Other per-page controls over AI-feature appearance are the standard preview and index directives: `nosnippet`, `data-nosnippet`, `max-snippet`, and `noindex` (Google docs). There is no AI-specific opt-out file. The third-party tools above are the only way to see cross-platform AI citation behavior.
 
 ---
 
@@ -487,6 +497,20 @@ For implementation, see the [tools registry](https://github.com/coreyhaines31/ma
 | `ahrefs` | Backlink analysis, content explorer, AI Overview data |
 | `gsc` | Search Console performance data, query tracking |
 | `ga4` | Referral traffic from AI sources |
+
+---
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| AI crawler access, citability, AI Overviews / AI Mode readiness | `/seo geo <url>` | Per-crawler robots.txt check, `llms.txt` presence (reported, no citation weight), `seo_updates.py` for dated Google product and core updates |
+| Agent readiness score | `/seo agentic lighthouse <url>` | `lighthouse_agentic.py` reads PageSpeed Insights' Agentic Browsing category and reports X/N (N is at most 6); never convert it to a percentage |
+| Full agent-readiness audit | `/seo agentic <url>` | `agentic_check.py` (robots groups, Content-Signal, `llms.txt`, Markdown delivery, discovery files, WebMCP markup); `agent_ux_check.py` (accessibility-tree heuristic, 0–100, kept apart from the Lighthouse fraction) |
+| Draft agent-access files | `/seo agentic fix <url>` | `agentic_fix.py` drafts Content-Signal lines, `llms.txt`, `ai-catalog.json`, and WebMCP markup for review |
+| Google AI impressions | `/seo google gsc <property>` | Search Console performance data via API; AI Mode clicks and impressions are mixed into the normal Web totals, so use the Generative AI performance report (impressions only) for AI visibility |
 
 ---
 

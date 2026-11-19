@@ -1,9 +1,9 @@
 ---
 name: content-strategy
-description: "When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover. Also use when the user mentions 'content strategy,' 'what should I write about,' 'content ideas,' 'blog strategy,' 'topic clusters,' 'content planning,' 'editorial calendar,' 'content marketing,' 'content roadmap,' 'what content should I create,' 'blog topics,' 'content pillars,' 'content gap analysis,' or 'I don't know what to write.' Use this whenever someone needs help deciding what content to produce, not just writing it. Classifies each topic as searchable, shareable, or both, and scores ideas before they reach the calendar. For writing a blog post or article, see content-production; for page copy, see copywriting. For SEO-specific audits, see seo-audit. For social media content specifically, see social."
+description: "When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover. Also use when the user mentions 'content strategy,' 'what should I write about,' 'content ideas,' 'blog strategy,' 'topic clusters,' 'content planning,' 'editorial calendar,' 'content marketing,' 'content roadmap,' 'what content should I create,' 'blog topics,' 'content pillars,' 'content gap analysis,' or 'I don't know what to write.' Use this whenever someone needs help deciding what content to produce, not just writing it. Classifies each topic as searchable, shareable, or both, and scores ideas before they reach the calendar. For writing a blog post or article, see content-production; for page copy, see copywriting. For SEO-specific audits, see seo-audit. For social media content specifically, see social. To cluster keywords from live search results with tools, use the claude-seo plugin's `/seo cluster` instead."
 metadata:
   version: 1.0.0
-  sources: "corey:content-strategy@96798cf; ali:content-strategy@8f08254"
+  sources: "corey:content-strategy@96798cf; ali:content-strategy@8f08254; claude-seo:seo-cluster@468ed5b"
 ---
 
 # Content Strategy
@@ -197,6 +197,19 @@ Good pillars should:
 - Match what your audience cares about
 - Have search volume and/or social interest
 - Be broad enough for many subtopics
+
+### Check Clusters Against Live Results
+
+Two keywords belong on one page when Google already ranks the same pages for both. Search each keyword in a pair, count the URLs shared in the top 10 organic results (ignore ads, featured snippets, and People Also Ask), then:
+
+| Shared top-10 results | Decision |
+|---|---|
+| 7-10 | Same page: merge the keywords into one target page |
+| 4-6 | Same cluster: separate articles under one pillar |
+| 2-3 | Separate pages in nearby clusters, linked to each other |
+| 0-1 | Unrelated: different clusters, or drop the keyword |
+
+These thresholds are a heuristic, not a Google rule (claude-seo `seo-cluster` v2.6.2, read 2026-11-19). Use them to stop two articles from competing for one query.
 
 ---
 
@@ -457,6 +470,18 @@ Match the depth to the request: a quick question gets a short answer, not a stra
 
 - **[Content Distribution Spine](references/content-distribution.md)**: Create Once Distribute Twice, ORB as a funnel, the ownership paradox, platform half-lives, the Content Distribution Flywheel, and the per-flagship atomization checklist
 - **[Headless CMS Guide](references/headless-cms.md)**: CMS selection, content modeling for marketing, editorial workflows, platform comparison (Sanity, Contentful, Strapi)
+
+---
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Cluster keywords by live results | `/seo cluster <seed-keyword>` | Expands the seed, compares search results pair by pair (web search, or DataForSEO when configured), designs hub and spoke pages and an internal link matrix |
+| SEO plan for a business type | `/seo plan <business-type>` | Industry templates, competitive analysis, and a phased roadmap |
+| Brief for one planned piece | `/seo content-brief <keyword>` | Hand-off to writing (see content-production) |
 
 ---
 

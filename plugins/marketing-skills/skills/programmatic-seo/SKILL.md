@@ -1,9 +1,9 @@
 ---
 name: programmatic-seo
-description: When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions "programmatic SEO," "template pages," "pages at scale," "directory pages," "location pages," "[keyword] + [city] pages," "comparison pages," "integration pages," "building many pages for SEO," "pSEO," "generate 100 pages," "data-driven pages," "templated landing pages," or "which CMS for pSEO." Use this whenever someone wants to create many similar pages targeting different keywords or locations, or wants to check a URL pattern before building it. For auditing existing SEO issues, see seo-audit. For content strategy planning, see content-strategy. For a local business's own location and service-area pages, see local-seo-manager.
+description: When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions "programmatic SEO," "template pages," "pages at scale," "directory pages," "location pages," "[keyword] + [city] pages," "comparison pages," "integration pages," "building many pages for SEO," "pSEO," "generate 100 pages," "data-driven pages," "templated landing pages," or "which CMS for pSEO." Use this whenever someone wants to create many similar pages targeting different keywords or locations, or wants to check a URL pattern before building it. For auditing existing SEO issues, see seo-audit. For content strategy planning, see content-strategy. For a local business's own location and service-area pages, see local-seo-manager. To audit a live page set with tools, use the claude-seo plugin's `/seo programmatic` instead.
 metadata:
   version: 1.0.0
-  sources: "corey:programmatic-seo@96798cf; ali:programmatic-seo@8f08254"
+  sources: "corey:programmatic-seo@96798cf; ali:programmatic-seo@8f08254; claude-seo:seo-programmatic@468ed5b"
 ---
 
 # Programmatic SEO
@@ -65,6 +65,7 @@ Better to have 100 great pages than 10,000 thin ones.
 - No keyword stuffing
 - No duplicate content
 - Genuine utility for users
+- No site reputation abuse: third-party or hosted programmatic content on a strong domain is a policy risk. Since 2026-08-30 (Google announcement) enforcement depends on where the searcher is: manual actions apply outside the EEA, while for EEA users the third-party section may be categorized separately from the main domain. Report the risk for both audiences.
 
 ---
 
@@ -201,6 +202,17 @@ Check that the platform can hold the page count, refresh the data, render server
 - [ ] Crawlable
 - [ ] No conflicting noindex
 
+### Scale Gates (heuristics, not Google rules)
+
+claude-seo uses these gates. They are its own heuristics, not Google rules, and claude-seo itself is not consistent: its sitemap skill warns at 30+ location pages and asks for 60%+ unique content. Use them as review triggers, not pass marks.
+
+| Gate | claude-seo threshold |
+|---|---|
+| Page count | Warn at 100+ pages without a content review; stop at 500+ pages without justification and an explicit go-ahead |
+| Unique content per page | Flag as thin under 40%; stop under 30% |
+| Rollout | Publish in batches of 50–100 pages, watch indexing and rankings for 2–4 weeks before the next batch |
+| Human review | Read a 5–10% sample of generated pages before publishing |
+
 ### Post-Launch Monitoring
 
 Define the plan before launch, not after a problem appears:
@@ -255,6 +267,18 @@ Rate the data type with the defensibility hierarchy above. Call out thin-content
 4. What does your site authority look like?
 5. Who currently ranks for these terms?
 6. What's your technical stack?
+
+---
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Audit or plan a programmatic page set | `/seo programmatic [url\|plan]` | Applies the scale gates above; `metadata_template.py` finds one templated title/description shape repeated across the set (a deterministic string heuristic) |
+| Sitemaps for the set | `/seo sitemap <url>` | `sitemap_discovery.py` finds the sitemaps; checks size and split limits |
+| Index status of sample pages | `/seo google inspect <url>` | `gsc_inspect.py` URL Inspection; needs Google API setup |
 
 ---
 

@@ -2,14 +2,15 @@
 
 | Part | From | Upstream file | Changed here |
 |---|---|---|---|
-| frontmatter | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § frontmatter | edited: 'content gap analysis' trigger and the classify-and-score sentence added; articles routed to content-production; version reset to 1.0.0; `sources` added |
+| frontmatter | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § frontmatter | edited: 'content gap analysis' trigger and the classify-and-score sentence added; articles routed to content-production; version reset to 1.0.0; `sources` added; 2026-11-19: routing sentence to claude-seo `/seo cluster` appended; `claude-seo:seo-cluster@468ed5b` added to sources |
 | SKILL.md § intro (title and role) | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § intro | as is |
 | SKILL.md § Before Planning | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Before Planning | edited: product context pointer now refers to product-marketing (per-product location, central pass) |
 | SKILL.md § Treat Content Like a Product | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Treat Content Like a Product | as is |
 | SKILL.md § Searchable vs Shareable (all text except Classify Each Topic) | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Searchable vs Shareable | as is |
 | SKILL.md § Searchable vs Shareable (Classify Each Topic table) | ali `content-strategy` @8f08254 | skills/content-strategy/SKILL.md § Searchable vs Shareable | edited: the decision rule and the "judged by" measures turned into one table |
 | SKILL.md § Content Types | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Content Types | as is |
-| SKILL.md § Content Pillars and Topic Clusters | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Content Pillars and Topic Clusters | as is |
+| SKILL.md § Content Pillars and Topic Clusters | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Content Pillars and Topic Clusters | edited: upstream text as is; 2026-11-19: subsection Check Clusters Against Live Results appended (row below) |
+| SKILL.md § Content Pillars and Topic Clusters › Check Clusters Against Live Results | claude-seo `seo-cluster` @468ed5b | skills/seo-cluster/SKILL.md § Step 2: SERP Overlap Clustering (:65-71) | new: SERP-overlap thresholds (7-10 / 4-6 / 2-3 / 0-1 shared results), labelled as a heuristic |
 | SKILL.md § Keyword Research by Buyer Stage | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Keyword Research by Buyer Stage | as is |
 | SKILL.md § Content Ideation Sources | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Content Ideation Sources | as is |
 | SKILL.md § Prioritizing Content Ideas | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Prioritizing Content Ideas | as is |
@@ -21,6 +22,7 @@
 | SKILL.md § Output Format (sections 4–5 and the depth line) | ali `content-strategy` @8f08254 | skills/content-strategy/SKILL.md § Output Artifacts rows 3–5, § Communication | edited: calendar and gap-table shapes kept, with owner and date from "actions have owners and deadlines"; the single-piece brief routed to content-production; emoji confidence tags dropped |
 | SKILL.md § Task-Specific Questions | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Task-Specific Questions | as is |
 | SKILL.md § References | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § References | as is |
+| SKILL.md § Measure with claude-seo | claude-seo `seo-cluster`, `seo-plan` @468ed5b | skills/seo-cluster/SKILL.md; skills/seo-plan/SKILL.md | new: pointers to /seo commands |
 | SKILL.md § Related Skills (content-production, copywriting, copy-editing lines) | ali `content-strategy` @8f08254 | skills/content-strategy/SKILL.md § Related Skills | edited: reworded; the copywriting line narrowed to page copy |
 | SKILL.md § Related Skills (all other lines) | corey `content-strategy` @96798cf | skills/content-strategy/SKILL.md § Related Skills | as is |
 | SKILL.md last line (Sources and credits) | merge | — | new: links this file |

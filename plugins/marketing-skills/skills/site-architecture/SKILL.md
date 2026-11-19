@@ -1,9 +1,9 @@
 ---
 name: site-architecture
-description: When the user wants to plan, map, audit, or restructure their website's page hierarchy, navigation, URL structure, or internal linking. Also use when the user mentions "sitemap," "visual sitemap," "site structure," "page hierarchy," "information architecture," "IA," "navigation design," "URL structure," "breadcrumbs," "internal linking strategy," "orphan pages," "hub pages," "topic clusters," "what pages do I need," "how should I organize my site," "which website builder should I use," "migrate my website," or "add a blog to my existing site." Use this whenever someone is planning what pages a website should have, how they connect, and where to build them, or when SEO problems look structural. Reads an XML sitemap only to audit structure; for sitemap generation and indexing problems, see seo-audit. For structured data, see schema.
+description: When the user wants to plan, map, audit, or restructure their website's page hierarchy, navigation, URL structure, or internal linking. Also use when the user mentions "sitemap," "visual sitemap," "site structure," "page hierarchy," "information architecture," "IA," "navigation design," "URL structure," "breadcrumbs," "internal linking strategy," "orphan pages," "hub pages," "topic clusters," "what pages do I need," "how should I organize my site," "which website builder should I use," "migrate my website," or "add a blog to my existing site." Use this whenever someone is planning what pages a website should have, how they connect, and where to build them, or when SEO problems look structural. Reads an XML sitemap only to audit structure; for sitemap generation and indexing problems, see seo-audit. For structured data, see schema. To discover and validate a live sitemap with tools, use the claude-seo plugin's `/seo sitemap` instead.
 metadata:
   version: 1.0.0
-  sources: "corey:site-architecture@96798cf; ali:site-architecture@8f08254"
+  sources: "corey:site-architecture@96798cf; ali:site-architecture@8f08254; claude-seo:seo-sitemap@468ed5b"
 ---
 
 # Site Architecture
@@ -393,6 +393,10 @@ Raise these whenever you see them, even if the user didn't ask. URL-level mistak
 | Sitemap lists `noindex`, redirected, or parameter URLs | Mixed signals about which URLs count | List only canonical, indexable URLs |
 | Filter and sort parameters create crawlable URL variants | Duplicate pages and wasted crawling | Canonical to the base page; keep crawlers out of endless filter combinations |
 
+Extension sitemaps have their own limits (Google docs, checked 2026-11-19 via claude-seo `seo-sitemap`):
+- **Image sitemap:** at most 1,000 images per `<url>`. Only `<image:image>` and `<image:loc>` still count. The `caption`, `title`, `geo_location`, and `license` tags were deprecated in 2022 and can be removed.
+- **News sitemap:** at most 1,000 `<news:news>` tags per file, and only for articles published in the last 2 days. The 50,000-URL and 50 MB limits still apply.
+
 ---
 
 ## Output Format
@@ -449,6 +453,21 @@ A before/after URL table with the 301 target for every old URL, plus the impleme
 4. What are the 5 most important pages on the site?
 5. Are there existing URLs that need to be preserved or redirected?
 6. Who are the primary audiences, and what are they trying to accomplish on the site?
+
+---
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Find and validate a live sitemap | `/seo sitemap <url>` | `sitemap_discovery.py` finds sitemaps from robots.txt and common paths, expands indexes, and checks image, video, and news subtypes |
+| Generate a sitemap for a planned site | `/seo sitemap generate` | XML output split at 50,000 URLs or 50 MB, with a sitemap index |
+| Cluster pages into hubs and spokes | `/seo cluster <seed-keyword>` | Hub and spoke design and an internal link matrix from live search results |
+| Full-site crawl and site map | `/seo firecrawl <command> <url>` | Full-site crawl and URL map to feed the audit above (claude-seo extension, installed separately) |
+
+Its location-page gates (warn at 30+ pages, stop at 50+) are a claude-seo heuristic, not a Google rule; programmatic-seo covers that judgment.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: link-building
-description: "When the user wants to earn backlinks or third-party mentions that lift rankings and AI citations. Also use when the user mentions 'link building,' 'linkbuilding,' 'backlinks,' 'get more backlinks,' 'link prospecting,' 'link gap,' 'competitor backlinks,' 'unlinked mentions,' 'link reclamation,' 'broken link building,' 'resource pages,' 'guest posting,' 'get into best-of lists,' 'listicle outreach,' 'domain rating,' 'referring domains,' 'anchor text,' or 'is this link vendor safe.' Use this whenever rankings stall on authority or someone wants off-site mentions that AI engines cite. Never recommend buying links that pass ranking credit: paid or exchanged placements get rel=sponsored or nofollow. For press coverage and journalist requests, see public-relations. For directories, see directory-submissions. For reviews, see referrals. For Reddit and communities, see community-marketing. For on-site AI citation work, see ai-seo."
+description: "When the user wants to earn backlinks or third-party mentions that lift rankings and AI citations. Also use when the user mentions 'link building,' 'linkbuilding,' 'backlinks,' 'get more backlinks,' 'link prospecting,' 'link gap,' 'competitor backlinks,' 'unlinked mentions,' 'link reclamation,' 'broken link building,' 'resource pages,' 'guest posting,' 'get into best-of lists,' 'listicle outreach,' 'domain rating,' 'referring domains,' 'anchor text,' or 'is this link vendor safe.' Use this whenever rankings stall on authority or someone wants off-site mentions that AI engines cite. Never recommend buying links that pass ranking credit: paid or exchanged placements get rel=sponsored or nofollow. For press coverage and journalist requests, see public-relations. For directories, see directory-submissions. For reviews, see referrals. For Reddit and communities, see community-marketing. For on-site AI citation work, see ai-seo. For a live backlink pull, use the claude-seo plugin's `/seo backlinks`."
 metadata:
   version: 1.0.0
   sources: "corey:link-building@96798cf (upstream v1.0.1)"
@@ -156,6 +156,18 @@ For a link building plan, deliver:
 5. **Outreach drafts:** for approval, one per tactic at minimum
 6. **Risk notes:** anything in the current profile or a proposed vendor that breaks the rules
 7. **Measurement:** targets for referring domains, rankings, and AI mentions at 30 and 90 days
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Backlink profile, anchors, referring domains | `/seo backlinks <url>` | Free sources merged with confidence labels: `moz_api.py` (Moz API), `bing_webmaster.py` (Bing Webmaster Tools), `commoncrawl_graph.py` (Common Crawl graph); DataForSEO when configured |
+| Are known links still live | `/seo backlinks <url>` | `verify_backlinks.py` crawls each link and says "could not check" when blocked |
+| Bing link data and IndexNow | `/seo bing <command> <url>` | Bing Webmaster Tools link data (claude-seo extension, installed separately) |
+
+It refuses a numeric health score when Common Crawl is the only source. One difference: claude-seo suggests a disavow when "toxic" links exceed 10% of the profile. Keep this skill's rule in [references/risk-policy.md](references/risk-policy.md): disavow only for a manual action or paid or spammy links you created. That rule matches Google's guidance; a tool's toxic score is not a reason to disavow.
 
 ## Related Skills
 

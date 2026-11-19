@@ -2,7 +2,7 @@
 
 | Part | From | Upstream file | Changed here |
 |---|---|---|---|
-| frontmatter | corey `competitors` @96798cf | skills/competitors/SKILL.md § frontmatter | edited: adds 'comparison table' and 'feature comparison matrix' triggers and the bundled script; `version: 1.0.0` and `sources` added |
+| frontmatter | corey `competitors` @96798cf | skills/competitors/SKILL.md § frontmatter | edited: adds 'comparison table' and 'feature comparison matrix' triggers and the bundled script; `version: 1.0.0` and `sources` added; 2026-11-19: format list and audit routing shortened to stay under 1024 characters, routing sentence to claude-seo `/seo competitor-pages` appended; `claude-seo:seo-schema@468ed5b` added to sources |
 | frontmatter | ali `competitor-alternatives` @8f08254 | skills/competitor-alternatives/SKILL.md § frontmatter | edited: its "builds the comparison matrix" promise folded into the description; nothing else taken |
 | SKILL.md § intro (title and opening) | corey `competitors` @96798cf | skills/competitors/SKILL.md § Competitor & Alternative Pages | as is (ali's opening is identical) |
 | SKILL.md § Initial Assessment | corey `competitors` @96798cf | skills/competitors/SKILL.md § Initial Assessment | edited: product context pointer now refers to product-marketing (per-product location, central pass) |
@@ -13,12 +13,14 @@
 | SKILL.md § Content Architecture | corey `competitors` @96798cf | skills/competitors/SKILL.md § Content Architecture | edited: Centralized Competitor Data as is; subsection Building the Comparison Table appended (next row) |
 | SKILL.md § Content Architecture | ali `competitor-alternatives` @8f08254 | skills/competitor-alternatives/SKILL.md § Tools | edited: new subsection "Building the Comparison Table" documents the rewritten script, its input and the evidence rules it applies |
 | SKILL.md § Research Process | corey `competitors` @96798cf | skills/competitors/SKILL.md § Research Process | edited: opens with a pointer to competitor-profiling dossiers; research list, update cadence and asset audit as is |
-| SKILL.md § SEO Considerations | corey `competitors` @96798cf | skills/competitors/SKILL.md § SEO Considerations | as is |
+| SKILL.md § SEO Considerations | corey `competitors` @96798cf | skills/competitors/SKILL.md § SEO Considerations | edited: rest as is; 2026-11-19: "Consider FAQ schema" replaced: answer questions in visible text; FAQ rich results ended 2026-05-07; existing FAQPage markup may stay |
+| SKILL.md § SEO Considerations › Schema Markup | claude-seo `seo-schema` @468ed5b | skills/seo-schema/SKILL.md:59; skills/seo/references/schema-types.md:52-60 | new: fact that FAQ rich results ended for all sites on 2026-05-07 and existing FAQPage markup need not be removed |
+| SKILL.md § Measure with claude-seo | claude-seo `seo-competitor-pages` @468ed5b | skills/seo-competitor-pages/SKILL.md | new: pointers to /seo commands; their 1,500-word minimum (:198) and AggregateRating example (:67) not taken |
 | SKILL.md § Output Format | corey `competitors` @96798cf | skills/competitors/SKILL.md § Output Format | edited: data file, page content, page set plan and asset audit report as is; Migration Block output appended (next row) |
 | SKILL.md § Output Format | ali `competitor-alternatives` @8f08254 | skills/competitor-alternatives/SKILL.md § Output Artifacts | edited: the "Migration Guide Section" artifact became the Migration Block output; the other artifacts repeated corey's |
 | SKILL.md § When to Suggest More Pages | ali `competitor-alternatives` @8f08254 | skills/competitor-alternatives/SKILL.md § Proactive Triggers | edited: triggers 1–4 rewritten as offers during competitor work; trigger 5 (pricing comparisons belong off the pricing page) dropped as opinion |
 | SKILL.md § Task-Specific Questions | corey `competitors` @96798cf | skills/competitors/SKILL.md § Task-Specific Questions | as is |
-| SKILL.md § Related Skills | corey `competitors` @96798cf | skills/competitors/SKILL.md § Related Skills | edited: adds competitor-profiling, product-marketing and ai-seo |
+| SKILL.md § Related Skills | corey `competitors` @96798cf | skills/competitors/SKILL.md § Related Skills | edited: adds competitor-profiling, product-marketing and ai-seo; 2026-11-19: schema entry no longer offers FAQ schema |
 | SKILL.md § Related Skills | ali `competitor-alternatives` @8f08254 | skills/competitor-alternatives/SKILL.md § Related Skills | edited: content-strategy entry kept ("a full competitive content program"); entries for skills outside this library dropped |
 | references/templates.md | corey `competitors` @96798cf | skills/competitors/references/templates.md | as is (ali's copy is an older version of the same file) |
 | references/content-architecture.md | corey `competitors` @96798cf | skills/competitors/references/content-architecture.md | as is (ali's copy is an older version without provenance fields) |

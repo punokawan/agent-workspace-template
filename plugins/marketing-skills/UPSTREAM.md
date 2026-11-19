@@ -21,7 +21,17 @@ credit: Alireza Rezvani
 licence: MIT
 ```
 
-This plugin is an adaptation that merges two MIT libraries. Keep `LICENSE` (both copyright
+```upstream
+repo: https://github.com/AgriciDaniel/claude-seo
+path: skills, hooks
+commit: 468ed5b0d9e3249394783710e54abb02837e326b
+mode: merged
+key: claude-seo
+credit: Daniel Agrici
+licence: MIT
+```
+
+This plugin is an adaptation that merges two MIT libraries, plus dated facts from a third. Keep `LICENSE` (both copyright
 notices) and the Credits section of `README.md` in any copy.
 
 | | Corey Haines | Alireza Rezvani |
@@ -30,6 +40,12 @@ notices) and the Credits section of `README.md` in any copy.
 | Path taken | `skills/`, `tools/` | `marketing-skill/skills/`, `marketing-skill/video-content-strategist/` |
 | Commit | `96798cf38736ecdba015a1d2b0521b0c8f8f41dd` (v2.14.2, upstream HEAD 2026-11-06) | `8f082544116fc0d014188e521ca40304cdfc86b0` (v2.14.10, upstream HEAD 2026-11-05) |
 | Licence | MIT, Copyright (c) 2025 Corey Haines | MIT, Copyright (c) 2025 Alireza Rezvani |
+
+A third source, Daniel Agrici's claude-seo (https://github.com/AgriciDaniel/claude-seo, `468ed5b`,
+v2.6.2, MIT, Copyright (c) 2026 agricidaniel), is installed beside this plugin as its own Claude Code
+plugin (`claude-seo@agricidaniel-claude-seo`). No claude-seo skill is copied here. Only dated Google
+facts from its skill references were folded into the SEO skills, each with a `claude-seo` row in that
+skill's `SOURCES.md`; the skills point to its `/seo …` commands for tool-backed checks.
 
 Material the upstreams took from others keeps its credit inside the skill: `alirezarezvani/aeo-box`
 (MIT, in `ai-seo`), `ZeroPointRepo/youtube-skills` (MIT, in `youtube-full`), and phrase lists adapted
@@ -64,6 +80,18 @@ in the workspace (local, not committed).
   (the plugin README covers install).
 - **Added here.** `README.md`, this file, `docs/`, `library.json` (README categories and the shared
   context file), the plugin manifests. Checks run through the workspace `skills.sh`.
+
+- **claude-seo facts (2026-11-19).** `seo-audit`, `ai-seo`, `schema`, `programmatic-seo`,
+  `content-strategy` and the pointer-only SEO skills gained a "Measure with claude-seo" section and
+  dated facts; outdated FAQ and HowTo rich-result advice was corrected in the same pass. Facts are
+  dated in the text so they can be re-checked against Google's own pages.
+
+## Review (read-only, 2026-11-19, claude-seo)
+
+- Plugin v2.6.2 read before install: no telemetry; network calls only to SEO APIs a command names;
+  one PostToolUse hook (`hooks/validate-schema.py`, stdlib, local JSON-LD check). Two key facts
+  checked against outside coverage: FAQ rich results gone 2026-05-07 (FAQPage markup still valid),
+  Search Console "Search generative AI" control on all sites 2026-08-31.
 
 ## Review (read-only, 2026-11-09)
 

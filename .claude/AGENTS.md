@@ -10,7 +10,7 @@ Agents, commands, and skills here are **project-agnostic**: they resolve what to
 through `.claude/scripts/_project.py` and each project's `projects/<name>/project.json`.
 Project-specific conventions live in `projects/<name>/AGENTS.md` and that project's own skills, never here.
 
-_Generated 2026-11-09 13:00_
+_Generated 2026-11-19 16:53_
 
 ## Agents (27)
 
@@ -84,7 +84,7 @@ _Generated 2026-11-09 13:00_
 | `/wt-start` | Start new work in an isolated git worktree on a short-lived branch off the repo's integration branch (from project.json) — leaves the user's checkouts untouched and costs its source size, not GBs of build output |
 | `/wt-sweep` | Retire every worktree whose work is already on its integration branch — clean, fully landed, idle — archiving its local-only files first, so disk and slots come back |
 
-## Skills (59)
+## Skills (60)
 
 | Skill | Loads for |
 |---|---|
@@ -129,7 +129,8 @@ _Generated 2026-11-09 13:00_
 | `remove-animations` | Find the animations an interface doesn't need and remove them — motion on keyboard actions, high-frequency surfaces, functional data, and decoration with no purpose — then clean up what they leave behind. Edits code, but only to subtract; it never adds or retunes motion. Use when the user says the app "feels slow", "has too much animation", "feels over-animated", wants to "tone down the motion", or asks what animations to remove. For finding places that should animate, use find-animation-opportunities; for fixing animations that should stay, use improve-animations or review-animations. |
 | `review-animations` | Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned. |
 | `security-audit` | Security guidance and vulnerability review for codebases, APIs, services, CLI tools, libraries, and daemons. Use for security questions, focused reviews, vulnerability research, security audits, or pen tests. Run the complete workflow only for explicit codebase audit or pen-test requests, full/comprehensive/end-to-end reviews, or requested report artifacts. |
-| `seo-geo` | Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content. |
+| `seo-geo` | Search (SEO) and AI-answer (GEO) visibility for every Next.js App Router web repo — metadata and metadataBase, canonical and hreflang, sitemap and robots, noindex for private and preview routes, URLs and internal links, server-rendered content and Core Web Vitals, structured data (JSON-LD), answer-first content AI engines can cite, the AI-crawler policy, programmatic pages, privacy limits, and review severities. Project domain, locales, crawler policy and page types live in the <project>-seo overlay. Load when adding or changing a public route, page metadata, sitemap/robots, structured data, or marketing content. Not for measuring a deployed URL with tools: that is the claude-seo plugin's `/seo` commands (see seo-routing). |
+| `seo-routing` | Parent map of every SEO and AI-search (GEO) skill in this workspace — picks the right one for a request. Three layers, Code (seo-geo plus the project's <project>-seo overlay, for editing a Next.js repo), Method (marketing-skills, for strategy, copy and judgment) and Measure (the claude-seo plugin's /seo commands, for tool-backed checks of a live URL with real data). Load at the start of any SEO, GEO, schema, sitemap, Core Web Vitals, Search Console, backlink, local-SEO or AI-citation task when it is not obvious which skill applies, or when a task spans more than one layer. |
 | `session-continuity` | Durable run-state protocol for work in every project — how to create, update, and resume a run so any session can pick up an in-flight task after /clear, a crash, or days away. Load this at the start of any multi-step task and whenever the user says "resume", "continue", or "where were we". |
 | `skill-security-auditor` | "Use before installing any skill or plugin from an untrusted source, or when asked if a skill is safe. Scans scripts, SKILL.md and dependencies for exfiltration, dangerous calls and prompt injection with skill_security_auditor.py." |
 | `solid-principles` | SOLID principles applied to studio Flutter/Dart apps (Clean Architecture + BLoC) — a violation and fix for each principle, common anti-patterns, and a review quick-check. |

@@ -1,9 +1,9 @@
 ---
 name: content-production
-description: "Produce a blog post, article, or guide end to end: research and brief, outline and draft, then SEO, readability, and voice passes and pre-publish quality gates. Use when the user asks to write a blog post, draft an article or guide on a topic, turn notes or a transcript into a full piece, write a content brief, or check a draft before it goes live. Includes a quality-gate checker and a readability scorer. For deciding what to write, see content-strategy; for landing and product page copy, see copywriting; for editing or humanizing an existing draft, see copy-editing; for AI-search citations, see ai-seo; for site-wide SEO audits, see seo-audit."
+description: "Produce a blog post, article, or guide end to end: research and brief, outline and draft, then SEO, readability, and voice passes and pre-publish quality gates. Use when the user asks to write a blog post, draft an article or guide on a topic, turn notes or a transcript into a full piece, write a content brief, or check a draft before it goes live. Includes a quality-gate checker and a readability scorer. For deciding what to write, see content-strategy; for landing and product page copy, see copywriting; for editing or humanizing an existing draft, see copy-editing; for AI-search citations, see ai-seo; for site-wide SEO audits, see seo-audit. To build a brief from live search results or to improve an existing URL with tools, use the claude-seo plugin's `/seo content-brief` instead."
 metadata:
   version: 1.0.0
-  sources: "ali:content-production@8f08254; ali:copy-editing@8f08254 (readability_scorer.py)"
+  sources: "ali:content-production@8f08254; ali:copy-editing@8f08254 (readability_scorer.py); claude-seo:seo-content@468ed5b; claude-seo:seo-schema@468ed5b"
 ---
 
 # Content Production
@@ -199,7 +199,7 @@ Then confirm what the script can't check:
 - [ ] The intro doesn't open with a stock phrase, and the AI-tell self-check passes
 - [ ] All internal links work
 - [ ] Readability meets the targets above
-- [ ] Word count is within 10% of the target
+- [ ] The piece covers the subtopics in the brief. Google has no preferred word count and says not to write to one (Google docs, helpful-content guidance). If the brief gives a length range, use it only as a planning aid; a large miss is a prompt to check coverage, not a failure
 
 The full pre-publish checklist is in [references/optimization-checklist.md](references/optimization-checklist.md).
 
@@ -231,6 +231,20 @@ When reviewing a draft, name the issue, its impact, and the exact fix. "Improve 
 
 ---
 
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Brief from the live results | `/seo content-brief <keyword> [page-type]` | Scores the current top results after dropping non-competitors (Wikipedia, Reddit, marketplaces, directories); nine page-type templates |
+| Improve an existing page | `/seo content-brief <url>` | Improve-mode brief: what to keep, what to add, no full rewrite when targeted fixes will do |
+| Quality review of a published piece | `/seo content <url>` | E-E-A-T and content-quality analysis of the live page |
+
+Its briefs give per-section word counts. Treat those as planning aids, as in Mode 3 above, not as targets.
+
+---
+
 ## Related Skills
 
 - **content-strategy**: For deciding what to write (topics, calendar, pillars); this skill writes the piece
@@ -238,7 +252,7 @@ When reviewing a draft, name the issue, its impact, and the exact fix. "Improve 
 - **copywriting**: For landing pages, CTAs, and conversion copy
 - **ai-seo**: For optimizing a piece to be cited in AI answers, in addition to traditional SEO
 - **seo-audit**: For auditing an existing content library or site, not for producing a single piece
-- **schema**: For structured data on articles, FAQs, and how-tos
+- **schema**: For structured data on articles, FAQs, and how-tos (FAQ rich results ended 2026-05-07 and HowTo rich results in September 2023; the markup stays valid but no longer earns a rich result)
 - **social**: For distributing and repurposing the finished piece
 
 Sources and credits: [SOURCES.md](SOURCES.md)

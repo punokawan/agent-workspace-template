@@ -1,9 +1,9 @@
 ---
 name: competitors
-description: "When the user wants to create competitor comparison or alternative pages for SEO and buyer-facing use. Also use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' 'comparison table,' 'feature comparison matrix,' '[Product] vs [Product],' '[Product] alternative,' 'competitive landing pages,' 'how do we compare to X,' 'competitor teardown,' 'audit our competitor pages,' 'are our comparison pages out of date,' or 'competitive asset audit.' Use this for any content that positions your product against competitors. Covers four formats: singular alternative, plural alternatives, you vs competitor, and competitor vs competitor, and builds the feature table with a bundled script. For auditing existing claims (not researching competitors from scratch, which is competitor-profiling; not technical SEO on these pages, which is seo-audit), use the asset audit here. For internal battle cards and sales-specific competitor docs, see sales-enablement."
+description: "When the user wants to create competitor comparison or alternative pages for SEO and buyer-facing use. Also use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' 'comparison table,' 'feature comparison matrix,' '[Product] vs [Product],' '[Product] alternative,' 'competitive landing pages,' 'how do we compare to X,' 'competitor teardown,' 'audit our competitor pages,' 'are our comparison pages out of date,' or 'competitive asset audit.' Use this for any content that positions your product against competitors. Covers four formats (singular and plural alternatives, you vs competitor, competitor vs competitor) and builds the feature table with a bundled script. To audit existing claims, use the asset audit here; to research competitors, see competitor-profiling; for technical SEO, see seo-audit. For battle cards and sales-specific competitor docs, see sales-enablement. For tool-backed checks of a live page, use the claude-seo plugin's `/seo competitor-pages`."
 metadata:
   version: 1.0.0
-  sources: "corey:competitors@96798cf; ali:competitor-alternatives@8f08254"
+  sources: "corey:competitors@96798cf; ali:competitor-alternatives@8f08254; claude-seo:seo-schema@468ed5b"
 ---
 
 # Competitor & Alternative Pages
@@ -270,7 +270,7 @@ Apply the Evidence Discipline rules above to every claim, including those in int
 - Create hub page linking to all competitor content
 
 ### Schema Markup
-Consider FAQ schema for common questions like "What is the best alternative to [Competitor]?"
+Answer common questions like "What is the best alternative to [Competitor]?" in visible text on the page. Do not add FAQ schema to get a rich result: Google stopped showing FAQ rich results for all sites on 2026-05-07 (Google announcement). FAQPage markup that already exists is still valid and harmless; you do not have to remove it. See **schema** for the markup that still applies.
 
 ---
 
@@ -312,6 +312,18 @@ While working on competitor content, offer the next page when you see:
 
 ---
 
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Check an existing comparison page | `/seo competitor-pages <url>` | Live page review: layout, feature matrix, markup, conversion elements |
+| Find page-type mismatch against the live results | `/seo sxo <url>` | Reads the current search results to show which page type ranks |
+| Cluster competitor keywords | `/seo cluster <seed-keyword>` | Groups keywords by shared search results |
+
+Do not take two of its defaults: a fixed minimum word count, and AggregateRating markup on comparison pages. This skill's Evidence Discipline and schema rules apply.
+
 ## Related Skills
 
 - **competitor-profiling**: For the researched competitor dossiers that feed the competitor data file
@@ -321,7 +333,7 @@ While working on competitor content, offer the next page when you see:
 - **copywriting**: For writing compelling comparison copy
 - **seo-audit**: For optimizing competitor pages
 - **ai-seo**: For how comparison pages earn citations and recommendations in AI answers
-- **schema**: For FAQ and comparison schema
+- **schema**: For comparison-page markup that still applies (FAQ rich results ended 2026-05-07)
 - **sales-enablement**: For battle cards and internal sales collateral, decks, and objection docs
 
 Sources and credits: [SOURCES.md](SOURCES.md)

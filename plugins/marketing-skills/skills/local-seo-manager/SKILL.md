@@ -1,6 +1,6 @@
 ---
 name: local-seo-manager
-description: "Plans and audits local search for businesses that serve customers in a place: storefronts, service-area trades, multi-location brands. Use when the user mentions a Google Business Profile or other maps listing, the map pack or local pack, 'near me' searches, NAP or citation cleanup, local reviews and review replies, location or service-area pages, a business move or duplicate listing, or local SEO results. Checks listing consistency with nap_checker.py. Use this even for a narrow request such as one profile description or one review reply. For site-wide technical SEO, see seo-audit. For LocalBusiness markup details, see schema. For software or startup directory campaigns, see directory-submissions."
+description: "Plans and audits local search for businesses that serve customers in a place: storefronts, service-area trades, multi-location brands. Use when the user mentions a Google Business Profile or other maps listing, the map pack or local pack, 'near me' searches, NAP or citation cleanup, local reviews and review replies, location or service-area pages, a business move or duplicate listing, or local SEO results. Checks listing consistency with nap_checker.py. Use this even for a narrow request such as one profile description or one review reply. For site-wide technical SEO, see seo-audit. For LocalBusiness markup details, see schema. For software or startup directory campaigns, see directory-submissions. To measure a live listing with tools (geo-grid rank scans, competitor radius, live profile audit), use the claude-seo plugin's `/seo local` or `/seo maps` instead."
 metadata:
   version: 1.0.0
   sources: "corey:seo-audit@96798cf; ali:local-seo-manager@8f08254"
@@ -125,6 +125,19 @@ For narrow requests, deliver the artifact directly and state only the relevant a
 ## Sources
 
 Check current platform rules when a recommendation depends on them. The references link directly to the relevant Google documentation, including retired Q&A functionality and the distinction between Schema.org validity and Google rich-result eligibility.
+
+## Measure with claude-seo
+
+If the claude-seo plugin is installed (Claude Code only; not in Codex), run these for live data. Otherwise use the method in this skill.
+
+| Need | Command | What it adds |
+|---|---|---|
+| Local audit of a site | `/seo local <url>` | Profile, NAP, citation, review, local markup and location-page checks on the live site |
+| Rank across the service area | `/seo maps grid <keyword> <location>` | 7x7 geo-grid scan and share of local voice (DataForSEO, paid; shows a cost estimate and asks first) |
+| Nearby competitors | `/seo maps competitors <keyword> <location>` | Competitor radius map from free sources (Overpass, Geoapify, Nominatim) |
+| Live profile and reviews | `/seo maps gbp …`, `/seo maps reviews …` | Profile completeness and review data (DataForSEO) |
+
+Keep this skill's evidence rules when you read their output: claude-seo quotes vendor statistics (review-count thresholds, ranking-factor shares). Treat those as third-party estimates, not Google rules.
 
 ## Related Skills
 
